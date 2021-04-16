@@ -11,7 +11,7 @@ public class Board {
     boolean[][][] cells = null;
     boolean[][][] startingPos = null;
     private int aliveNeighbors;
-    
+
     private int size;
 
     public Board(int size) {
