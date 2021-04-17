@@ -29,6 +29,8 @@
             <Menu mnemonicParsing="false" text="Edit">
                <items>
                   <CheckMenuItem fx:id="showAxis" mnemonicParsing="false" onAction="#showAxisC" text="Show Axis" />
+                  <MenuItem mnemonicParsing="false" onAction="#clearLayerC" text="clear layer" />
+                  <MenuItem mnemonicParsing="false" onAction="#fillLayerC" text="fill layer" />
                   <MenuItem mnemonicParsing="false" text="Delete" />
                </items>
             </Menu>
