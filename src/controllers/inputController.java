@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class inputController {
@@ -49,6 +51,7 @@ public class inputController {
     private Line axisY;
     private Line axisX;
     private boolean newAxisLayer = true;
+    private HashMap<Integer, Rectangle> layerMap;
 
     /**
      * sceneBuilder methods
@@ -66,6 +69,14 @@ public class inputController {
             if (e.getCode() == KeyCode.ALT) {
                 altPressed = true;
             }
+            if (e.getCode() == KeyCode.W){
+                upLayerC();
+                e.consume();
+            }
+            if (e.getCode() == KeyCode.S){
+                downLayerC();
+                e.consume();
+            }
         });
         mainBorderPane.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.CONTROL) {
@@ -76,7 +87,6 @@ public class inputController {
             }
         });
     }
-
     public void switchSceneC() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/output.fxml"));
         Parent outputRoot = loader.load();
@@ -97,8 +107,7 @@ public class inputController {
         outputC.zVal = zVal;
     }
 
-    @FXML
-    public void saveButtonC() {
+    public void saveC() {
         aliveString = ""; // don't add to already made alive
         for (int y = 0; y < yVal; y++) {
             for (int i = 0; i < zVal; i++) {
@@ -168,6 +177,35 @@ public class inputController {
         }
     }
 
+    public void clearLayerC() {
+        if (checkAxisFilledBase()) {
+            int mapCount = 0;
+            for (int x = 0; x < xVal; x++) {
+                for (int z = 0; z < zVal; z++) {
+                    layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setFill(Color.TRANSPARENT);
+                    mapCount++;
+                }
+            }
+        }
+    }
+    public void fillLayerC(){
+        if (checkAxisFilledBase()) {
+            int mapCount = 0;
+            for (int x = 0; x < xVal; x++) {
+                for (int z = 0; z < zVal; z++) {
+                    layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setFill(Color.BLACK);
+                    mapCount++;
+                }
+            }
+        }
+    }
+    private boolean checkAxisFilledBase(){
+        if (!x.getText().equals("") && !y.getText().equals("") && !z.getText().equals("")){
+            return true;
+        }
+        return false;
+    }
+
     @FXML
     public void xC() {
         if (!(x.getText().equals(""))) {
@@ -220,7 +258,7 @@ public class inputController {
 
     @FXML
     public void saveTemplateC() {
-        saveButtonC();
+        saveC();
         String content = String.format("%d %d %d\n%s", yVal, xVal, zVal, aliveString);
         new fileIO().saveFile(content);
     }
@@ -234,10 +272,12 @@ public class inputController {
 
             axisY.setStrokeWidth(2.5);
             axisX.setStrokeWidth(2.5);
-            axisY.setFill(Color.GREY);
-            axisX.setFill(Color.GREY);
+            axisY.setFill(Color.LIGHTGREY);
+            axisX.setFill(Color.LIGHTGREY);
             axisY.setVisible(axisShown);
             axisX.setVisible(axisShown);
+            axisY.setOpacity(0.7);
+            axisX.setOpacity(0.7);
             stackPane.getChildren().addAll(axisY, axisX);
         }
         axisY.setVisible(axisShown);
@@ -250,6 +290,8 @@ public class inputController {
      */
     @FXML
     private void fillLayer() { // originally initialize
+        int mapCount = 0;
+        layerMap = new HashMap<>();
         empty3dArray();
         stackPane = new StackPane();
         stackPane.setOnKeyPressed(e -> {
@@ -278,6 +320,10 @@ public class inputController {
                     rectangle.setFill(Color.TRANSPARENT);
                     rectangle.setId("0");
 
+                    layerMap.put(mapCount,rectangle);
+                    mapCount++;
+
+
                     rectangle.setOnMouseClicked(e -> {
                         if (rectangle.getFill().equals(Color.TRANSPARENT)) {
                             rectangle.setFill(Color.BLACK);
@@ -287,7 +333,6 @@ public class inputController {
                             rectangle.setId("0");
                         }
                     });
-
                     rectangle.setOnMouseEntered(t -> {
                         if (altPressed) {
                             rectangle.setFill(Color.BLACK);
@@ -304,6 +349,7 @@ public class inputController {
             }
             stackPane.getChildren().add(gridPane);
             layers.add(gridPane);
+
         }
         for (int l = 1; l < layers.size(); l++) {
             layers.get(l).setVisible(false);
@@ -400,7 +446,7 @@ public class inputController {
         output.show();
 
         outputController outputC = loader.getController();
-        saveButtonC();
+        saveC();
         outputC.init(this.xVal*10, alive);
 //        outputC.setSize(this.xVal*10);
 //        System.out.println("xVal = " + xVal);
@@ -410,4 +456,6 @@ public class inputController {
         outputC.xVal = xVal;
         outputC.zVal = zVal;
     }
+
+
 }
