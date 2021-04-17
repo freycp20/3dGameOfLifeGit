@@ -1,0 +1,8 @@
+#pageOptions {
+    -fx-background-color: #3b3f41;
+}
+
+.label {
+    -fx-text-fill: #bab9b9;
+    -fx-font-size: 15px;
+}

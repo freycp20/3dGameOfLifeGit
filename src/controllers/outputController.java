@@ -108,11 +108,11 @@ public class outputController {
     }
     public void aliveNC() {
         setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
-        System.out.println("aliveNeighbors = " + aliveNeighbors);
+//        System.out.println("aliveNeighbors = " + aliveNeighbors);
     }
     public void deadNC() {
         setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
-        System.out.println("deadNeighbor = " + deadNeighbors);
+//        System.out.println("deadNeighbor = " + deadNeighbors);
     }
     public void runButtonC() {
         if (!modelRunning){
@@ -166,6 +166,7 @@ public class outputController {
         root.getChildren().add(cube);
         root.setStyle("-fx-background-color: #2c2c2c;");
         buttonVbox.setStyle("-fx-background-color: #3b3f41;");
+        buttonVbox.getStylesheets().add("resources/outputStyle.css");
         resetButton.setStyle("-fx-background-color: #3b3f41;");
         resetButton.setStyle("-fx-background-color: #3b3f41;");
         resetButton.setStyle("-fx-border-color:#5c5e5e;");
@@ -177,14 +178,15 @@ public class outputController {
 
 
         // scene
+//        mainBorderPane.getScene().getStylesheets().add("resources/outputStyle.css");
         SubScene subScene = new SubScene(root, subScenePane.getLayoutBounds().getMaxX(), subScenePane.getLayoutBounds().getMaxY(), true, SceneAntialiasing.BALANCED);
         subScene.heightProperty().bind(subScenePane.heightProperty());
         subScene.widthProperty().bind(subScenePane.widthProperty());
 //        subScene.widthProperty().bind();
 //        subScenePane.prefHeightProperty().bind(mainBorderPane.getCenter());
 //        mainBorderPane.set;
-        subScenePane.setStyle("-fx-background-color: #000000;");
-        subScene.setStyle("-fx-background-color: #000000;");
+//        subScenePane.setStyle("-fx-background-color: #2c2c2c;");
+//        subScene.setStyle("-fx-background-color: #000000;");
 //        subScenePane.setMaxSize(mainBorderPane.getCenter().getLayoutBounds().getMaxX(), mainBorderPane.getCenter().getLayoutBounds().getMaxY());
         subScenePane.getChildren().addAll(subScene);
 //        mainBorderPane.getCenter().;
@@ -228,11 +230,12 @@ public class outputController {
         timeline =
                 new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> {
                     removeChildren(cube);
-                    System.out.println("this is working");
+//                    System.out.println("this is working");
                     board.nextStep();
                     addValsToGroup(cube, board.getCells());
                 }));
         timeline.setCycleCount(Animation.INDEFINITE);
+//        runButton.getParent().getScene().getStylesheets().add("outputStyle");
 //        // create axis walls
 //        size = 100;
 //        cube = createCube(size);
@@ -300,7 +303,7 @@ public class outputController {
     public void setCube(int size) {
         this.size = size;
         cube = createCube(size);
-        System.out.println("this.size = " + this.size);
+//        System.out.println("this.size = " + this.size);
         // initial cube rotation
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
@@ -338,10 +341,10 @@ public class outputController {
             for (int j = 0; j < cells[i].length; j++) {
                 for (int k = 0; k < cells[i][j].length; k++) {
                     if (cells[i][j][k]) {
-                        System.out.println(cells[i][j][k]);
-                        System.out.println("k = " + k);
-                        System.out.println("j = " + j);
-                        System.out.println("i = " + i);
+//                        System.out.println(cells[i][j][k]);
+//                        System.out.println("k = " + k);
+//                        System.out.println("j = " + j);
+//                        System.out.println("i = " + i);
                         PhongMaterial material = new PhongMaterial();
                         Box newBox = new Box(cubeSize, cubeSize, cubeSize);
                         newBox.setTranslateX(localize(i));

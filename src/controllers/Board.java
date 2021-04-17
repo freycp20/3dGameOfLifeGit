@@ -84,12 +84,12 @@ public class Board {
                     System.out.println("cells[layer][row][col] = " + cells[layer][row][col]);
                     if (cells[layer][row][col]) {
                         System.out.println("made it here");
-                        if (livingNeighbors == 2) {
-                            board[layer][row][col] = true;
-                        } else {
+                        if (livingNeighbors == 8) {
                             board[layer][row][col] = false;
+                        } else {
+                            board[layer][row][col] = true;
                         }
-                    } else if (livingNeighbors==2) {
+                    } else if (livingNeighbors==9) {
                         board[layer][row][col] = true;
                     }
                 }

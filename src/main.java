@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -17,6 +18,7 @@ public class main extends Application {
     Scene input;
     Scene output;
     Stage pStage;
+    Paint labelFill;
     @Override
     public void start(Stage primaryStage) throws Exception{
         pStage = primaryStage;
@@ -25,6 +27,7 @@ public class main extends Application {
         Label outputLabel = new Label("output");
         Label splitSLabel = new Label("split-screen");
         Label consoleLabel = new Label("console");
+//        labelFill = consoleLabel.getTextFill();
         setLabel(inputLabel);
         setLabel(outputLabel);
         setLabel(splitSLabel);
@@ -51,7 +54,11 @@ public class main extends Application {
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(inputLabel,outputLabel,splitSLabel,consoleLabel);
+        vbox.setId("pageOptions");
         Scene scene = new Scene(vbox, 300,200);
+        scene.getStylesheets().add("resources/welcomePage.css");
+        labelFill = inputLabel.getTextFill();
+        System.out.println(labelFill);
         pStage.setScene(scene);
         pStage.show();
 
@@ -64,11 +71,12 @@ public class main extends Application {
         Insets insets = new Insets(2,2,2,2);
         label.setPadding(insets);
         label.setOnMouseEntered(e -> {
-            label.setTextFill(Color.BLUE);
+            label.setStyle("-fx-text-fill: #5b92b7;");
             label.setUnderline(true);
         });
         label.setOnMouseExited(e -> {
-            label.setTextFill(Color.BLACK);
+//            System.out.println(labelFill);
+            label.setStyle("-fx-text-fill: #bab9b9;");
             label.setUnderline(false);
         });
     }
