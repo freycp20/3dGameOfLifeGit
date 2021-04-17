@@ -95,16 +95,18 @@ public class inputController {
         Stage output = (Stage) mainBorderPane.getScene().getWindow();
         output.setScene(scene);
         output.show();
-
-        outputController outputC = loader.getController();
-        outputC.init(this.xVal*10, alive);
+        if (checkAxisFilledBase()){
+            saveC();
+            outputController outputC = loader.getController();
+            outputC.init(this.xVal*10, alive);
 //        outputC.setSize(this.xVal*10);
 //        System.out.println("xVal = " + xVal);
 //        outputC.setCube(this.xVal*10);
 //        outputC.setBoard("test.txt");
-        outputC.yVal = yVal;
-        outputC.xVal = xVal;
-        outputC.zVal = zVal;
+            outputC.yVal = yVal;
+            outputC.xVal = xVal;
+            outputC.zVal = zVal;
+        }
     }
 
     public void saveC() {
@@ -183,6 +185,7 @@ public class inputController {
             for (int x = 0; x < xVal; x++) {
                 for (int z = 0; z < zVal; z++) {
                     layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setFill(Color.TRANSPARENT);
+                    layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setId("0");
                     mapCount++;
                 }
             }
@@ -194,6 +197,7 @@ public class inputController {
             for (int x = 0; x < xVal; x++) {
                 for (int z = 0; z < zVal; z++) {
                     layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setFill(Color.BLACK);
+                    layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setId("1");
                     mapCount++;
                 }
             }
@@ -289,7 +293,7 @@ public class inputController {
      * non-scenebuilder methods
      */
     @FXML
-    private void fillLayer() { // originally initialize
+    void fillLayer() { // originally initialize
         int mapCount = 0;
         layerMap = new HashMap<>();
         empty3dArray();
@@ -359,7 +363,7 @@ public class inputController {
     }
 
     @FXML
-    private void setLayer(boolean[][][] cellArray) {
+    void setLayer(boolean[][][] cellArray) {
         empty3dArray();
         StackPane stackPane = new StackPane();
         layers.clear();
@@ -436,26 +440,7 @@ public class inputController {
         }
     }
 
-    public void visualizeC(MouseEvent mouseEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/output.fxml"));
-        Parent outputRoot = loader.load();
-//        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
-        Scene scene = new Scene(outputRoot,mainBorderPane.getWidth(),mainBorderPane.getHeight());
-        Stage output = (Stage) mainBorderPane.getScene().getWindow();
-        output.setScene(scene);
-        output.show();
-
-        outputController outputC = loader.getController();
-        saveC();
-        outputC.init(this.xVal*10, alive);
-//        outputC.setSize(this.xVal*10);
-//        System.out.println("xVal = " + xVal);
-//        outputC.setCube(this.xVal*10);
-//        outputC.setBoard("test.txt");
-        outputC.yVal = yVal;
-        outputC.xVal = xVal;
-        outputC.zVal = zVal;
+    public void visualizeC() throws IOException {
+        switchSceneC();
     }
-
-
 }

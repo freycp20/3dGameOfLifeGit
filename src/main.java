@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class main extends Application {
+
     Parent inputRoot;
     Parent outputRoot;
     Scene input;
