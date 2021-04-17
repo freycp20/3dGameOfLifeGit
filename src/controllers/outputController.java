@@ -36,6 +36,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
@@ -53,9 +55,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class outputController {
     private SimpleIntegerProperty randomness = new SimpleIntegerProperty(100);
@@ -79,7 +83,7 @@ public class outputController {
     private final Rotate rotateY = new Rotate(-45, Rotate.Y_AXIS);
     private boolean modelRunning = false;
     private Board board;
-
+    public VBox buttonVbox;
     public VBox mainVbox;
     public BorderPane mainBorderPane;
     public MenuBar mainMenuBar;
@@ -88,12 +92,14 @@ public class outputController {
     public TextField deadNeighbor = null;
     public Button runButton;
     public Button resetButton;
+    public StackPane subScenePane;
     private boolean falseBoxVal = false;
     private Timeline timeline;
     private Group cube;
     protected int yVal;
     protected int xVal;
     protected int zVal;
+    Color lineColor;
 
     public void booleanBoxC() {
         falseBoxVal = !falseBoxVal;
@@ -142,6 +148,8 @@ public class outputController {
 
     }
     public void init(int size, boolean[][][] alive) {
+        lineColor = Color.SILVER;
+//        lineColor = Color.TRANSPARENT;
         this.size = size;
         cube = createCube(size);
         width = (size/10);
@@ -152,24 +160,44 @@ public class outputController {
         board = new Board(alive);
         System.out.println("board.getCells() = " + board.getCells());
 
-
-        BorderPane page = new BorderPane();
+        AmbientLight ambientLight = new AmbientLight();
+        ambientLight.setLightOn(true);
         StackPane root = new StackPane();
         root.getChildren().add(cube);
+        root.setStyle("-fx-background-color: #2c2c2c;");
+        buttonVbox.setStyle("-fx-background-color: #3b3f41;");
+        resetButton.setStyle("-fx-background-color: #3b3f41;");
+        resetButton.setStyle("-fx-background-color: #3b3f41;");
+        resetButton.setStyle("-fx-border-color:#5c5e5e;");
+        runButton.setStyle("-fx-background-color: #3b3f41;");
+        runButton.setStyle("-fx-border-color:#5c5e5e;");
+        root.getChildren().add(ambientLight);
 
         addValsToGroup(cube, board.getCells());
 
+
         // scene
-        SubScene subScene = new SubScene(root, 800, 900, true, SceneAntialiasing.BALANCED);
+        SubScene subScene = new SubScene(root, subScenePane.getLayoutBounds().getMaxX(), subScenePane.getLayoutBounds().getMaxY(), true, SceneAntialiasing.BALANCED);
+        subScene.heightProperty().bind(subScenePane.heightProperty());
+        subScene.widthProperty().bind(subScenePane.widthProperty());
+//        subScene.widthProperty().bind();
+//        subScenePane.prefHeightProperty().bind(mainBorderPane.getCenter());
+//        mainBorderPane.set;
+        subScenePane.setStyle("-fx-background-color: #000000;");
+        subScene.setStyle("-fx-background-color: #000000;");
+//        subScenePane.setMaxSize(mainBorderPane.getCenter().getLayoutBounds().getMaxX(), mainBorderPane.getCenter().getLayoutBounds().getMaxY());
+        subScenePane.getChildren().addAll(subScene);
+//        mainBorderPane.getCenter().;
         PerspectiveCamera cam = new PerspectiveCamera();
 
 //        cam.setFieldOfView();
         subScene.setCamera(cam);
+//        pointLight.setRotate(100);
         Label random = new Label();
 
 //        page.setLeft(buttons);
-        page.setCenter(subScene);
-        mainVbox.getChildren().add(page);
+        mainBorderPane.setCenter(subScenePane);
+//        mainVbox.getChildren().add(page);
 
 //        page.getChildren().addAll(removeKids, random, subScene);
 
@@ -356,7 +384,7 @@ public class outputController {
 
         Rectangle wall;
 
-        public Axis(double size) {
+        public Axis(double size, Color lineColor) {
 
             // wall
             // first the wall, then the lines => overlapping of lines over walls
@@ -368,7 +396,7 @@ public class outputController {
             // grid
             double zTranslate = 0;
             double lineWidth = 0.5;
-            Color gridColor = Color.BLUE;
+            Color gridColor = lineColor;
 
             for (int y = 0; y <= size; y += size) {
 
@@ -405,7 +433,7 @@ public class outputController {
 
     public void makeZoomable(StackPane control) {
 
-        final double MAX_SCALE = .8;
+        final double MAX_SCALE = 3;
         final double MIN_SCALE = .05;
 
         control.addEventFilter(ScrollEvent.ANY, new EventHandler<ScrollEvent>() {
@@ -449,14 +477,14 @@ public class outputController {
         Axis r;
 
         // back face
-        r = new Axis(size);
+        r = new Axis(size, lineColor);
         r.setTranslateX((-0.5 * size));
         r.setTranslateY(-0.5 * size);
         r.setTranslateZ((0.5 * size));
         cubeFaces.add(r);
 
         // bottom face
-        r = new Axis(size);
+        r = new Axis(size, lineColor);
         r.setTranslateX(-0.5 * size);
         r.setTranslateY(0);
         r.setRotationAxis(Rotate.X_AXIS);
@@ -464,7 +492,7 @@ public class outputController {
         cubeFaces.add(r);
 
         // right face
-        r = new Axis(size);
+        r = new Axis(size, lineColor);
         r.setTranslateX(-size);
         r.setTranslateY(-0.5 * size);
         r.setRotationAxis(Rotate.Y_AXIS);
@@ -472,7 +500,7 @@ public class outputController {
         cubeFaces.add( r);
 
         // left face
-        r = new Axis(size);
+        r = new Axis(size, lineColor);
         r.setTranslateX(0);
         r.setTranslateY((-0.5 * size));
         r.setRotationAxis(Rotate.Y_AXIS);
@@ -480,7 +508,7 @@ public class outputController {
         cubeFaces.add(r);
 
         // top face
-        r = new Axis(size);
+        r = new Axis(size, lineColor);
         r.setTranslateX(-0.5 * size);
         r.setTranslateY(-size);
         r.setRotationAxis(Rotate.X_AXIS);
@@ -488,7 +516,7 @@ public class outputController {
         cubeFaces.add(r);
 
         // front face
-        r = new Axis(size);
+        r = new Axis(size, lineColor);
         r.setTranslateX(-0.5 * size);
         r.setTranslateY(-0.5 * size);
         r.setTranslateZ(-0.5 * size);

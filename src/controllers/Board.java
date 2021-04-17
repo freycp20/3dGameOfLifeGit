@@ -21,6 +21,19 @@ public class Board {
         cells = new boolean[size][size][size];
         startingPos = new boolean[size][size][size];
     }
+
+    public void setAliveNeighbors(int aliveNeighbors) {
+        this.aliveNeighbors = aliveNeighbors;
+    }
+
+    public void setDeadNeighbors(int deadNeighbors) {
+        this.deadNeighbors = deadNeighbors;
+    }
+
+    public void setFalseFirst(boolean falseFirst) {
+        this.falseFirst = falseFirst;
+    }
+
     public Board(File file) {
         try {
             FileInputStream readFile = new FileInputStream(file);
