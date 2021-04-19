@@ -3,6 +3,11 @@
 }
 
 .label {
-    -fx-text-fill: #bab9b9;
+    -fx-text-fill: #adacac;
     -fx-font-size: 15px;
+}
+
+.label:hover {
+    -fx-text-fill: #5b92b7;
+    -fx-underline: true;
 }

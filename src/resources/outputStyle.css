@@ -1,9 +1,20 @@
-.label {
+/** {*/
+/*    --text-color: #adacac;*/
+/*}*/
+/*.label {*/
+
+/*}*/
+.text-field {
 
 }
 .button {
-    -fx-background-color: #7c7c7c;
+    -fx-background-color: #3b3f41;
     -fx-border-radius: 4px;
+    -fx-text-fill: #adacac;
+    -fx-border-color: #5c5e5e;
+}
+.button:hover {
+    -fx-background-color: #4a4f51;
 }
 .vbox {
     -fx-background-color: #3b3f41;
@@ -15,3 +26,68 @@
 #buttonVbox {
     -fx-background-color: #3b3f41;
 }
+#subScenePane {
+    -fx-background-color: #2c2c2c;
+}
+#cubeGridPane {
+    -fx-background-color: #2c2c2c;
+
+}
+#mainMenuBar {
+    -fx-background-color: #3b3f41;
+    -fx-border-color: #030303;
+    -fx-border-width: 1px;
+    /*-fx-text-fill: #adacac;*/
+    /*-fx-font-style: ;*/
+    /*-fx*/
+
+}
+.menu-button:hover, .menu-button:focused, .menu-button:showing{
+    -fx-background-color: #4a4f51;
+}
+#mainMenuBar .label {
+    -fx-text-fill: #adacac;
+
+}
+.menu-item {
+    -fx-background-color: #4a4f51;
+    -fx-font-size: 13px;
+    -fx-text-fill: purple;
+}
+.menu-item:hover {
+    -fx-text-fill: #f6f6f6;
+    -fx-background-color: #3c6ece;
+}
+/*.menu {*/
+/*    -fx-background-color: #4a4f51;*/
+/*    */
+/*}*/
+.text-field {
+    -fx-prompt-text-fill: #6a6b6b;
+    /*-fx-text-fill: #6a6b6b;*/
+    -fx-text-fill: #b2b2b3;
+    -fx-background-color: #2c2c2c;
+}
+#mainMenuBar .label:hover {
+    -fx-background-color: #494e50;
+
+}
+.context-menu {
+    /*-fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";*/
+    -fx-background-color:#4a4f51;
+    -fx-border-width: 0.2px;
+    -fx-border-color: #020202;
+    /** -fx-background-insets: 0.0, 1.0, 2.0;
+    -fx-background-radius: 0.0 6.0 6.0 6.0, 0.0 5.0 5.0 5.0, 0.0 4.0 4.0 4.0;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
+    -fx-opacity: 0.9;*/
+}
+/*#mainMenuBar-button:hover  {*/
+/*    !*-fx-background-color: #494e50;*!*/
+/*    -fx-background-color: red;*/
+
+/*}*/
+
+/*.root {*/
+/*    -fx-base: rgba(60, 63, 65, 255); // dark*/
+/*}*/

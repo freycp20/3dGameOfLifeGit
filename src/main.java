@@ -1,3 +1,4 @@
+import controllers.outputController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -12,6 +13,8 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class main extends Application {
 
     Parent inputRoot;
@@ -22,6 +25,8 @@ public class main extends Application {
     Paint labelFill;
     @Override
     public void start(Stage primaryStage) throws Exception{
+        VBox vbox = new VBox();
+
         pStage = primaryStage;
         pStage.setTitle("welcome");
         Label inputLabel = new Label("input");
@@ -34,7 +39,8 @@ public class main extends Application {
         setLabel(splitSLabel);
         setLabel(consoleLabel);
         inputRoot = FXMLLoader.load(getClass().getResource("resources/input.fxml"));
-        outputRoot = FXMLLoader.load(getClass().getResource("resources/output.fxml"));
+        FXMLLoader outputLoader = new FXMLLoader(getClass().getResource("/resources/output.fxml"));
+        outputRoot = outputLoader.load();
         inputLabel.setOnMouseClicked(e -> {
             input = new Scene(inputRoot, 1200, 600);
             pStage.close();
@@ -46,13 +52,15 @@ public class main extends Application {
             primaryStage.setResizable(true);
             primaryStage.setX(bounds.getWidth()/2);
             output = new Scene(outputRoot, 1200, 600);
+            outputController outputC = outputLoader.getController();
+            outputC.setStyleDark();
             pStage.close();
             pStage.setScene(output);
             pStage.centerOnScreen();
             pStage.show();
         });
 
-        VBox vbox = new VBox();
+//        VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(inputLabel,outputLabel,splitSLabel,consoleLabel);
         vbox.setId("pageOptions");
@@ -71,14 +79,5 @@ public class main extends Application {
     private void setLabel(Label label){
         Insets insets = new Insets(2,2,2,2);
         label.setPadding(insets);
-        label.setOnMouseEntered(e -> {
-            label.setStyle("-fx-text-fill: #5b92b7;");
-            label.setUnderline(true);
-        });
-        label.setOnMouseExited(e -> {
-//            System.out.println(labelFill);
-            label.setStyle("-fx-text-fill: #bab9b9;");
-            label.setUnderline(false);
-        });
     }
 }

@@ -136,6 +136,7 @@ public class outputController {
     }
 
     public void switchSceneC() throws IOException {
+        timeline.pause();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/input.fxml"));
         Parent inputRoot = loader.load();
 //        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
@@ -148,7 +149,7 @@ public class outputController {
 
     }
     public void init(int size, boolean[][][] alive) {
-        lineColor = Color.SILVER;
+        lineColor = Color.web("#adacac");
 //        lineColor = Color.TRANSPARENT;
         this.size = size;
         cube = createCube(size);
@@ -164,13 +165,14 @@ public class outputController {
         ambientLight.setLightOn(true);
         StackPane root = new StackPane();
         root.getChildren().add(cube);
-        root.setStyle("-fx-background-color: #2c2c2c;");
-        buttonVbox.setStyle("-fx-background-color: #3b3f41;");
-        resetButton.setStyle("-fx-background-color: #3b3f41;");
-        resetButton.setStyle("-fx-background-color: #3b3f41;");
-        resetButton.setStyle("-fx-border-color:#5c5e5e;");
-        runButton.setStyle("-fx-background-color: #3b3f41;");
-        runButton.setStyle("-fx-border-color:#5c5e5e;");
+        setStyleDark();
+//        root.setStyle("-fx-background-color: #2c2c2c;");
+//        buttonVbox.setStyle("-fx-background-color: #3b3f41;");
+//        resetButton.setStyle("-fx-background-color: #3b3f41;");
+//        resetButton.setStyle("-fx-background-color: #3b3f41;");
+//        resetButton.setStyle("-fx-border-color:#5c5e5e;");
+//        runButton.setStyle("-fx-background-color: #3b3f41;");
+//        runButton.setStyle("-fx-border-color:#5c5e5e;");
         root.getChildren().add(ambientLight);
 
         addValsToGroup(cube, board.getCells());
@@ -183,10 +185,13 @@ public class outputController {
 //        subScene.widthProperty().bind();
 //        subScenePane.prefHeightProperty().bind(mainBorderPane.getCenter());
 //        mainBorderPane.set;
-        subScenePane.setStyle("-fx-background-color: #000000;");
+//        subScenePane.setStyle("-fx-background-color: #000000;");
         subScene.setStyle("-fx-background-color: #000000;");
 //        subScenePane.setMaxSize(mainBorderPane.getCenter().getLayoutBounds().getMaxX(), mainBorderPane.getCenter().getLayoutBounds().getMaxY());
         subScenePane.getChildren().addAll(subScene);
+        subScenePane.setId("subScenePane");
+        root.setId("cubeGridPane");
+        System.out.println("root.getId() = " + root.getId());
 //        mainBorderPane.getCenter().;
         PerspectiveCamera cam = new PerspectiveCamera();
 
@@ -233,6 +238,7 @@ public class outputController {
                     addValsToGroup(cube, board.getCells());
                 }));
         timeline.setCycleCount(Animation.INDEFINITE);
+//        setStyleDark();
 //        // create axis walls
 //        size = 100;
 //        cube = createCube(size);
@@ -294,6 +300,12 @@ public class outputController {
 //        setDragRotate(root);
 //        makeZoomable(root);
     }
+    public void setStyleLight() {
+
+    }
+    public void setStyleDark() {
+        mainBorderPane.getScene().getStylesheets().add("resources/outputStyle.css");
+    }
     public void setBoard(String file) {
         board = new Board(new java.io.File(file));
     }
@@ -306,15 +318,15 @@ public class outputController {
         cube.setTranslateZ(-size);
     }
     private void setFalseFirst(boolean var){
-        falseFirst = var;
+        board.setFalseFirst(var);
     }
 
     public void setAliveNeighbors(int aliveNeighbors) {
-        this.aliveNeighbors = aliveNeighbors;
+        board.setAliveNeighbors(aliveNeighbors);
     }
 
     public void setDeadNeighbors(int deadNeighbors) {
-        this.deadNeighbors = deadNeighbors;
+        board.setDeadNeighbors(deadNeighbors);
     }
 
     public void setDragRotate(StackPane root){
@@ -338,16 +350,16 @@ public class outputController {
             for (int j = 0; j < cells[i].length; j++) {
                 for (int k = 0; k < cells[i][j].length; k++) {
                     if (cells[i][j][k]) {
-                        System.out.println(cells[i][j][k]);
-                        System.out.println("k = " + k);
-                        System.out.println("j = " + j);
-                        System.out.println("i = " + i);
+//                        System.out.println(cells[i][j][k]);
+//                        System.out.println("k = " + k);
+//                        System.out.println("j = " + j);
+//                        System.out.println("i = " + i);
                         PhongMaterial material = new PhongMaterial();
                         Box newBox = new Box(cubeSize, cubeSize, cubeSize);
                         newBox.setTranslateX(localize(i));
                         newBox.setTranslateY(localize(j));
                         newBox.setTranslateZ(localize(k));
-
+                        newBox.setStyle("-fx-border-color: #808080");
                         int dx = width/2 - i;
                         int dy = width/2 - j;
                         int dz = width/2 - k;

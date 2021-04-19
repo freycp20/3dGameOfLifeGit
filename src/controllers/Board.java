@@ -21,7 +21,23 @@ public class Board {
         cells = new boolean[size][size][size];
         startingPos = new boolean[size][size][size];
     }
+    public void printCells() {
+        for (int y = 0; y < cells.length; y++) {
+            for (int x = 0; x < cells.length; x++) {
+                for (int z = 0; z < cells.length; z++) {
+//                        System.out.println("maybe?");
+                    System.out.print("cells[y][x][z] = " + cells[y][x][z] + " ");
+                    if (cells[y][x][z]){
 
+//                            System.out.print(cells[y][x][z] + " ");
+
+                    }
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
+    }
     public void setAliveNeighbors(int aliveNeighbors) {
         this.aliveNeighbors = aliveNeighbors;
     }
@@ -52,7 +68,7 @@ public class Board {
                         cells[y][x][z] = scn.nextBoolean();
                         if (cells[y][x][z]){
 
-                            System.out.print(cells[y][x][z] + " ");
+//                            System.out.print(cells[y][x][z] + " ");
 
                         }
                     }
@@ -67,7 +83,6 @@ public class Board {
         System.out.println("nextstep is getting called");
         boolean[][][] board = new boolean[size][size][size];
         int livingNeighbors = 0;
-        
         for (int layer = 1; layer < board.length-1; layer++) {
             for (int row = 1; row < board[layer].length-1; row++) {
                 for (int col = 1; col < board[layer][row].length-1; col++) {
@@ -81,22 +96,34 @@ public class Board {
 //                    } else if (livingNeighbors==deadNeighbors) {
 //                        board[layer][row][col] = true;
 //                    }
-                    System.out.println("cells[layer][row][col] = " + cells[layer][row][col]);
+//                    System.out.println("cells[layer][row][col] = " + cells[layer][row][col]);
+//                    System.out.println("aliveNeighbors = " + aliveNeighbors);
+//                    System.out.println("deadNeighbors = " + deadNeighbors);
+
                     if (cells[layer][row][col]) {
                         System.out.println("made it here");
-                        if (livingNeighbors == 2) {
-                            board[layer][row][col] = true;
+                        System.out.println("livingNeighbors = " + livingNeighbors);
+                        if (falseFirst) {
+                            if (livingNeighbors == aliveNeighbors) {
+                                board[layer][row][col] = false;
+                            } else {
+                                board[layer][row][col] = true;
+                            }
                         } else {
-                            board[layer][row][col] = false;
+                            if (livingNeighbors == aliveNeighbors) {
+                                board[layer][row][col] = true;
+                            } else {
+                                board[layer][row][col] = false;
+                            }
                         }
-                    } else if (livingNeighbors==2) {
+                    } else if (livingNeighbors==deadNeighbors) {
                         board[layer][row][col] = true;
                     }
                 }
             }
         }
-        System.out.println("woh");
-        cells = new Board(board).getCells();
+//        System.out.println("woh");
+        cells = board;
     }
     public ArrayList<Boolean> surroundingCells(boolean[][][] board, int layer, int row, int col) {
         final int NUM_NEIGHBORS = 27;
@@ -137,8 +164,8 @@ public class Board {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 for (int k = 0; k < cells[i][j].length; k++) {
-                    System.out.println("this.cells[i][j][k] = " + this.cells[i][j][k]);
-                    System.out.println("this.startingPos[i][j][k] = " + this.startingPos[i][j][k]);
+//                    System.out.println("this.cells[i][j][k] = " + this.cells[i][j][k]);
+//                    System.out.println("this.startingPos[i][j][k] = " + this.startingPos[i][j][k]);
                 }
             }
         }
