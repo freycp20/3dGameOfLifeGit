@@ -24,19 +24,14 @@
 .menu-item {
     -fx-background-color: #4a4f51;
     -fx-font-size: 13px;
-    -fx-text-fill: purple;
 }
 .menu-item:hover {
     -fx-text-fill: #f6f6f6;
     -fx-background-color: #3591c3;
 }
-/*.menu {*/
-/*    -fx-background-color: #4a4f51;*/
-/*    */
-/*}*/
+
 .text-field {
     -fx-prompt-text-fill: #adacac;
-    /*-fx-text-fill: #6a6b6b;*/
     -fx-border-radius: 1px;
     -fx-border-color:#5c5e5e;
     -fx-background-color: #3b3f41;
@@ -45,23 +40,9 @@
 .context-menu {
     /*-fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";*/
     -fx-background-color:#4a4f51;
-    -fx-border-width: 1px; /* floating point px isn't a thing caleb lol
-    -fx-border-color: #020202;
-    /** -fx-background-insets: 0.0, 1.0, 2.0;
-    -fx-background-radius: 0.0 6.0 6.0 6.0, 0.0 5.0 5.0 5.0, 0.0 4.0 4.0 4.0;
-    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
-    -fx-opacity: 0.9;*/
+    -fx-border-width: 1px; /* floating point px isn't a thing caleb lol*/
+
 }
-/*#mainMenuBar-button:hover  {*/
-/*    !*-fx-background-color: #494e50;*!*/
-/*    -fx-background-color: red;*/
-
-/*}*/
-
-/*.root {*/
-/*    -fx-base: rgba(60, 63, 65, 255); // dark*/
-/*}*/
-
 
 #slider .track {
     -fx-background-color: #adacac;
@@ -96,9 +77,6 @@
     -fx-background-color: #3b3f41;
     -fx-border-color: #515151;
     -fx-border-width: 0px 0px 1px 0px;
-    /*-fx-text-fill: #adacac;*/
-    /*-fx-font-style: ;*/
-    /*-fx*/
 
 }
 

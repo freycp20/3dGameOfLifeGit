@@ -68,7 +68,6 @@ public class main extends Application {
         Scene scene = new Scene(vbox, 300,200);
         scene.getStylesheets().add("resources/welcomePage.css");
         labelFill = inputLabel.getTextFill();
-        System.out.println(labelFill);
         pStage.setScene(scene);
         pStage.show();
 

@@ -26,10 +26,10 @@ public class Board {
             for (int x = 0; x < cells.length; x++) {
                 for (int z = 0; z < cells.length; z++) {
 //                        System.out.println("maybe?");
-                    System.out.print("cells[y][x][z] = " + cells[y][x][z] + " ");
+//                    System.out.print("cells[y][x][z] = " + cells[y][x][z] + " ");
                     if (cells[y][x][z]){
 
-//                            System.out.print(cells[y][x][z] + " ");
+                            System.out.print(cells[y][x][z] + " ");
 
                     }
                 }
@@ -60,7 +60,7 @@ public class Board {
             cells = new boolean[size][size][size];
             startingPos = new boolean[size][size][size];
 
-            System.out.println("here?");
+//            System.out.println("here?");
             for (int y = 0; y < cells.length; y++) {
                 for (int x = 0; x < cells.length; x++) {
                     for (int z = 0; z < cells.length; z++) {
@@ -68,7 +68,7 @@ public class Board {
                         cells[y][x][z] = scn.nextBoolean();
                         if (cells[y][x][z]){
 
-                            System.out.print(cells[y][x][z] + " ");
+//                            System.out.print(cells[y][x][z] + " ");
 
                         }
                     }
@@ -80,7 +80,7 @@ public class Board {
         }
     }
     public void nextStep() {
-        System.out.println("nextstep is getting called");
+//        System.out.println("nextstep is getting called");
         boolean[][][] board = new boolean[size][size][size];
         int livingNeighbors = 0;
         
@@ -102,8 +102,8 @@ public class Board {
 //                    System.out.println("deadNeighbors = " + deadNeighbors);
 
                     if (cells[layer][row][col]) {
-                        System.out.println("made it here");
-                        System.out.println("livingNeighbors = " + livingNeighbors);
+//                        System.out.println("made it here");
+//                        System.out.println("livingNeighbors = " + livingNeighbors);
                         if (falseFirst) {
                             if (livingNeighbors == aliveNeighbors) {
                                 board[layer][row][col] = false;

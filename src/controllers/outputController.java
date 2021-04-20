@@ -27,7 +27,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -36,9 +35,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -55,11 +51,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class outputController {
     private SimpleIntegerProperty randomness = new SimpleIntegerProperty(100);
@@ -118,11 +112,11 @@ public class outputController {
         if (!modelRunning){
 //            System.out.println("Working!");
             timeline.play();
-//            runButton.setText("Stop");
+            runButton.setText("Stop");
             modelRunning = true;
         } else {
             timeline.pause();
-//            runButton.setText("Start");
+            runButton.setText("Start");
             modelRunning = false;
         }
     }
@@ -146,19 +140,21 @@ public class outputController {
         Stage output = (Stage) mainBorderPane.getScene().getWindow();
         output.setScene(scene);
         output.show();
-
         inputController inputC = loader.getController();
-        inputC.y.setText(String.valueOf(yVal));
-        inputC.x.setText(String.valueOf(xVal));
-        inputC.z.setText(String.valueOf(xVal));
-        inputC.yVal = yVal;
-        inputC.xVal = xVal;
-        inputC.zVal = zVal;
-        inputC.yC();
-        inputC.xC();
-        inputC.zC();
+        inputC.mainBorderPane.requestFocus();
+        if (yVal != 0){
+            inputC.y.setText(String.valueOf(yVal));
+            inputC.x.setText(String.valueOf(xVal));
+            inputC.z.setText(String.valueOf(xVal));
+            inputC.yVal = yVal;
+            inputC.xVal = xVal;
+            inputC.zVal = zVal;
+            inputC.yC();
+            inputC.xC();
+            inputC.zC();
+            inputC.handlers();
+        }
         inputC.setLayer(board.getStartingPos());
-
     }
     public void init(int size, boolean[][][] alive) {
         lineColor = Color.web("#adacac");
@@ -203,7 +199,7 @@ public class outputController {
         subScenePane.getChildren().addAll(subScene);
         subScenePane.setId("subScenePane");
         root.setId("cubeGridPane");
-        System.out.println("root.getId() = " + root.getId());
+//        System.out.println("root.getId() = " + root.getId());
 //        mainBorderPane.getCenter().;
         PerspectiveCamera cam = new PerspectiveCamera();
 
