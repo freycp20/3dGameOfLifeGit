@@ -173,4 +173,17 @@ public class Board {
         }
         this.cells = new Board(startingPos).getCells();
     }
+    public String arrayToString(boolean[][][] arr){
+        String cellString = "";
+        for (boolean[][] booleans : arr) {
+            for (boolean[] aBoolean : booleans) {
+                for (boolean b : aBoolean) {
+                    cellString += b + " ";
+                }
+                cellString += "\n";
+            }
+            cellString += "\n";
+        }
+        return cellString;
+    }
 }

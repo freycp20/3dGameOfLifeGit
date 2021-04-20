@@ -27,6 +27,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -50,7 +51,6 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,18 +58,12 @@ import java.util.List;
 public class outputController {
     private SimpleIntegerProperty randomness = new SimpleIntegerProperty(100);
 
-    boolean[][][] alive;
-    String file = "FORCLAEB.txt";
     // size of graph
     private int size;
     private int width;
     private int cubeSize;
     private int stepSpeed = 250;
-    Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 
-    private boolean falseFirst = true;
-    private int aliveNeighbors = 1;
-    private int deadNeighbors = 1;
     // variables for mouse interaction
     private double mousePosX, mousePosY;
     private double mouseOldX, mouseOldY;
@@ -78,7 +72,6 @@ public class outputController {
     private boolean modelRunning = false;
     private Board board;
     public VBox buttonVbox;
-    public VBox mainVbox;
     public BorderPane mainBorderPane;
     public MenuBar mainMenuBar;
     public Button booleanBox;
@@ -101,11 +94,15 @@ public class outputController {
         booleanBox.setText(String.valueOf(falseBoxVal));
     }
     public void aliveNC() {
-        setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
+        if (!aliveNeighbor.getText().equals("")){
+            setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
+        }
 //        System.out.println("aliveNeighbors = " + aliveNeighbors);
     }
     public void deadNC() {
-        setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
+        if (!deadNeighbor.getText().equals("")){
+            setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
+        }
 //        System.out.println("deadNeighbor = " + deadNeighbors);
     }
     public void runButtonC() {
@@ -122,40 +119,16 @@ public class outputController {
     }
     public void resetButtonC() {
 //        System.out.println("here");
+        if (modelRunning){
+            runButtonC();
+        }
         removeChildren(cube);
         board.reset();
         addValsToGroup(cube, board.getCells());
-        modelRunning = false;
         timeline.pause();
     }
 
-    public void switchSceneC() throws IOException {
-        timeline.pause();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/input.fxml"));
-        Parent inputRoot = loader.load();
-//        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
-        Scene scene = new Scene(inputRoot,mainBorderPane.getWidth(),mainBorderPane.getHeight());
-        scene.getStylesheets().add("/resources/inputStyle.css");
 
-        Stage output = (Stage) mainBorderPane.getScene().getWindow();
-        output.setScene(scene);
-        output.show();
-        inputController inputC = loader.getController();
-        inputC.mainBorderPane.requestFocus();
-        if (yVal != 0){
-            inputC.y.setText(String.valueOf(yVal));
-            inputC.x.setText(String.valueOf(xVal));
-            inputC.z.setText(String.valueOf(xVal));
-            inputC.yVal = yVal;
-            inputC.xVal = xVal;
-            inputC.zVal = zVal;
-            inputC.yC();
-            inputC.xC();
-            inputC.zC();
-            inputC.handlers();
-        }
-        inputC.setLayer(board.getStartingPos());
-    }
     public void init(int size, boolean[][][] alive) {
         lineColor = Color.web("#adacac");
 //        lineColor = Color.TRANSPARENT;
@@ -174,13 +147,7 @@ public class outputController {
         StackPane root = new StackPane();
         root.getChildren().add(cube);
         setStyleDark();
-//        root.setStyle("-fx-background-color: #2c2c2c;");
-//        buttonVbox.setStyle("-fx-background-color: #3b3f41;");
-//        resetButton.setStyle("-fx-background-color: #3b3f41;");
-//        resetButton.setStyle("-fx-background-color: #3b3f41;");
-//        resetButton.setStyle("-fx-border-color:#5c5e5e;");
-//        runButton.setStyle("-fx-background-color: #3b3f41;");
-//        runButton.setStyle("-fx-border-color:#5c5e5e;");
+
         root.getChildren().add(ambientLight);
 
         addValsToGroup(cube, board.getCells());
@@ -206,34 +173,10 @@ public class outputController {
 //        cam.setFieldOfView();
         subScene.setCamera(cam);
 //        pointLight.setRotate(100);
-        Label random = new Label();
 
 //        page.setLeft(buttons);
         mainBorderPane.setCenter(subScenePane);
-//        mainVbox.getChildren().add(page);
 
-//        page.getChildren().addAll(removeKids, random, subScene);
-
-//        Scene scene = new Scene(page, bounds.getWidth()/2, bounds.getHeight(), true, SceneAntialiasing.BALANCED);
-//        scene.setOnKeyPressed(e -> {
-//            if (e.getCode() == KeyCode.COMMAND) {
-//                if (!modelRunning) {
-//                    timeline.play();
-//                    removeKids.setText("Stop Generations");
-//                    modelRunning = true;
-//                } else{
-//                    modelRunning = false;
-//                    timeline.pause();
-//                    removeKids.setText("Start Generations");
-//                }
-//            }
-//        });
-//        screenshot(scene, "woah.jpg");
-
-//        primaryStage.setResizable(true);
-//        primaryStage.setScene(scene);
-//        primaryStage.setX(bounds.getWidth()/2);
-//        primaryStage.show();
         setDragRotate(root);
         makeZoomable(root);
     }
@@ -246,71 +189,8 @@ public class outputController {
                     addValsToGroup(cube, board.getCells());
                 }));
         timeline.setCycleCount(Animation.INDEFINITE);
-//        setStyleDark();
-//        // create axis walls
-//        size = 100;
-//        cube = createCube(size);
-//        width = (size/10);
-//        cubeSize = (size/(size/10));
-//        // initial cube rotation
-//        cube.getTransforms().addAll(rotateX, rotateY);
-//        cube.setTranslateZ(-size);
-//        board = new Board(new java.io.File("test.txt"));
-//        timeline =
-//                new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> {
-//                    removeChildren(cube);
-//                    System.out.println();
-//                    board.nextStep();
-//                    addValsToGroup(cube, board.getCells());
-//                }));
-//        timeline.setCycleCount(Animation.INDEFINITE);
-//
-//        BorderPane page = new BorderPane();
-//        StackPane root = new StackPane();
-//        root.getChildren().add(cube);
-//
-//        addValsToGroup(cube, board.getCells());
-//
-//        // scene
-//        SubScene subScene = new SubScene(root, 800, 550, true, SceneAntialiasing.BALANCED);
-//        PerspectiveCamera cam = new PerspectiveCamera();
-//
-////        cam.setFieldOfView();
-//        subScene.setCamera(cam);
-//        Label random = new Label();
-//
-////        page.setLeft(buttons);
-//        page.setCenter(subScene);
-//        mainVbox.getChildren().add(page);
-//
-////        page.getChildren().addAll(removeKids, random, subScene);
-//
-////        Scene scene = new Scene(page, bounds.getWidth()/2, bounds.getHeight(), true, SceneAntialiasing.BALANCED);
-////        scene.setOnKeyPressed(e -> {
-////            if (e.getCode() == KeyCode.COMMAND) {
-////                if (!modelRunning) {
-////                    timeline.play();
-////                    removeKids.setText("Stop Generations");
-////                    modelRunning = true;
-////                } else{
-////                    modelRunning = false;
-////                    timeline.pause();
-////                    removeKids.setText("Start Generations");
-////                }
-////            }
-////        });
-////        screenshot(scene, "woah.jpg");
-//
-////        primaryStage.setResizable(true);
-////        primaryStage.setScene(scene);
-////        primaryStage.setX(bounds.getWidth()/2);
-////        primaryStage.show();
-//        setDragRotate(root);
-//        makeZoomable(root);
     }
-    public void setStyleLight() {
 
-    }
     public void setStyleDark() {
         mainBorderPane.getScene().getStylesheets().add("resources/outputStyle.css");
     }
@@ -395,6 +275,64 @@ public class outputController {
             }
         }
     }
+
+    public void saveOriginGenC() {
+        String content = String.format("%d %d %d\n%s", yVal, xVal, zVal, board.arrayToString(board.getStartingPos()));
+        new fileIO().saveFile(content);
+    }
+
+    public void saveCurrentGenC() {
+        if (modelRunning){
+            runButtonC();
+        }
+        String content = String.format("%d %d %d\n%s", yVal, xVal, zVal, board.arrayToString(board.getCells()));
+        new fileIO().saveFile(content);
+    }
+
+    public void openTemplateC() {
+        fileIO ifio = new fileIO();
+        ifio.openFile();
+        yVal = ifio.getY();
+        xVal = ifio.getX();
+        zVal = ifio.getZ();
+        board = new Board(ifio.getCellArray());
+        init(yVal*10,board.getStartingPos());
+    }
+    public void switchSceneC(boolean[][][] arr) throws IOException {
+        timeline.pause();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/input.fxml"));
+        Parent inputRoot = loader.load();
+//        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
+        Scene scene = new Scene(inputRoot,mainBorderPane.getWidth(),mainBorderPane.getHeight());
+        scene.getStylesheets().add("/resources/inputStyle.css");
+        Stage input = (Stage) mainBorderPane.getScene().getWindow();
+        input.setTitle("Input");
+        input.setScene(scene);
+        input.show();
+        inputController inputC = loader.getController();
+        inputC.mainBorderPane.requestFocus();
+        if (yVal != 0){
+            inputC.y.setText(String.valueOf(yVal));
+            inputC.x.setText(String.valueOf(xVal));
+            inputC.z.setText(String.valueOf(xVal));
+            inputC.yVal = yVal;
+            inputC.xVal = xVal;
+            inputC.zVal = zVal;
+            inputC.yC();
+            inputC.xC();
+            inputC.zC();
+            inputC.handlers();
+            inputC.setLayer(arr);
+        }
+    }
+    public void switchCurrentC() throws IOException {
+        switchSceneC(board.getCells());
+    }
+
+    public void switchOriginalC() throws IOException {
+        switchSceneC(board.getStartingPos());
+    }
+
 
 
     /**

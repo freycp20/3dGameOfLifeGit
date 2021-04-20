@@ -14,6 +14,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class main extends Application {
 
@@ -38,12 +39,14 @@ public class main extends Application {
         setLabel(outputLabel);
         setLabel(splitSLabel);
         setLabel(consoleLabel);
-        inputRoot = FXMLLoader.load(getClass().getResource("resources/input.fxml"));
+        FXMLLoader inputLoader = new FXMLLoader(getClass().getResource("/resources/input.fxml"));
+        inputRoot = inputLoader.load();
         FXMLLoader outputLoader = new FXMLLoader(getClass().getResource("/resources/output.fxml"));
         outputRoot = outputLoader.load();
         inputLabel.setOnMouseClicked(e -> {
             input = new Scene(inputRoot, 1200, 600);
             pStage.close();
+            pStage.setTitle("Input");
             input.getStylesheets().add("resources/inputStyle.css");
             pStage.setScene(input);
             pStage.centerOnScreen();
@@ -53,6 +56,7 @@ public class main extends Application {
             pStage.setResizable(true);
             pStage.setX(bounds.getWidth()/2);
             output = new Scene(outputRoot, 1200, 600);
+            pStage.setTitle("Output");
             outputController outputC = outputLoader.getController();
             outputC.setStyleDark();
             pStage.close();

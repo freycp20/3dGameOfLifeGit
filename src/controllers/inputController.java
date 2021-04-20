@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,8 +109,9 @@ public class inputController {
         Parent outputRoot = loader.load();
 //        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
         Scene scene = new Scene(outputRoot,mainBorderPane.getWidth(),mainBorderPane.getHeight());
-       scene.getStylesheets().add("/resources/outputStyle.css");
+        scene.getStylesheets().add("/resources/outputStyle.css");
         Stage output = (Stage) mainBorderPane.getScene().getWindow();
+        output.setTitle("Output");
         output.setScene(scene);
         output.show();
         outputController outputC = loader.getController();
@@ -131,10 +131,12 @@ public class inputController {
 
     public void saveC() {
         aliveString = ""; // don't add to already made alive
+        String tempCell;
         for (int y = 0; y < yVal; y++) {
             for (int i = 0; i < zVal; i++) {
                 for (int j = i; j < xVal * zVal; j += zVal) {
 //                    System.out.println(layers.get(y).getChildren().get(j).getId().equals("1") + " = " + y + "," + j/zVal + "," + j%xVal);
+
                     alive[y][j / zVal][j % xVal] = layers.get(y).getChildren().get(j).getId().equals("1"); // y = y | x = j/xVal | z = j%zVal
                     aliveString += alive[y][j / zVal][j % xVal] + " ";
                 }
