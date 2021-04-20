@@ -44,13 +44,14 @@ public class main extends Application {
         inputLabel.setOnMouseClicked(e -> {
             input = new Scene(inputRoot, 1200, 600);
             pStage.close();
+            input.getStylesheets().add("resources/inputStyle.css");
             pStage.setScene(input);
             pStage.centerOnScreen();
             pStage.show();
         });
         outputLabel.setOnMouseClicked(e -> { Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-            primaryStage.setResizable(true);
-            primaryStage.setX(bounds.getWidth()/2);
+            pStage.setResizable(true);
+            pStage.setX(bounds.getWidth()/2);
             output = new Scene(outputRoot, 1200, 600);
             outputController outputC = outputLoader.getController();
             outputC.setStyleDark();

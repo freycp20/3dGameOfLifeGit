@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,12 +30,13 @@ public class inputController {
     public TextField z = null;
     public Label layerNumLabel = null;
     public Button visualize = null;
-    public Label sizeLabel = null;
     public BorderPane mainBorderPane = null;
     public CheckMenuItem showAxis;
     public VBox buttonVbox;
+    public MenuBar mainMenuBar;
+    public Label sizeLabel = null;
 
-    private int layerCount;
+    protected int layerCount;
     protected int xVal;
     protected int yVal;
     protected int zVal;
@@ -47,6 +49,10 @@ public class inputController {
     private boolean ctrlPressed = false;
     private boolean altPressed = false;
     private boolean axisShown = false;
+    private boolean fP = false;
+    private boolean cP = false;
+    private boolean wP = false;
+    private boolean sP = false;
     private StackPane stackPane;
     private Line axisY;
     private Line axisX;
@@ -65,17 +71,23 @@ public class inputController {
         mainBorderPane.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.CONTROL) {
                 ctrlPressed = true;
+                mainBorderPane.setOnKeyPressed(f -> {
+                   if (f.getCode() == KeyCode.F){
+                       fillLayerC();
+                   }
+                    if (f.getCode() == KeyCode.C){
+                        clearLayerC();
+                    }
+                });
             }
             if (e.getCode() == KeyCode.ALT) {
                 altPressed = true;
             }
             if (e.getCode() == KeyCode.W){
                 upLayerC();
-                e.consume();
             }
             if (e.getCode() == KeyCode.S){
                 downLayerC();
-                e.consume();
             }
         });
         mainBorderPane.setOnKeyReleased(e -> {
@@ -85,13 +97,20 @@ public class inputController {
             if (e.getCode() == KeyCode.ALT) {
                 altPressed = false;
             }
+
         });
+        VBox vbox = new VBox();
+        Label label = new Label("Welcome");
+        vbox.getChildren().add(label);
+        mainBorderPane.setCenter(vbox);
+
     }
     public void switchSceneC() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/output.fxml"));
         Parent outputRoot = loader.load();
 //        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
         Scene scene = new Scene(outputRoot,mainBorderPane.getWidth(),mainBorderPane.getHeight());
+       scene.getStylesheets().add("/resources/outputStyle.css");
         Stage output = (Stage) mainBorderPane.getScene().getWindow();
         output.setScene(scene);
         output.show();
@@ -196,7 +215,7 @@ public class inputController {
             int mapCount = 0;
             for (int x = 0; x < xVal; x++) {
                 for (int z = 0; z < zVal; z++) {
-                    layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setFill(Color.BLACK);
+                    layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setFill(Color.SILVER);
                     layerMap.get((layerCount-1)*(xVal*zVal)+mapCount).setId("1");
                     mapCount++;
                 }
@@ -298,29 +317,13 @@ public class inputController {
         layerMap = new HashMap<>();
         empty3dArray();
         stackPane = new StackPane();
-        stackPane.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.CONTROL) {
-                ctrlPressed = true;
-            }
-            if (e.getCode() == KeyCode.ALT) {
-                altPressed = true;
-            }
-        });
-        stackPane.setOnKeyReleased(e -> {
-            if (e.getCode() == KeyCode.CONTROL) {
-                ctrlPressed = false;
-            }
-            if (e.getCode() == KeyCode.ALT) {
-                altPressed = false;
-            }
-        });
         layers.clear();
         for (int y = 0; y < yVal; y++) {
             gridPane = new GridPane();
             for (int x = 0; x < zVal; x++) {
                 for (int z = 0; z < xVal; z++) {
                     Rectangle rectangle = new Rectangle(30, 30);
-                    rectangle.setStroke(Color.BLUE);
+                    rectangle.setStroke(Color.SILVER);
                     rectangle.setFill(Color.TRANSPARENT);
                     rectangle.setId("0");
 
@@ -330,7 +333,7 @@ public class inputController {
 
                     rectangle.setOnMouseClicked(e -> {
                         if (rectangle.getFill().equals(Color.TRANSPARENT)) {
-                            rectangle.setFill(Color.BLACK);
+                            rectangle.setFill(Color.SILVER);
                             rectangle.setId("1");
                         } else {
                             rectangle.setFill(Color.TRANSPARENT);
@@ -339,7 +342,7 @@ public class inputController {
                     });
                     rectangle.setOnMouseEntered(t -> {
                         if (altPressed) {
-                            rectangle.setFill(Color.BLACK);
+                            rectangle.setFill(Color.SILVER);
                             rectangle.setId("1");
 
                         } else if (ctrlPressed) {
@@ -358,7 +361,10 @@ public class inputController {
         for (int l = 1; l < layers.size(); l++) {
             layers.get(l).setVisible(false);
         }
+
         ZoomableScrollPane zScroll = new ZoomableScrollPane(stackPane);
+        zScroll.setStyle("-fx-background-color: #2c2c2c");
+
         mainBorderPane.setCenter(zScroll);
     }
 
@@ -372,9 +378,9 @@ public class inputController {
             for (int x = 0; x < zVal; x++) {
                 for (int z = 0; z < xVal; z++) {
                     Rectangle rectangle = new Rectangle(30, 30);
-                    rectangle.setStroke(Color.BLUE);
+                    rectangle.setStroke(Color.SILVER);
                     if (cellArray[y][x][z]) {
-                        rectangle.setFill(Color.BLACK);
+                        rectangle.setFill(Color.SILVER);
                         rectangle.setId("1");
                     } else {
                         rectangle.setFill(Color.TRANSPARENT);
@@ -382,7 +388,7 @@ public class inputController {
                     }
                     rectangle.setOnMouseClicked(e -> {
                         if (rectangle.getFill().equals(Color.TRANSPARENT)) {
-                            rectangle.setFill(Color.BLACK);
+                            rectangle.setFill(Color.SILVER);
                             rectangle.setId("1");
                         } else {
                             rectangle.setFill(Color.TRANSPARENT);
@@ -399,6 +405,7 @@ public class inputController {
             layers.get(l).setVisible(false);
         }
         ZoomableScrollPane zScroll = new ZoomableScrollPane(stackPane);
+        zScroll.setStyle("-fx-background-color: #2c2c2c");
         mainBorderPane.setCenter(zScroll);
     }
 

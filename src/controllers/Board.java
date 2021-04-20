@@ -68,7 +68,7 @@ public class Board {
                         cells[y][x][z] = scn.nextBoolean();
                         if (cells[y][x][z]){
 
-//                            System.out.print(cells[y][x][z] + " ");
+                            System.out.print(cells[y][x][z] + " ");
 
                         }
                     }
@@ -83,6 +83,7 @@ public class Board {
         System.out.println("nextstep is getting called");
         boolean[][][] board = new boolean[size][size][size];
         int livingNeighbors = 0;
+        
         for (int layer = 1; layer < board.length-1; layer++) {
             for (int row = 1; row < board[layer].length-1; row++) {
                 for (int col = 1; col < board[layer][row].length-1; col++) {
@@ -142,9 +143,11 @@ public class Board {
     public boolean[][][] getCells() {
         return cells;
     }
+    public boolean[][][] getStartingPos(){
+        return startingPos;
+    }
 
     public Board (boolean[][][] cellArray) {
-        System.out.println("here");
         this.cells = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.size = cellArray.length;
@@ -158,9 +161,8 @@ public class Board {
         }
     }
     public void reset() {
-        System.out.println("here");
-        System.out.println(this.cells);
-        System.out.println(this.startingPos);
+//        System.out.println(this.cells);
+//        System.out.println(this.startingPos);
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 for (int k = 0; k < cells[i][j].length; k++) {

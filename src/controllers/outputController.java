@@ -96,9 +96,9 @@ public class outputController {
     private boolean falseBoxVal = false;
     private Timeline timeline;
     private Group cube;
-    protected int yVal;
-    protected int xVal;
-    protected int zVal;
+    protected int yVal=0;
+    protected int xVal=0;
+    protected int zVal=0;
     Color lineColor;
 
     public void booleanBoxC() {
@@ -108,26 +108,26 @@ public class outputController {
     }
     public void aliveNC() {
         setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
-        System.out.println("aliveNeighbors = " + aliveNeighbors);
+//        System.out.println("aliveNeighbors = " + aliveNeighbors);
     }
     public void deadNC() {
         setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
-        System.out.println("deadNeighbor = " + deadNeighbors);
+//        System.out.println("deadNeighbor = " + deadNeighbors);
     }
     public void runButtonC() {
         if (!modelRunning){
-            System.out.println("Working!");
+//            System.out.println("Working!");
             timeline.play();
-            runButton.setText("Stop");
+//            runButton.setText("Stop");
             modelRunning = true;
         } else {
             timeline.pause();
-            runButton.setText("Start");
+//            runButton.setText("Start");
             modelRunning = false;
         }
     }
     public void resetButtonC() {
-        System.out.println("here");
+//        System.out.println("here");
         removeChildren(cube);
         board.reset();
         addValsToGroup(cube, board.getCells());
@@ -141,11 +141,23 @@ public class outputController {
         Parent inputRoot = loader.load();
 //        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
         Scene scene = new Scene(inputRoot,mainBorderPane.getWidth(),mainBorderPane.getHeight());
+        scene.getStylesheets().add("/resources/inputStyle.css");
+
         Stage output = (Stage) mainBorderPane.getScene().getWindow();
         output.setScene(scene);
-        inputController inputC = loader.getController();
-        inputC.yVal = yVal;
         output.show();
+
+        inputController inputC = loader.getController();
+        inputC.y.setText(String.valueOf(yVal));
+        inputC.x.setText(String.valueOf(xVal));
+        inputC.z.setText(String.valueOf(xVal));
+        inputC.yVal = yVal;
+        inputC.xVal = xVal;
+        inputC.zVal = zVal;
+        inputC.yC();
+        inputC.xC();
+        inputC.zC();
+        inputC.setLayer(board.getStartingPos());
 
     }
     public void init(int size, boolean[][][] alive) {
@@ -159,7 +171,7 @@ public class outputController {
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
         board = new Board(alive);
-        System.out.println("board.getCells() = " + board.getCells());
+//        System.out.println("board.getCells() = " + board.getCells());
 
         AmbientLight ambientLight = new AmbientLight();
         ambientLight.setLightOn(true);
@@ -233,7 +245,7 @@ public class outputController {
         timeline =
                 new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> {
                     removeChildren(cube);
-                    System.out.println("this is working");
+//                    System.out.println("this is working");
                     board.nextStep();
                     addValsToGroup(cube, board.getCells());
                 }));
@@ -312,7 +324,7 @@ public class outputController {
     public void setCube(int size) {
         this.size = size;
         cube = createCube(size);
-        System.out.println("this.size = " + this.size);
+//        System.out.println("this.size = " + this.size);
         // initial cube rotation
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
@@ -533,9 +545,7 @@ public class outputController {
         r.setTranslateY(-0.5 * size);
         r.setTranslateZ(-0.5 * size);
         cubeFaces.add( r);
-
         cube.getChildren().addAll(cubeFaces);
-
         return cube;
     }
 
@@ -543,10 +553,8 @@ public class outputController {
 
         if (Double.compare(value, min) < 0)
             return min;
-
         if (Double.compare(value, max) > 0)
             return max;
-
         return value;
     }
 }
