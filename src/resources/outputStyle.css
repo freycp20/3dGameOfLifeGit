@@ -26,6 +26,13 @@
     -fx-text-fill: #f6f6f6;
     -fx-background-color: #3591c3;
 }
+.text-field {
+    -fx-prompt-text-fill: #adacac;
+    -fx-border-radius: 1px;
+    -fx-border-color:#5c5e5e;
+    -fx-background-color: #3b3f41;
+    -fx-text-fill: #adacac;
+}
 
 .menu-button:hover, .menu-button:focused, .menu-button:showing{
     -fx-background-color: #4a4f51;

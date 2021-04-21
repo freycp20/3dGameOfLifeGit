@@ -27,13 +27,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
@@ -48,9 +45,9 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +84,14 @@ public class outputController {
     protected int xVal=0;
     protected int zVal=0;
     Color lineColor;
+    public boolean boardMade;
+    private int deadN;
+    private int aliveN;
+    public boolean areRules;
+    public boolean rule1;
+    public int rule2;
+    public int rule3;
+
 
     public void booleanBoxC() {
         falseBoxVal = !falseBoxVal;
@@ -96,12 +101,14 @@ public class outputController {
     public void aliveNC() {
         if (!aliveNeighbor.getText().equals("")){
             setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
+            aliveN = Integer.parseInt(aliveNeighbor.getText());
         }
 //        System.out.println("aliveNeighbors = " + aliveNeighbors);
     }
     public void deadNC() {
         if (!deadNeighbor.getText().equals("")){
             setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
+            deadN = Integer.parseInt(deadNeighbor.getText());
         }
 //        System.out.println("deadNeighbor = " + deadNeighbors);
     }
@@ -277,25 +284,40 @@ public class outputController {
     }
 
     public void saveOriginGenC() {
-        String content = String.format("%d %d %d\n%s", yVal, xVal, zVal, board.arrayToString(board.getStartingPos()));
-        new fileIO().saveFile(content);
+        if (boardMade){
+            String content = String.format(
+                    "%d %d %d %s %s %d %d\n%s", yVal, xVal, zVal, true, falseBoxVal, aliveN, deadN, board.arrayToString(board.getStartingPos()));
+                    new fileIO().saveFile(content);
+        }
     }
 
     public void saveCurrentGenC() {
-        if (modelRunning){
-            runButtonC();
+        if (boardMade){
+            if (modelRunning){
+                runButtonC();
+            }
+            String content = String.format(
+                    "%d %d %d %b %b %d %d \n%s", yVal, xVal, zVal, true, falseBoxVal, aliveN, deadN, board.arrayToString(board.getCells()));
+            new fileIO().saveFile(content);
         }
-        String content = String.format("%d %d %d\n%s", yVal, xVal, zVal, board.arrayToString(board.getCells()));
-        new fileIO().saveFile(content);
     }
 
     public void openTemplateC() {
+        boardMade = true;
         fileIO ifio = new fileIO();
         ifio.openFile();
         yVal = ifio.getY();
         xVal = ifio.getX();
         zVal = ifio.getZ();
         board = new Board(ifio.getCellArray());
+        if (ifio.areRules()){
+            booleanBox.setText(String.valueOf(ifio.getRule1()));
+            aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
+            deadNeighbor.setText(String.valueOf(ifio.getRule3()));
+            booleanBoxC();
+            aliveNC();
+            deadNC();
+        }
         init(yVal*10,board.getStartingPos());
     }
     public void switchSceneC(boolean[][][] arr) throws IOException {
@@ -311,7 +333,7 @@ public class outputController {
         input.show();
         inputController inputC = loader.getController();
         inputC.mainBorderPane.requestFocus();
-        if (yVal != 0){
+        if (boardMade){
             inputC.y.setText(String.valueOf(yVal));
             inputC.x.setText(String.valueOf(xVal));
             inputC.z.setText(String.valueOf(xVal));
@@ -323,14 +345,26 @@ public class outputController {
             inputC.zC();
             inputC.handlers();
             inputC.setLayer(arr);
+            inputC.areRules = areRules;
+            inputC.rule1 = rule1;
+            inputC.rule2 = rule2;
+            inputC.rule3 = rule3;
         }
     }
     public void switchCurrentC() throws IOException {
-        switchSceneC(board.getCells());
+        if (boardMade){
+            switchSceneC(board.getCells());
+        } else {
+            switchSceneC(new boolean[0][0][0]);
+        }
     }
 
     public void switchOriginalC() throws IOException {
-        switchSceneC(board.getStartingPos());
+        if (boardMade){
+            switchSceneC(board.getStartingPos());
+        } else {
+            switchSceneC(new boolean[0][0][0]);
+        }
     }
 
 

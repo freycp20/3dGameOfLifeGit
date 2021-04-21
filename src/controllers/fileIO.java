@@ -18,6 +18,11 @@ public class fileIO {
     private int yVal;
     private int xVal;
     private int zVal;
+    private boolean areRules;
+    private boolean rule1;
+    private int rule2;
+    private int rule3;
+
     private boolean[][][] cellArray;
 
     public void openFile(){
@@ -35,6 +40,12 @@ public class fileIO {
             yVal = scn.nextInt();
             xVal = scn.nextInt();
             zVal = scn.nextInt();
+            areRules = scn.nextBoolean();
+            if (areRules){
+                rule1 = scn.nextBoolean();
+                rule2 = scn.nextInt();
+                rule3 = scn.nextInt();
+            }
             cellArray = new boolean[yVal][xVal][zVal];
             for (int y = 0; y < yVal; y++) {
                 for (int x = 0; x < xVal; x++) {
@@ -81,6 +92,18 @@ public class fileIO {
     }
     public int getZ(){
         return zVal;
+    }
+    public boolean areRules(){
+        return areRules;
+    }
+    public boolean getRule1(){
+        return rule1;
+    }
+    public int getRule2(){
+        return rule2;
+    }
+    public int getRule3(){
+        return rule3;
     }
     public boolean[][][] getCellArray(){
         return cellArray;

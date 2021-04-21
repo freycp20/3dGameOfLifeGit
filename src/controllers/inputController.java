@@ -53,6 +53,10 @@ public class inputController {
     private boolean newAxisLayer = true;
     private HashMap<Integer, Rectangle> layerMap;
     private int mapCount;
+    public boolean areRules;
+    public boolean rule1;
+    public int rule2;
+    public int rule3;
 
     /**
      * sceneBuilder methods
@@ -126,6 +130,13 @@ public class inputController {
             outputC.yVal = yVal;
             outputC.xVal = xVal;
             outputC.zVal = zVal;
+            outputC.boardMade = true;
+            if (areRules){
+                outputC.areRules = areRules;
+                outputC.rule1 = rule1;
+                outputC.rule2 = rule2;
+                outputC.rule3 = rule3;
+            }
         }
     }
 
@@ -281,13 +292,19 @@ public class inputController {
         xC();
         yC();
         zC();
+        if (ifio.areRules()){
+            areRules = ifio.areRules();
+            rule1 = ifio.getRule1();
+            rule2 = ifio.getRule2();
+            rule3 = ifio.getRule3();
+        }
         setLayer(ifio.getCellArray());
     }
 
     @FXML
     public void saveTemplateC() {
         saveC();
-        String content = String.format("%d %d %d\n%s", yVal, xVal, zVal, aliveString);
+        String content = String.format("%d %d %d %b\n%s", yVal, xVal, zVal, true, aliveString);
         new fileIO().saveFile(content);
     }
 
