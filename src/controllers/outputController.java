@@ -27,17 +27,18 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.PhongMaterial;
@@ -303,22 +304,26 @@ public class outputController {
     }
 
     public void openTemplateC() {
-        boardMade = true;
         fileIO ifio = new fileIO();
         ifio.openFile();
-        yVal = ifio.getY();
-        xVal = ifio.getX();
-        zVal = ifio.getZ();
-        board = new Board(ifio.getCellArray());
-        if (ifio.areRules()){
-            booleanBox.setText(String.valueOf(ifio.getRule1()));
-            aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
-            deadNeighbor.setText(String.valueOf(ifio.getRule3()));
-            booleanBoxC();
-            aliveNC();
-            deadNC();
+        if (ifio.boardOpened()){
+            yVal = ifio.getY();
+            xVal = ifio.getX();
+            zVal = ifio.getZ();
+            board = new Board(ifio.getCellArray());
+            if (ifio.areRules()){
+                booleanBox.setText(String.valueOf(ifio.getRule1()));
+                aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
+                deadNeighbor.setText(String.valueOf(ifio.getRule3()));
+                setAliveNeighbors(ifio.getRule2());
+                setDeadNeighbors(ifio.getRule3());
+                booleanBoxC();
+                aliveNC();
+                deadNC();
+            }
+            boardMade = true;
+            init(yVal*10,board.getStartingPos());
         }
-        init(yVal*10,board.getStartingPos());
     }
     public void switchSceneC(boolean[][][] arr) throws IOException {
         timeline.pause();
@@ -367,6 +372,40 @@ public class outputController {
         }
     }
 
+    public void switchNewC() throws IOException {
+        if (boardMade){
+            saveWarning();
+        } else {
+            switchSceneC(new boolean[0][0][0]);
+        }
+    }
+    public void saveWarning() {
+        Stage stage = new Stage();
+        VBox vb = new VBox();
+        HBox hb = new HBox();
+        stage.setTitle("save");
+        hb.setAlignment(Pos.CENTER);
+        vb.setAlignment(Pos.CENTER);
+        Button contB = new Button("Continue");
+        Button cancB = new Button("Cancel");
+        Label label = new Label("Are you sure you want to continue?\nYour work won't be saved.");
+        contB.setOnMouseClicked(e -> {
+            try {
+                boardMade = false;
+                switchSceneC(new boolean[0][0][0]);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            stage.close();
+        });
+        cancB.setOnMouseClicked(e -> stage.close());
+        hb.getChildren().addAll(contB,cancB);
+        vb.getChildren().addAll(label,hb);
+        Scene scene = new Scene(vb,200,100);
+        scene.getStylesheets().add("/resources/outputStyle.css");
+        stage.setScene(scene);
+        stage.show();
+    }
 
 
     /**

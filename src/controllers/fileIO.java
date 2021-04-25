@@ -22,6 +22,7 @@ public class fileIO {
     private boolean rule1;
     private int rule2;
     private int rule3;
+    private boolean boardOpened;
 
     private boolean[][][] cellArray;
 
@@ -31,6 +32,7 @@ public class fileIO {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             readFile(file);
+            boardOpened = true;
         }
     }
     protected void readFile(File file) {
@@ -105,6 +107,7 @@ public class fileIO {
     public int getRule3(){
         return rule3;
     }
+    public boolean boardOpened(){return boardOpened;}
     public boolean[][][] getCellArray(){
         return cellArray;
     }

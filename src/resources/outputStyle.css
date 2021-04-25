@@ -1,3 +1,6 @@
+.label{
+    -fx-text-fill: #adacac;
+}
 .button {
     -fx-background-color: #3b3f41;
     -fx-border-radius: 4px;
@@ -13,8 +16,16 @@
     -fx-background-color: #3b3f41;
 }
 
+.hbox {
+    -fx-background-color: #3b3f41;
+}
+
 .gridPane {
     -fx-background-color: #2c2c2c;
+}
+
+.menu-button:hover, .menu-button:focused, .menu-button:showing{
+    -fx-background-color: #4a4f51;
 }
 
 .menu-item {
@@ -32,16 +43,6 @@
     -fx-border-color:#5c5e5e;
     -fx-background-color: #3b3f41;
     -fx-text-fill: #adacac;
-}
-
-.menu-button:hover, .menu-button:focused, .menu-button:showing{
-    -fx-background-color: #4a4f51;
-}
-
-.text-field {
-    -fx-prompt-text-fill: #6a6b6b;
-    -fx-text-fill: #b2b2b3;
-    -fx-background-color: #2c2c2c;
 }
 
 .context-menu {

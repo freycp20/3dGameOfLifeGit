@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -27,8 +28,9 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu mnemonicParsing="false" text="switch">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#switchCurrentC" text="switch original" />
-                      <MenuItem mnemonicParsing="false" onAction="#switchOriginalC" text="switch current" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchOriginalC" text="switch original" />
+                      <MenuItem mnemonicParsing="false" onAction="#switchCurrentC" text="switch current" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchNewC" text="switch new" />
                     </items>
                   </Menu>
               <MenuItem mnemonicParsing="false" text="Close" />
@@ -50,16 +52,19 @@
    <left>
       <VBox fx:id="buttonVbox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
+            <Label text="Label" />
             <Button fx:id="booleanBox" mnemonicParsing="false" onMouseClicked="#booleanBoxC" text="False">
                <VBox.margin>
                   <Insets left="25.0" right="25.0" top="10.0" />
                </VBox.margin>
             </Button>
+            <Label text="Label" />
             <TextField fx:id="aliveNeighbor" maxHeight="6.0" maxWidth="100.0" minHeight="20.0" onKeyTyped="#aliveNC" prefHeight="6.0" prefWidth="100.0" promptText="alive neighbor">
                <VBox.margin>
                   <Insets left="3.0" right="3.0" top="10.0" />
                </VBox.margin>
             </TextField>
+            <Label text="Label" />
             <TextField fx:id="deadNeighbor" maxHeight="20.0" minHeight="20.0" onKeyTyped="#deadNC" promptText="dead neighbor">
                <VBox.margin>
                   <Insets left="3.0" right="3.0" top="10.0" />
