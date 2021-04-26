@@ -55,34 +55,34 @@
             </Button>
             <Label fx:id="sizeLabel" text="Size:" wrapText="true">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                  <Insets left="10.0" right="20.0" top="10.0" />
                </VBox.margin>
             </Label>
             <HBox prefHeight="19.0" prefWidth="100.0">
                <children>
                   <Label text="x axis:" />
-                  <TextField maxHeight="15.0" maxWidth="30.0" minHeight="15.0" minWidth="30.0" onKeyTyped="#xC" prefHeight="11.0" prefWidth="30.0" promptText="x" fx:id="x">
+                  <TextField depthTest="DISABLE" maxHeight="15.0" maxWidth="30.0" minHeight="20.0" minWidth="30.0" onKeyTyped="#xC" prefHeight="11.0" prefWidth="30.0" promptText="x" fx:id="x">
                      <HBox.margin>
                         <Insets left="2.0" top="2.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="10.0" />
+                        <Font size="8.0" />
                      </font>
                   </TextField>
                </children>
                <padding>
-                  <Insets left="10.0" />
+                  <Insets left="10.0" top="5.0" />
                </padding>
             </HBox>
             <HBox layoutX="10.0" layoutY="47.0" prefHeight="19.0" prefWidth="100.0">
                <children>
                   <Label text="y axis:" />
-                  <TextField fx:id="y" maxHeight="20.0" maxWidth="30.0" minHeight="15.0" minWidth="30.0" onKeyTyped="#yC" prefHeight="20.0" prefWidth="30.0" promptText="y">
+                  <TextField fx:id="y" maxHeight="20.0" maxWidth="30.0" minHeight="20.0" minWidth="30.0" onKeyTyped="#yC" prefHeight="20.0" prefWidth="30.0" promptText="y">
                      <HBox.margin>
                         <Insets left="2.0" top="2.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="10.0" />
+                        <Font size="8.0" />
                      </font>
                   </TextField>
                </children>
@@ -93,12 +93,12 @@
             <HBox layoutX="10.0" layoutY="67.0" prefHeight="19.0" prefWidth="100.0">
                <children>
                   <Label text="z axis:" />
-                  <TextField fx:id="z" maxHeight="33.0" maxWidth="30.0" minHeight="15.0" minWidth="30.0" onKeyTyped="#zC" prefHeight="29.0" prefWidth="30.0" promptText="z">
+                  <TextField fx:id="z" maxHeight="33.0" maxWidth="30.0" minHeight="20.0" minWidth="30.0" onKeyTyped="#zC" prefHeight="29.0" prefWidth="30.0" promptText="z">
                      <HBox.margin>
                         <Insets left="2.0" top="2.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="10.0" />
+                        <Font size="8.0" />
                      </font>
                   </TextField>
                </children>

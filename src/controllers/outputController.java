@@ -407,8 +407,11 @@ public class outputController {
         vb.setAlignment(Pos.CENTER);
         Button contB = new Button("Continue");
         Button cancB = new Button("Cancel");
-        Label label = new Label("Are you sure you want to continue?\nYour work won't be saved.");
-        label.setAlignment(Pos.CENTER);
+        Label l1 = new Label("Are you sure you want to continue?");
+        Label l2 = new Label("Your work won't be saved.");
+
+        l1.setAlignment(Pos.CENTER);
+        l2.setAlignment(Pos.CENTER);
         contB.setOnMouseClicked(e -> {
             try {
                 boardMade = false;
@@ -420,7 +423,7 @@ public class outputController {
         });
         cancB.setOnMouseClicked(e -> stage.close());
         hb.getChildren().addAll(contB,cancB);
-        vb.getChildren().addAll(label,hb);
+        vb.getChildren().addAll(l1,l2,hb);
         hb.setStyle("-fx-background-color: #3b3f41");
         vb.setStyle("-fx-background-color: #3b3f41");
         Scene scene = new Scene(vb,200,100);
