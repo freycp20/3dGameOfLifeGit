@@ -27,16 +27,11 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -46,12 +41,14 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class outputController {
     private SimpleIntegerProperty randomness = new SimpleIntegerProperty(100);
@@ -101,15 +98,34 @@ public class outputController {
     }
     public void aliveNC() {
         if (!aliveNeighbor.getText().equals("")){
-            setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
-            aliveN = Integer.parseInt(aliveNeighbor.getText());
+            String text = aliveNeighbor.getText();
+            Scanner scnr = new Scanner(text);
+//            scnr.useDelimiter("\D");
+            ArrayList<Integer> neighbors = new ArrayList<>();
+            while (scnr.hasNextInt()) {
+                neighbors.add(scnr.nextInt());
+            }
+            board.setAliveNlist(neighbors);
+            System.out.println(neighbors);
+//            setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
+//            aliveN = Integer.parseInt(aliveNeighbor.getText());
         }
 //        System.out.println("aliveNeighbors = " + aliveNeighbors);
     }
     public void deadNC() {
         if (!deadNeighbor.getText().equals("")){
-            setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
-            deadN = Integer.parseInt(deadNeighbor.getText());
+            String text = deadNeighbor.getText();
+            Scanner scnr = new Scanner(text);
+            ArrayList<Integer> neighbors = new ArrayList<>();
+            System.out.println("text = " + text);
+            while (scnr.hasNextInt()) {
+                neighbors.add(scnr.nextInt());
+            }
+            System.out.println(neighbors);
+            board.setDeadNlist(neighbors);
+
+//            setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
+//            deadN = Integer.parseInt(deadNeighbor.getText());
         }
 //        System.out.println("deadNeighbor = " + deadNeighbors);
     }
@@ -150,6 +166,9 @@ public class outputController {
         board = new Board(alive);
 //        System.out.println("board.getCells() = " + board.getCells());
 
+        System.out.println("board.getCells() = " + board.getCells());
+        board.setDeadNeighbors(3);
+        board.setAliveNeighbors(3);
         AmbientLight ambientLight = new AmbientLight();
         ambientLight.setLightOn(true);
         StackPane root = new StackPane();
@@ -214,7 +233,7 @@ public class outputController {
         cube.setTranslateZ(-size);
     }
     private void setFalseFirst(boolean var){
-        board.setFalseFirst(var);
+        board.setTrueFirst(var);
     }
 
     public void setAliveNeighbors(int aliveNeighbors) {
@@ -389,6 +408,7 @@ public class outputController {
         Button contB = new Button("Continue");
         Button cancB = new Button("Cancel");
         Label label = new Label("Are you sure you want to continue?\nYour work won't be saved.");
+        label.setAlignment(Pos.CENTER);
         contB.setOnMouseClicked(e -> {
             try {
                 boardMade = false;
@@ -401,9 +421,14 @@ public class outputController {
         cancB.setOnMouseClicked(e -> stage.close());
         hb.getChildren().addAll(contB,cancB);
         vb.getChildren().addAll(label,hb);
+        hb.setStyle("-fx-background-color: #3b3f41");
+        vb.setStyle("-fx-background-color: #3b3f41");
         Scene scene = new Scene(vb,200,100);
         scene.getStylesheets().add("/resources/outputStyle.css");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
 

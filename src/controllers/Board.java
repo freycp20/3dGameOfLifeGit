@@ -12,7 +12,9 @@ public class Board {
     boolean[][][] startingPos = null;
     private int aliveNeighbors;
     private int deadNeighbors;
-    private boolean falseFirst;
+    private ArrayList<Integer> aliveNlist;
+    private ArrayList<Integer> deadNlist;
+    private boolean trueFirst;
 
     private int size;
 
@@ -20,6 +22,8 @@ public class Board {
         this.size = size;
         cells = new boolean[size][size][size];
         startingPos = new boolean[size][size][size];
+        aliveNlist = new ArrayList<>();
+        deadNlist = new ArrayList<>();
     }
     public void printCells() {
         for (int y = 0; y < cells.length; y++) {
@@ -42,12 +46,22 @@ public class Board {
         this.aliveNeighbors = aliveNeighbors;
     }
 
+    public void setAliveNlist(ArrayList<Integer> aliveNlist) {
+        this.aliveNlist = aliveNlist;
+        System.out.println(aliveNlist);
+    }
+
+    public void setDeadNlist(ArrayList<Integer> deadNlist) {
+        this.deadNlist = deadNlist;
+        System.out.println(deadNlist);
+    }
+
     public void setDeadNeighbors(int deadNeighbors) {
         this.deadNeighbors = deadNeighbors;
     }
 
-    public void setFalseFirst(boolean falseFirst) {
-        this.falseFirst = falseFirst;
+    public void setTrueFirst(boolean trueFirst) {
+        this.trueFirst = trueFirst;
     }
 
     public Board(File file) {
@@ -101,23 +115,33 @@ public class Board {
 //                    System.out.println("aliveNeighbors = " + aliveNeighbors);
 //                    System.out.println("deadNeighbors = " + deadNeighbors);
 
+//                    if (cells[layer][row][col]) {
+////                        System.out.println("made it here");
+////                        System.out.println("livingNeighbors = " + livingNeighbors);
+//                        if (falseFirst) {
+//                            if (livingNeighbors == aliveNeighbors) {
+//                                board[layer][row][col] = false;
+//                            } else {
+//                                board[layer][row][col] = true;
+//                            }
+//                        } else {
+//                            if (livingNeighbors == aliveNeighbors) {
+//                                board[layer][row][col] = true;
+//                            } else {
+//                                board[layer][row][col] = false;
+//                            }
+//                        }
+//                    } else if (livingNeighbors==deadNeighbors) {
+//                        board[layer][row][col] = true;
+//                    }
                     if (cells[layer][row][col]) {
-//                        System.out.println("made it here");
-//                        System.out.println("livingNeighbors = " + livingNeighbors);
-                        if (falseFirst) {
-                            if (livingNeighbors == aliveNeighbors) {
-                                board[layer][row][col] = false;
-                            } else {
-                                board[layer][row][col] = true;
-                            }
+                        if (aliveNlist.contains(livingNeighbors)) {
+                            board[layer][row][col] = trueFirst;
                         } else {
-                            if (livingNeighbors == aliveNeighbors) {
-                                board[layer][row][col] = true;
-                            } else {
-                                board[layer][row][col] = false;
-                            }
+                            board[layer][row][col] = !trueFirst;
                         }
-                    } else if (livingNeighbors==deadNeighbors) {
+
+                    } else if (deadNlist.contains(livingNeighbors)) {
                         board[layer][row][col] = true;
                     }
                 }
@@ -185,5 +209,13 @@ public class Board {
             cellString += "\n";
         }
         return cellString;
+    }
+
+    public int getAliveNeighbors() {
+        return aliveNeighbors;
+    }
+
+    public int getDeadNeighbors() {
+        return deadNeighbors;
     }
 }

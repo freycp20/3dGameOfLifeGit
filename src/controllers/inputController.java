@@ -248,34 +248,50 @@ public class inputController {
     @FXML
     public void xC() {
         if (!(x.getText().equals(""))) {
-            xVal = Integer.parseInt(x.getText());
             checkValidRange(x);
-            checkAxisFilled();
+            x.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if (oldVal && !newVal) {
+                    xVal = Integer.parseInt(x.getText());
+                    checkAxisFilled();
+                }
+            });
         }
     }
 
     @FXML
     public void yC() {
         if (!(y.getText().equals(""))) {
-            yVal = Integer.parseInt(y.getText());
-            layerNumLabel.setText("Layer #: 1");
-            slider.setBlockIncrement(10);
-            slider.setMax(yVal);
-            slider.setMin(1);
-            slider.setShowTickMarks(true);
-            slider.setMinorTickCount(1);
-            slider.setMajorTickUnit(2);
             checkValidRange(y);
-            checkAxisFilled();
+            y.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if (oldVal && !newVal) {
+                    yVal = Integer.parseInt(y.getText());
+                    layerNumLabel.setText("Layer #: 1");
+                    slider.setBlockIncrement(10);
+                    slider.setMax(yVal);
+                    slider.setMin(1);
+                    slider.setShowTickMarks(true);
+                    slider.setMinorTickCount(1);
+                    slider.setMajorTickUnit(2);
+                    checkValidRange(y);
+                    checkAxisFilled();
+                }
+            });
+        }
+        if (!(y.getText().equals(""))) {
+
         }
     }
 
     @FXML
     public void zC() {
         if (!(z.getText().equals(""))) {
-            zVal = Integer.parseInt(z.getText());
             checkValidRange(z);
-            checkAxisFilled();
+            z.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if (oldVal && !newVal) {
+                    zVal = Integer.parseInt(z.getText());
+                    checkAxisFilled();
+                }
+            });
         }
     }
 

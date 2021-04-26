@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.outputController">
    <top>
@@ -50,37 +51,70 @@
       </MenuBar>
    </top>
    <left>
-      <VBox fx:id="buttonVbox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="buttonVbox" prefHeight="373.0" prefWidth="105.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Label" />
-            <Button fx:id="booleanBox" mnemonicParsing="false" onMouseClicked="#booleanBoxC" text="False">
+            <Label alignment="CENTER" prefHeight="1.0" prefWidth="95.0" text="True First">
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <Button fx:id="booleanBox" mnemonicParsing="false" onMouseClicked="#booleanBoxC" prefHeight="26.0" prefWidth="53.0" text="False">
                <VBox.margin>
                   <Insets left="25.0" right="25.0" top="10.0" />
                </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
             </Button>
-            <Label text="Label" />
-            <TextField fx:id="aliveNeighbor" maxHeight="6.0" maxWidth="100.0" minHeight="20.0" onKeyTyped="#aliveNC" prefHeight="6.0" prefWidth="100.0" promptText="alive neighbor">
+            <Label prefHeight="36.0" prefWidth="95.0" text="Alive Neighbors Constraint" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <TextField fx:id="aliveNeighbor" maxHeight="26.0" maxWidth="100.0" minHeight="20.0" onKeyTyped="#aliveNC" prefHeight="26.0" prefWidth="94.0" promptText="alive neighbor">
                <VBox.margin>
                   <Insets left="3.0" right="3.0" top="10.0" />
                </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
             </TextField>
-            <Label text="Label" />
-            <TextField fx:id="deadNeighbor" maxHeight="20.0" minHeight="20.0" onKeyTyped="#deadNC" promptText="dead neighbor">
+            <Label text="Dead Neighbors Constraint" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <TextField fx:id="deadNeighbor" maxHeight="26.0" minHeight="20.0" onKeyTyped="#deadNC" prefHeight="26.0" prefWidth="94.0" promptText="dead neighbor">
                <VBox.margin>
                   <Insets left="3.0" right="3.0" top="10.0" />
                </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
             </TextField>
-            <Button fx:id="runButton" mnemonicParsing="false" onMouseClicked="#runButtonC" text="Start">
+            <Button fx:id="runButton" mnemonicParsing="false" onMouseClicked="#runButtonC" text="Start" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="25.0" top="10.0" />
                </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
             </Button>
-            <Button fx:id="resetButton" mnemonicParsing="false" onMouseClicked="#resetButtonC" text="Reset">
+            <Button fx:id="resetButton" mnemonicParsing="false" onMouseClicked="#resetButtonC" text="Reset" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="24.0" top="10.0" />
                </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
             </Button>
          </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
       </VBox>
    </left>
    <center>
