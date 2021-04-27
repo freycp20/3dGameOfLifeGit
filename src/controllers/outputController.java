@@ -98,36 +98,35 @@ public class outputController {
     }
     public void aliveNC() {
         if (!aliveNeighbor.getText().equals("")){
-            String text = aliveNeighbor.getText();
-            Scanner scnr = new Scanner(text);
-//            scnr.useDelimiter("\D");
             ArrayList<Integer> neighbors = new ArrayList<>();
-            while (scnr.hasNextInt()) {
-                neighbors.add(scnr.nextInt());
+
+            Scanner scnr = new Scanner(aliveNeighbor.getText())
+                    .useDelimiter("[^\\d]");
+
+            while (scnr.hasNext()) {
+                String next = scnr.next();
+                if (!next.isEmpty()) {
+                    neighbors.add(Integer.parseInt(next));
+                }
             }
             board.setAliveNlist(neighbors);
-            System.out.println(neighbors);
-//            setAliveNeighbors(Integer.parseInt(aliveNeighbor.getText()));
-//            aliveN = Integer.parseInt(aliveNeighbor.getText());
         }
-//        System.out.println("aliveNeighbors = " + aliveNeighbors);
     }
     public void deadNC() {
         if (!deadNeighbor.getText().equals("")){
-            String text = deadNeighbor.getText();
-            Scanner scnr = new Scanner(text);
             ArrayList<Integer> neighbors = new ArrayList<>();
-            System.out.println("text = " + text);
-            while (scnr.hasNextInt()) {
-                neighbors.add(scnr.nextInt());
-            }
-            System.out.println(neighbors);
-            board.setDeadNlist(neighbors);
 
-//            setDeadNeighbors(Integer.parseInt(deadNeighbor.getText()));
-//            deadN = Integer.parseInt(deadNeighbor.getText());
+            Scanner scnr = new Scanner(deadNeighbor.getText())
+                    .useDelimiter("[^\\d]");
+
+            while (scnr.hasNext()) {
+                String next = scnr.next();
+                if (!next.isEmpty()) {
+                    neighbors.add(Integer.parseInt(next));
+                }
+            }
+            board.setDeadNlist(neighbors);
         }
-//        System.out.println("deadNeighbor = " + deadNeighbors);
     }
     public void runButtonC() {
         if (!modelRunning){
