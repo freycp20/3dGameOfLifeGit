@@ -57,7 +57,7 @@
                <font>
                   <Font size="12.0" />
                </font></Label>
-            <Button fx:id="booleanBox" mnemonicParsing="false" onMouseClicked="#booleanBoxC" prefHeight="26.0" prefWidth="53.0" text="False">
+            <Button fx:id="booleanBox" mnemonicParsing="false" onMouseClicked="#booleanBoxC" prefHeight="26.0" prefWidth="53.0" text="True">
                <VBox.margin>
                   <Insets left="25.0" right="25.0" top="10.0" />
                </VBox.margin>
