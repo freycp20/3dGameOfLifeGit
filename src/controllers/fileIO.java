@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,9 +21,10 @@ public class fileIO {
     private int zVal;
     private boolean areRules;
     private boolean rule1;
-    private int rule2;
-    private int rule3;
     private boolean boardOpened;
+    ArrayList<Integer> aNeighbors;
+    ArrayList<Integer> dNeighbors;
+
 
     private boolean[][][] cellArray;
 
@@ -44,9 +46,18 @@ public class fileIO {
             zVal = scn.nextInt();
             areRules = scn.nextBoolean();
             if (areRules){
+                aNeighbors = new ArrayList<>();
+                dNeighbors = new ArrayList<>();
                 rule1 = scn.nextBoolean();
-                rule2 = scn.nextInt();
-                rule3 = scn.nextInt();
+                int stop = scn.nextInt();
+                System.out.println(stop);
+                for (int i = 0; i < stop; i++) {
+                    aNeighbors.add(scn.nextInt());
+                }
+                stop = scn.nextInt();
+                for (int i = 0; i < stop; i++) {
+                    dNeighbors.add(scn.nextInt());
+                }
             }
             cellArray = new boolean[yVal][xVal][zVal];
             for (int y = 0; y < yVal; y++) {
@@ -101,11 +112,11 @@ public class fileIO {
     public boolean getRule1(){
         return rule1;
     }
-    public int getRule2(){
-        return rule2;
+    public ArrayList<Integer> getRule2(){
+        return aNeighbors;
     }
-    public int getRule3(){
-        return rule3;
+    public ArrayList<Integer> getRule3(){
+        return dNeighbors;
     }
     public boolean boardOpened(){return boardOpened;}
     public boolean[][][] getCellArray(){
