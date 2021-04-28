@@ -27,6 +27,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -57,7 +58,7 @@ public class outputController {
     private int size;
     private int width;
     private int cubeSize;
-    private int stepSpeed = 250;
+    private int stepSpeed = 100;
 
     // variables for mouse interaction
     private double mousePosX, mousePosY;
@@ -74,6 +75,7 @@ public class outputController {
     public TextField deadNeighbor = null;
     public Button runButton;
     public Button resetButton;
+    public Button nextGeneration;
     public StackPane subScenePane;
     private boolean falseBoxVal = false;
     private Timeline timeline;
@@ -432,6 +434,13 @@ public class outputController {
         stage.setAlwaysOnTop(true);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
+    }
+
+    public void nextGenC() {
+        removeChildren(cube);
+        board.nextStep();
+        addValsToGroup(cube, board.getCells());
+
     }
 
 

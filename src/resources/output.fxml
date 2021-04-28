@@ -9,6 +9,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -53,61 +54,84 @@
    <left>
       <VBox fx:id="buttonVbox" prefHeight="373.0" prefWidth="105.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="1.0" prefWidth="95.0" text="True First">
+            <Label alignment="CENTER" prefHeight="32.0" prefWidth="95.0" text="Alive Constraint Inversion" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="12.0" />
                </font></Label>
-            <Button fx:id="booleanBox" mnemonicParsing="false" onMouseClicked="#booleanBoxC" prefHeight="26.0" prefWidth="53.0" text="True">
-               <VBox.margin>
-                  <Insets left="25.0" right="25.0" top="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font>
-               <padding>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-               </padding>
-            </Button>
+            <HBox alignment="CENTER" prefHeight="26.0" prefWidth="95.0">
+               <children>
+                  <Button fx:id="booleanBox" mnemonicParsing="false" onMouseClicked="#booleanBoxC" prefHeight="23.0" prefWidth="45.0" text="False">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </HBox>
             <Label prefHeight="36.0" prefWidth="95.0" text="Alive Neighbors Constraint" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                <font>
                   <Font size="12.0" />
-               </font></Label>
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Label>
             <TextField fx:id="aliveNeighbor" maxHeight="26.0" maxWidth="100.0" minHeight="20.0" onKeyTyped="#aliveNC" prefHeight="26.0" prefWidth="94.0" promptText="alive neighbor">
                <VBox.margin>
-                  <Insets left="3.0" right="3.0" top="10.0" />
+                  <Insets bottom="10.0" left="3.0" right="3.0" />
                </VBox.margin>
                <font>
                   <Font size="12.0" />
                </font>
             </TextField>
-            <Label text="Dead Neighbors Constraint" textAlignment="CENTER" wrapText="true">
+            <Label prefHeight="36.0" prefWidth="95.0" text="Dead Neighbors Constraint" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="12.0" />
                </font></Label>
             <TextField fx:id="deadNeighbor" maxHeight="26.0" minHeight="20.0" onKeyTyped="#deadNC" prefHeight="26.0" prefWidth="94.0" promptText="dead neighbor">
                <VBox.margin>
-                  <Insets left="3.0" right="3.0" top="10.0" />
+                  <Insets bottom="10.0" left="3.0" right="3.0" />
                </VBox.margin>
                <font>
                   <Font size="12.0" />
                </font>
             </TextField>
-            <Button fx:id="runButton" mnemonicParsing="false" onMouseClicked="#runButtonC" text="Start" textAlignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="11.0" prefWidth="95.0">
+               <children>
+                  <Button fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#runButtonC" text="Start" textAlignment="CENTER">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="resetButton" mnemonicParsing="false" onMouseClicked="#resetButtonC" text="Reset" textAlignment="CENTER">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="95.0">
+               <children>
+                  <Button fx:id="nextGeneration" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextGenC" prefHeight="23.0" prefWidth="90.0" text="Next Gen" textAlignment="CENTER">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
                <VBox.margin>
-                  <Insets left="25.0" top="10.0" />
+                  <Insets top="5.0" />
                </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="resetButton" mnemonicParsing="false" onMouseClicked="#resetButtonC" text="Reset" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets left="24.0" top="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Button>
+            </HBox>
          </children>
          <opaqueInsets>
             <Insets />

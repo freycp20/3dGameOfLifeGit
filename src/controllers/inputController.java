@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -490,5 +491,11 @@ public class inputController {
 
     public void visualizeC() throws IOException {
         switchSceneC();
+    }
+
+    public void keybindsC(ActionEvent actionEvent) {
+    }
+
+    public void aboutC(Event event) {
     }
 }
