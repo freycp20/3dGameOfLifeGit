@@ -368,8 +368,6 @@ public class inputController {
         Label clear = new Label("clear layer: control + c");
         Label altM = new Label("draw: alt + mouse hover");
         Label ctrlM = new Label("erase: control + mouse hover");
-
-
         vb.getChildren().addAll(w,s,fill,clear,altM,ctrlM);
         vb.setStyle("-fx-background-color: #3b3f41");
         Scene scene = new Scene(vb,200,150);
@@ -382,6 +380,25 @@ public class inputController {
     }
 
     public void aboutC() {
+        Stage stage = new Stage();
+        VBox vb = new VBox();
+        stage.setTitle("key-binds");
+        vb.setAlignment(Pos.CENTER);
+        Label w = new Label("up layer: w");
+        Label s = new Label("down layer: s");
+        Label fill = new Label("fill layer: control + f");
+        Label clear = new Label("clear layer: control + c");
+        Label altM = new Label("draw: alt + mouse hover");
+        Label ctrlM = new Label("erase: control + mouse hover");
+        vb.getChildren().addAll(w,s,fill,clear,altM,ctrlM);
+        vb.setStyle("-fx-background-color: #3b3f41");
+        Scene scene = new Scene(vb,200,150);
+        scene.getStylesheets().add("/resources/outputStyle.css");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     /**
@@ -521,5 +538,4 @@ public class inputController {
     public void visualizeC() throws IOException {
         switchSceneC();
     }
-
 }
