@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -238,6 +239,16 @@ public class inputController {
         }
         handlers();
     }
+    public void clearAllLayersC() {
+        int stop = layerCount;
+        layerCount = 1;
+        for (int i = 0; i < stop; i++) {
+            clearLayerC();
+            layerCount++;
+        }
+        layerCount = stop;
+        handlers();
+    }
     private boolean checkAxisFilledBase(){
         if (!x.getText().equals("") && !y.getText().equals("") && !z.getText().equals("")){
             return true;
@@ -247,52 +258,49 @@ public class inputController {
 
     @FXML
     public void xC() {
-        if (!(x.getText().equals(""))) {
-            checkValidRange(x);
-            x.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if (oldVal && !newVal) {
+//        x.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!(x.getText().equals(""))) {
+//                if (oldVal && !newVal) {
                     xVal = Integer.parseInt(x.getText());
+                    checkValidRange(x);
                     checkAxisFilled();
-                }
-            });
-        }
+//                }
+            }
+//        });
+
     }
 
     @FXML
     public void yC() {
-        if (!(y.getText().equals(""))) {
-            checkValidRange(y);
-            y.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if (oldVal && !newVal) {
-                    yVal = Integer.parseInt(y.getText());
-                    layerNumLabel.setText("Layer #: 1");
-                    slider.setBlockIncrement(10);
-                    slider.setMax(yVal);
-                    slider.setMin(1);
-                    slider.setShowTickMarks(true);
-                    slider.setMinorTickCount(1);
-                    slider.setMajorTickUnit(2);
-                    checkValidRange(y);
-                    checkAxisFilled();
-                }
-            });
-        }
-        if (!(y.getText().equals(""))) {
-
-        }
+//            y.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if (!(y.getText().equals(""))) {
+//                    if (oldVal && !newVal) {
+                        yVal = Integer.parseInt(y.getText());
+                        layerNumLabel.setText("Layer #: 1");
+                        slider.setBlockIncrement(10);
+                        slider.setMax(yVal);
+                        slider.setMin(1);
+                        slider.setShowTickMarks(true);
+                        slider.setMinorTickCount(1);
+                        slider.setMajorTickUnit(2);
+                        checkValidRange(y);
+                        checkAxisFilled();
+                    }
+//                }
+//            });
     }
 
     @FXML
     public void zC() {
-        if (!(z.getText().equals(""))) {
-            checkValidRange(z);
-            z.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if (oldVal && !newVal) {
+//        z.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!(z.getText().equals(""))) {
+//                if (oldVal && !newVal) {
                     zVal = Integer.parseInt(z.getText());
+                    checkValidRange(z);
                     checkAxisFilled();
-                }
-            });
-        }
+//                }
+            }
+//        });
     }
 
     @FXML
@@ -476,7 +484,7 @@ public class inputController {
             newAxisLayer = true;
             axisShown = false;
             showAxis.setSelected(false);
-            mainBorderPane.requestFocus();
+//            mainBorderPane.requestFocus();
         }
     }
 

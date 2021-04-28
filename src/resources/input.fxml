@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.inputController">
    <top>
@@ -31,6 +30,7 @@
                   <CheckMenuItem fx:id="showAxis" mnemonicParsing="false" onAction="#showAxisC" text="Show Axis" />
                   <MenuItem mnemonicParsing="false" onAction="#clearLayerC" text="clear layer" />
                   <MenuItem mnemonicParsing="false" onAction="#fillLayerC" text="fill layer" />
+                  <MenuItem mnemonicParsing="false" onAction="#clearAllLayersC" text="clear all layers" />
                   <MenuItem mnemonicParsing="false" text="Delete" />
                </items>
             </Menu>
@@ -60,14 +60,21 @@
             </Label>
             <HBox prefHeight="19.0" prefWidth="100.0">
                <children>
-                  <Label text="x axis:" />
+                  <Label text="x axis:">
+                     <HBox.margin>
+                        <Insets top="3.5" />
+                     </HBox.margin>
+                  </Label>
                   <TextField depthTest="DISABLE" maxHeight="15.0" maxWidth="30.0" minHeight="20.0" minWidth="30.0" onKeyTyped="#xC" prefHeight="11.0" prefWidth="30.0" promptText="x" fx:id="x">
                      <HBox.margin>
                         <Insets left="2.0" top="2.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="8.0" />
-                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
+                     </padding>
                   </TextField>
                </children>
                <padding>
@@ -76,14 +83,17 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="47.0" prefHeight="19.0" prefWidth="100.0">
                <children>
-                  <Label text="y axis:" />
+                  <Label text="y axis:">
+                     <HBox.margin>
+                        <Insets top="3.5" />
+                     </HBox.margin></Label>
                   <TextField fx:id="y" maxHeight="20.0" maxWidth="30.0" minHeight="20.0" minWidth="30.0" onKeyTyped="#yC" prefHeight="20.0" prefWidth="30.0" promptText="y">
                      <HBox.margin>
                         <Insets left="2.0" top="2.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="8.0" />
-                     </font>
+                     <padding>
+                        <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
+                     </padding>
                   </TextField>
                </children>
                <padding>
@@ -92,14 +102,17 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="67.0" prefHeight="19.0" prefWidth="100.0">
                <children>
-                  <Label text="z axis:" />
+                  <Label text="z axis:">
+                     <HBox.margin>
+                        <Insets top="3.5" />
+                     </HBox.margin></Label>
                   <TextField fx:id="z" maxHeight="33.0" maxWidth="30.0" minHeight="20.0" minWidth="30.0" onKeyTyped="#zC" prefHeight="29.0" prefWidth="30.0" promptText="z">
                      <HBox.margin>
                         <Insets left="2.0" top="2.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="8.0" />
-                     </font>
+                     <padding>
+                        <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
+                     </padding>
                   </TextField>
                </children>
                <padding>
