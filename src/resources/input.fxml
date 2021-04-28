@@ -19,25 +19,25 @@
          <menus>
             <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#openTemplateC" text="open template" />
-                  <MenuItem mnemonicParsing="false" onAction="#saveTemplateC" text="save template" />
-                  <MenuItem mnemonicParsing="false" onAction="#switchSceneC" text="switch" />
+                  <MenuItem mnemonicParsing="false" onAction="#openTemplateC" text="Open Template" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveTemplateC" text="SaveTemplate" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchSceneC" text="Switch" />
                   <MenuItem mnemonicParsing="false" text="Close" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Edit">
                <items>
                   <CheckMenuItem fx:id="showAxis" mnemonicParsing="false" onAction="#showAxisC" text="Show Axis" />
-                  <MenuItem mnemonicParsing="false" onAction="#clearLayerC" text="clear layer" />
-                  <MenuItem mnemonicParsing="false" onAction="#fillLayerC" text="fill layer" />
-                  <MenuItem mnemonicParsing="false" onAction="#clearAllLayersC" text="clear all layers" />
+                  <MenuItem mnemonicParsing="false" onAction="#clearLayerC" text="Clear Layer" />
+                  <MenuItem mnemonicParsing="false" onAction="#fillLayerC" text="Fill Layer" />
+                  <MenuItem mnemonicParsing="false" onAction="#clearAllLayersC" text="Clear All Layers" />
                   <MenuItem mnemonicParsing="false" text="Delete" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#keybindsC" onMenuValidation="#aboutC" text="keybinds" />
-                  <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#keybindsC" text="Key-Binds" />
+                  <MenuItem mnemonicParsing="false" onAction="#aboutC" text="About" />
                </items>
             </Menu>
          </menus>

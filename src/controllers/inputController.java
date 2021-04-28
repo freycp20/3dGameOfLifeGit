@@ -4,17 +4,16 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,10 +94,14 @@ public class inputController {
                 altPressed = true;
             }
             if (e.getCode() == KeyCode.W){
-                upLayerC();
+                if (checkAxisFilledBase()) {
+                    upLayerC();
+                }
             }
             if (e.getCode() == KeyCode.S){
-                downLayerC();
+                if (checkAxisFilledBase()) {
+                    downLayerC();
+                }
             }
         });
         mainBorderPane.setOnKeyReleased(e -> {
@@ -339,20 +342,46 @@ public class inputController {
         if (newAxisLayer) {
             axisY = new Line(stackPane.getWidth() / 2, stackPane.getHeight(), stackPane.getWidth() / 2, 2);
             axisX = new Line(0, stackPane.getHeight() / 2, stackPane.getWidth() - 2, stackPane.getHeight() / 2);
-
             axisY.setStrokeWidth(2.5);
             axisX.setStrokeWidth(2.5);
             axisY.setFill(Color.LIGHTGREY);
             axisX.setFill(Color.LIGHTGREY);
             axisY.setVisible(axisShown);
             axisX.setVisible(axisShown);
-            axisY.setOpacity(0.7);
-            axisX.setOpacity(0.7);
             stackPane.getChildren().addAll(axisY, axisX);
+            axisY.toBack();
+            axisX.toBack();
         }
         axisY.setVisible(axisShown);
         axisX.setVisible(axisShown);
         newAxisLayer = false;
+    }
+
+    public void keybindsC() {
+        Stage stage = new Stage();
+        VBox vb = new VBox();
+        stage.setTitle("key-binds");
+        vb.setAlignment(Pos.CENTER);
+        Label w = new Label("up layer: w");
+        Label s = new Label("down layer: s");
+        Label fill = new Label("fill layer: control + f");
+        Label clear = new Label("clear layer: control + c");
+        Label altM = new Label("draw: alt + mouse hover");
+        Label ctrlM = new Label("erase: control + mouse hover");
+
+
+        vb.getChildren().addAll(w,s,fill,clear,altM,ctrlM);
+        vb.setStyle("-fx-background-color: #3b3f41");
+        Scene scene = new Scene(vb,200,150);
+        scene.getStylesheets().add("/resources/outputStyle.css");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+
+    public void aboutC() {
     }
 
     /**
@@ -493,9 +522,4 @@ public class inputController {
         switchSceneC();
     }
 
-    public void keybindsC(ActionEvent actionEvent) {
-    }
-
-    public void aboutC(Event event) {
-    }
 }
