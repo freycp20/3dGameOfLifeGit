@@ -56,8 +56,8 @@ public class inputController {
     private int mapCount;
     public boolean areRules;
     public boolean rule1;
-    public int rule2;
-    public int rule3;
+    public ArrayList<Integer> aNeighbors;
+    public ArrayList<Integer> dNeighbors;
 
     /**
      * sceneBuilder methods
@@ -139,8 +139,8 @@ public class inputController {
             if (areRules){
                 outputC.areRules = areRules;
                 outputC.rule1 = rule1;
-                outputC.rule2 = rule2;
-                outputC.rule3 = rule3;
+                outputC.aNeighbors = aNeighbors;
+                outputC.dNeighbors = dNeighbors;
             }
         }
     }
@@ -246,7 +246,7 @@ public class inputController {
     public void clearAllLayersC() {
         int stop = layerCount;
         layerCount = 1;
-        for (int i = 0; i < stop; i++) {
+        for (int i = 0; i < yVal; i++) {
             clearLayerC();
             layerCount++;
         }
@@ -323,8 +323,8 @@ public class inputController {
         if (ifio.areRules()){
             areRules = ifio.areRules();
             rule1 = ifio.getRule1();
-            rule2 = ifio.getRule2();
-            rule3 = ifio.getRule3();
+            aNeighbors = ifio.getRule2();
+            dNeighbors = ifio.getRule3();
         }
         setLayer(ifio.getCellArray());
     }
@@ -368,8 +368,6 @@ public class inputController {
         Label clear = new Label("clear layer: control + c");
         Label altM = new Label("draw: alt + mouse hover");
         Label ctrlM = new Label("erase: control + mouse hover");
-
-
         vb.getChildren().addAll(w,s,fill,clear,altM,ctrlM);
         vb.setStyle("-fx-background-color: #3b3f41");
         Scene scene = new Scene(vb,200,150);
@@ -382,6 +380,25 @@ public class inputController {
     }
 
     public void aboutC() {
+        Stage stage = new Stage();
+        VBox vb = new VBox();
+        stage.setTitle("key-binds");
+        vb.setAlignment(Pos.CENTER);
+        Label w = new Label("up layer: w");
+        Label s = new Label("down layer: s");
+        Label fill = new Label("fill layer: control + f");
+        Label clear = new Label("clear layer: control + c");
+        Label altM = new Label("draw: alt + mouse hover");
+        Label ctrlM = new Label("erase: control + mouse hover");
+        vb.getChildren().addAll(w,s,fill,clear,altM,ctrlM);
+        vb.setStyle("-fx-background-color: #3b3f41");
+        Scene scene = new Scene(vb,200,150);
+        scene.getStylesheets().add("/resources/outputStyle.css");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     /**
@@ -521,5 +538,4 @@ public class inputController {
     public void visualizeC() throws IOException {
         switchSceneC();
     }
-
 }

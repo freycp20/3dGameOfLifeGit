@@ -91,8 +91,8 @@ public class outputController {
     private int aliveN;
     public boolean areRules;
     public boolean rule1;
-    public int rule2;
-    public int rule3;
+    ArrayList<Integer> aNeighbors;
+    ArrayList<Integer> dNeighbors;
 
 
     public void booleanBoxC() {
@@ -102,7 +102,7 @@ public class outputController {
     }
     public void aliveNC() {
         if (!aliveNeighbor.getText().equals("")){
-            ArrayList<Integer> neighbors = new ArrayList<>();
+            aNeighbors = new ArrayList<>();
 
             Scanner scnr = new Scanner(aliveNeighbor.getText())
                     .useDelimiter("[^\\d]");
@@ -110,15 +110,15 @@ public class outputController {
             while (scnr.hasNext()) {
                 String next = scnr.next();
                 if (!next.isEmpty()) {
-                    neighbors.add(Integer.parseInt(next));
+                    aNeighbors.add(Integer.parseInt(next));
                 }
             }
-            board.setAliveNlist(neighbors);
+            board.setAliveNlist(aNeighbors);
         }
     }
     public void deadNC() {
         if (!deadNeighbor.getText().equals("")){
-            ArrayList<Integer> neighbors = new ArrayList<>();
+            dNeighbors = new ArrayList<>();
 
             Scanner scnr = new Scanner(deadNeighbor.getText())
                     .useDelimiter("[^\\d]");
@@ -126,10 +126,10 @@ public class outputController {
             while (scnr.hasNext()) {
                 String next = scnr.next();
                 if (!next.isEmpty()) {
-                    neighbors.add(Integer.parseInt(next));
+                    dNeighbors.add(Integer.parseInt(next));
                 }
             }
-            board.setDeadNlist(neighbors);
+            board.setDeadNlist(dNeighbors);
         }
     }
     public void runButtonC() {
@@ -330,8 +330,16 @@ public class outputController {
 
     public void saveOriginGenC() {
         if (boardMade){
+            String aN = "";
+            String dN = "";
+            for (int i = 0; i < aNeighbors.size(); i++) {
+                aN += aNeighbors.get(i) + " ";
+            }
+            for (int i = 0; i < dNeighbors.size(); i++) {
+                dN += dNeighbors.get(i) + " ";
+            }
             String content = String.format(
-                    "%d %d %d %s %s %d %d\n%s", yVal, xVal, zVal, true, falseBoxVal, aliveN, deadN, board.arrayToString(board.getStartingPos()));
+                    "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, falseBoxVal,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getStartingPos()));
                     new fileIO().saveFile(content);
         }
     }
@@ -342,7 +350,7 @@ public class outputController {
                 runButtonC();
             }
             String content = String.format(
-                    "%d %d %d %b %b %d %d \n%s", yVal, xVal, zVal, true, falseBoxVal, aliveN, deadN, board.arrayToString(board.getCells()));
+                    "%d %d %d %b %b %d %d\n%s", yVal, xVal, zVal, true, falseBoxVal, aliveN, deadN, board.arrayToString(board.getCells()));
             new fileIO().saveFile(content);
         }
     }
@@ -359,8 +367,8 @@ public class outputController {
                 booleanBox.setText(String.valueOf(ifio.getRule1()));
                 aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
                 deadNeighbor.setText(String.valueOf(ifio.getRule3()));
-                setAliveNeighbors(ifio.getRule2());
-                setDeadNeighbors(ifio.getRule3());
+                board.setAliveNlist(ifio.getRule2());
+                board.setDeadNlist(ifio.getRule3());
                 booleanBoxC();
                 aliveNC();
                 deadNC();
@@ -396,8 +404,8 @@ public class outputController {
             inputC.setLayer(arr);
             inputC.areRules = areRules;
             inputC.rule1 = rule1;
-            inputC.rule2 = rule2;
-            inputC.rule3 = rule3;
+            inputC.aNeighbors = aNeighbors;
+            inputC.dNeighbors = dNeighbors;
         }
     }
     public void switchCurrentC() throws IOException {
