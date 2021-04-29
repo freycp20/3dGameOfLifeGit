@@ -27,7 +27,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -48,8 +47,10 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeoutException;
 
 public class outputController {
     private SimpleIntegerProperty randomness = new SimpleIntegerProperty(100);
@@ -67,6 +68,7 @@ public class outputController {
     private final Rotate rotateY = new Rotate(-45, Rotate.Y_AXIS);
     private boolean modelRunning = false;
     private Board board;
+    public Slider speedSlider;
     public VBox buttonVbox;
     public BorderPane mainBorderPane;
     public MenuBar mainMenuBar;
@@ -133,11 +135,11 @@ public class outputController {
     public void runButtonC() {
         if (!modelRunning){
 //            System.out.println("Working!");
-            timeline.play();
+            playTimeLine();
             runButton.setText("Stop");
             modelRunning = true;
         } else {
-            timeline.pause();
+            pauseTimeLine();
             runButton.setText("Start");
             modelRunning = false;
         }
@@ -150,7 +152,7 @@ public class outputController {
         removeChildren(cube);
         board.reset();
         addValsToGroup(cube, board.getCells());
-        timeline.pause();
+        pauseTimeLine();
     }
 
 
@@ -208,13 +210,35 @@ public class outputController {
         setDragRotate(root);
         makeZoomable(root);
     }
+    public void pauseTimeLine() {
+        timeline.pause();
+        modelRunning = false;
+        runButton.setText("Start");
+    }
+    public void playTimeLine() {
+        timeline.play();
+        modelRunning = true;
+        runButton.setText("Stop");
+
+    }
+    public void timeLineLogic() {
+        boolean[][][] lastBoard = board.getCells();
+        board.nextStep();
+//                    System.out.println("this is working");
+        if (Arrays.deepEquals(board.getCells(), lastBoard)) {
+            pauseTimeLine();
+            System.out.println("we stopped");
+        }
+        else {
+            removeChildren(cube);
+            addValsToGroup(cube, board.getCells());
+            System.out.println("WE ARE GOING");
+        }
+    }
     public void initialize() {
         timeline =
                 new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> {
-                    removeChildren(cube);
-//                    System.out.println("this is working");
-                    board.nextStep();
-                    addValsToGroup(cube, board.getCells());
+                    timeLineLogic();
                 }));
         timeline.setCycleCount(Animation.INDEFINITE);
     }
@@ -346,7 +370,7 @@ public class outputController {
         }
     }
     public void switchSceneC(boolean[][][] arr) throws IOException {
-        timeline.pause();
+        pauseTimeLine();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/input.fxml"));
         Parent inputRoot = loader.load();
 //        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
@@ -440,6 +464,26 @@ public class outputController {
         removeChildren(cube);
         board.nextStep();
         addValsToGroup(cube, board.getCells());
+
+    }
+
+    public void speedSliderC() {
+        System.out.println("HERE");
+        timeline.pause();
+        this.stepSpeed = (int) speedSlider.getValue();
+        System.out.println("stepSpeed = " + stepSpeed);
+        System.out.println("timeline.getCycleDuration() = " + timeline.getCycleDuration());
+        timeline =
+                new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> {
+                    timeLineLogic();
+                }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        if (modelRunning) {
+            playTimeLine();
+        } else {
+            pauseTimeLine();
+        }
+
 
     }
 

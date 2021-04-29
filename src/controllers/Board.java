@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -22,8 +23,8 @@ public class Board {
         this.size = size;
         cells = new boolean[size][size][size];
         startingPos = new boolean[size][size][size];
-        aliveNlist = new ArrayList<>();
-        deadNlist = new ArrayList<>();
+        aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
+        deadNlist = new ArrayList<>(Arrays.asList(6));
     }
     public void printCells() {
         for (int y = 0; y < cells.length; y++) {
@@ -73,7 +74,8 @@ public class Board {
             scn.nextInt();
             cells = new boolean[size][size][size];
             startingPos = new boolean[size][size][size];
-
+            aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
+            deadNlist = new ArrayList<>(Arrays.asList(6));
 //            System.out.println("here?");
             for (int y = 0; y < cells.length; y++) {
                 for (int x = 0; x < cells.length; x++) {
@@ -175,6 +177,8 @@ public class Board {
         this.cells = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.size = cellArray.length;
+        aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
+        deadNlist = new ArrayList<>(Arrays.asList(6));
         for (int i = 0; i < cellArray.length; i++) {
             for (int j = 0; j < cellArray[i].length; j++) {
                 for (int k = 0; k < cellArray[i][j].length; k++) {
@@ -218,4 +222,5 @@ public class Board {
     public int getDeadNeighbors() {
         return deadNeighbors;
     }
+
 }

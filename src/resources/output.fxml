@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -132,6 +133,11 @@
                   <Insets top="5.0" />
                </VBox.margin>
             </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Slider fx:id="speedSlider" blockIncrement="50.0" majorTickUnit="50.0" max="500.0" min="50.0" minorTickCount="5" onMouseDragged="#speedSliderC" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" value="250.0" />
+               </children>
+            </HBox>
          </children>
          <opaqueInsets>
             <Insets />
@@ -142,6 +148,6 @@
       </VBox>
    </left>
    <center>
-      <StackPane fx:id="subScenePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="subScenePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="495.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
