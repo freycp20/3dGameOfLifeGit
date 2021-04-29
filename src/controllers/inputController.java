@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -71,9 +72,11 @@ public class inputController {
         handlers();
         VBox vbox = new VBox();
         Label label = new Label("Welcome");
+        label.setStyle("-fx-font: 24 arial;");
         vbox.getChildren().add(label);
-        mainBorderPane.setCenter(vbox);
-
+        ZoomableScrollPane zScroll = new ZoomableScrollPane(vbox);
+        zScroll.setStyle("-fx-background-color: #2c2c2c");
+        mainBorderPane.setCenter(zScroll);
     }
     public void handlers(){
         mainBorderPane.setOnKeyPressed(e -> {
@@ -381,18 +384,23 @@ public class inputController {
 
     public void aboutC() {
         Stage stage = new Stage();
-        VBox vb = new VBox();
         stage.setTitle("key-binds");
+        VBox vb = new VBox();
         vb.setAlignment(Pos.CENTER);
-        Label w = new Label("up layer: w");
-        Label s = new Label("down layer: s");
-        Label fill = new Label("fill layer: control + f");
-        Label clear = new Label("clear layer: control + c");
-        Label altM = new Label("draw: alt + mouse hover");
-        Label ctrlM = new Label("erase: control + mouse hover");
-        vb.getChildren().addAll(w,s,fill,clear,altM,ctrlM);
+        Label l1 = new Label("Inspired by Conways Game of Life, this program provides a easy and streamlined " +
+                "method of input and output for 3D Cellular Automata. The default rules are 5 6 7 for alive, " +
+                "and 6 for dead. The cellular neighborhood we use to calculate alive and dead cells is moore's type. " +
+                "With moore's neighborhood, 26 possible values are read in, and a/d cells are accounted for. To use various key-binds," +
+                " go to help->key-binds.");
+        Label l2 = new Label("\nAuthors: Caleb Frey, Keegan Woodburn, Michael Gomez");
+        Insets ins = new Insets(15,15,15,15);
+        l1.setPadding(ins);
+        l1.setStyle("-fx-font: 15 arial;");
+        l2.setStyle("-fx-font: 13 arial;");
+        l1.setWrapText(true);
+        vb.getChildren().addAll(l1,l2);
         vb.setStyle("-fx-background-color: #3b3f41");
-        Scene scene = new Scene(vb,200,150);
+        Scene scene = new Scene(vb,450,250);
         scene.getStylesheets().add("/resources/outputStyle.css");
         stage.setScene(scene);
         stage.setResizable(false);
