@@ -48,12 +48,15 @@ public class Board {
     }
 
     public void setAliveNlist(ArrayList<Integer> aliveNlist) {
+//        System.out.println(aliveNlist);
+        System.out.println("LOOK IM BEING PRESSED ALIVE");
         this.aliveNlist = aliveNlist;
-        System.out.println(aliveNlist);
+//        System.out.println(this.aliveNlist);
     }
 
     public void setDeadNlist(ArrayList<Integer> deadNlist) {
         this.deadNlist = deadNlist;
+        System.out.println("LOOK IM BEING PRESSED DEAD");
         System.out.println(deadNlist);
     }
 
@@ -221,6 +224,14 @@ public class Board {
 
     public int getDeadNeighbors() {
         return deadNeighbors;
+    }
+
+    public ArrayList<Integer> getAliveNlist() {
+        return aliveNlist;
+    }
+
+    public ArrayList<Integer> getDeadNlist() {
+        return deadNlist;
     }
 
 }

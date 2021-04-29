@@ -59,7 +59,7 @@ public class outputController {
     private int size;
     private int width;
     private int cubeSize;
-    private int stepSpeed = 100;
+    private int stepSpeed;
 
     // variables for mouse interaction
     private double mousePosX, mousePosY;
@@ -67,6 +67,8 @@ public class outputController {
     private final Rotate rotateX = new Rotate(20, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(-45, Rotate.Y_AXIS);
     private boolean modelRunning = false;
+    private ArrayList<Integer> aliveNList;
+    private ArrayList<Integer> deadNList;
     private Board board;
     public Slider speedSlider;
     public VBox buttonVbox;
@@ -135,6 +137,8 @@ public class outputController {
     public void runButtonC() {
         if (!modelRunning){
 //            System.out.println("Working!");
+            System.out.println("board.getAliveNlist() = " + board.getAliveNlist());
+            System.out.println("board.getDeadNlist() = " + board.getDeadNlist());
             playTimeLine();
             runButton.setText("Stop");
             modelRunning = true;
@@ -160,6 +164,7 @@ public class outputController {
         lineColor = Color.web("#adacac");
 //        lineColor = Color.TRANSPARENT;
         this.size = size;
+        stepSpeed = (int) speedSlider.getValue();
         cube = createCube(size);
         width = (size/10);
         cubeSize = (size/(size/10));
@@ -224,7 +229,7 @@ public class outputController {
     public void timeLineLogic() {
         boolean[][][] lastBoard = board.getCells();
         board.nextStep();
-//                    System.out.println("this is working");
+                    System.out.println("this is working");
         if (Arrays.deepEquals(board.getCells(), lastBoard)) {
             pauseTimeLine();
             System.out.println("we stopped");
@@ -367,6 +372,9 @@ public class outputController {
                 booleanBox.setText(String.valueOf(ifio.getRule1()));
                 aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
                 deadNeighbor.setText(String.valueOf(ifio.getRule3()));
+                System.out.println("ifio.getRule2() = " + ifio.getRule2());
+                System.out.println("ifio.getRule3() = " + ifio.getRule3());
+
                 board.setAliveNlist(ifio.getRule2());
                 board.setDeadNlist(ifio.getRule3());
                 booleanBoxC();
