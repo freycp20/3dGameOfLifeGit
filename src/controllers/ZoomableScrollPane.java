@@ -12,15 +12,11 @@ public class ZoomableScrollPane extends ScrollPane {
     private double scaleValue = 0.9;
     private final Node target;
     private final Node zoomNode;
-
     public ZoomableScrollPane(Node target) {
-
         super();
         this.target = target;
         this.zoomNode = new Group(target);
-
         setContent(outerNode(zoomNode));
-
         setPannable(true);
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -32,7 +28,8 @@ public class ZoomableScrollPane extends ScrollPane {
 
     private Node outerNode(Node node) {
         Node outerNode = centeredNode(node);
-            outerNode.setOnScroll(e -> {
+
+        outerNode.setOnScroll(e -> {
             e.consume();
             onScroll(e.getTextDeltaY(), new Point2D(e.getX(), e.getY()));
         });
@@ -41,7 +38,6 @@ public class ZoomableScrollPane extends ScrollPane {
     }
 
     private Node centeredNode(Node node) {
-
         VBox vBox = new VBox(node);
         vBox.setStyle("-fx-background-color: #2c2c2c");
 
