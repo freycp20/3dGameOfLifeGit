@@ -43,21 +43,19 @@ public class Board {
             System.out.println();
         }
     }
-    public void setAliveNeighbors(int aliveNeighbors) {
-        this.aliveNeighbors = aliveNeighbors;
-    }
 
     public void setAliveNlist(ArrayList<Integer> aliveNlist) {
-//        System.out.println(aliveNlist);
-        System.out.println("LOOK IM BEING PRESSED ALIVE");
         this.aliveNlist = aliveNlist;
-//        System.out.println(this.aliveNlist);
+//        System.out.println("Given: " + aliveNlist.toString() + "\nTaken: " + this.aliveNlist.toString());
     }
 
     public void setDeadNlist(ArrayList<Integer> deadNlist) {
         this.deadNlist = deadNlist;
-        System.out.println("LOOK IM BEING PRESSED DEAD");
-        System.out.println(deadNlist);
+//        System.out.println("Given: " + deadNlist.toString() + "\nTaken: " + this.deadNlist.toString());
+    }
+
+    public void setAliveNeighbors(int aliveNeighbors) {
+        this.aliveNeighbors = aliveNeighbors;
     }
 
     public void setDeadNeighbors(int deadNeighbors) {
@@ -107,38 +105,6 @@ public class Board {
             for (int row = 1; row < board[layer].length-1; row++) {
                 for (int col = 1; col < board[layer][row].length-1; col++) {
                     livingNeighbors = Collections.frequency(surroundingCells(cells,layer,row,col), true);
-//                    if (newBoard[layer][row][col]) {
-//                        if (livingNeighbors == aliveNeighbors) {
-//                            board[layer][row][col] = trueFirst;
-//                        } else {
-//                            board[layer][row][col] = !trueFirst;
-//                        }
-//                    } else if (livingNeighbors==deadNeighbors) {
-//                        board[layer][row][col] = true;
-//                    }
-//                    System.out.println("cells[layer][row][col] = " + cells[layer][row][col]);
-//                    System.out.println("aliveNeighbors = " + aliveNeighbors);
-//                    System.out.println("deadNeighbors = " + deadNeighbors);
-
-//                    if (cells[layer][row][col]) {
-////                        System.out.println("made it here");
-////                        System.out.println("livingNeighbors = " + livingNeighbors);
-//                        if (falseFirst) {
-//                            if (livingNeighbors == aliveNeighbors) {
-//                                board[layer][row][col] = false;
-//                            } else {
-//                                board[layer][row][col] = true;
-//                            }
-//                        } else {
-//                            if (livingNeighbors == aliveNeighbors) {
-//                                board[layer][row][col] = true;
-//                            } else {
-//                                board[layer][row][col] = false;
-//                            }
-//                        }
-//                    } else if (livingNeighbors==deadNeighbors) {
-//                        board[layer][row][col] = true;
-//                    }
                     if (cells[layer][row][col]) {
                         if (aliveNlist.contains(livingNeighbors)) {
                             board[layer][row][col] = trueFirst;
@@ -218,13 +184,7 @@ public class Board {
         return cellString;
     }
 
-    public int getAliveNeighbors() {
-        return aliveNeighbors;
-    }
-
-    public int getDeadNeighbors() {
-        return deadNeighbors;
-    }
+    public boolean getTrueFirst(){ return trueFirst;}
 
     public ArrayList<Integer> getAliveNlist() {
         return aliveNlist;

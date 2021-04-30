@@ -48,9 +48,9 @@
 .text-field {
     -fx-background-color: #e8e8e8, #3b3f41;
     -fx-background-insets: 0, 0 0 1 0 ;
-    -fx-background-radius: 0 ;
+    -fx-background-radius: 0;
     -fx-text-fill: #e8e8e8;
-    -fx-prompt-text-fill: #3b3f41;
+    -fx-prompt-text-fill: #acabab;
 }
 .text-field:focused {
     -fx-background-color: -fx-focus-color, #3b3f41 ;
@@ -59,7 +59,16 @@
     -fx-background-color:#4a4f51;
     -fx-border-width: 1px;
 }
-
+#speedSlider .tick-label {
+    -fx-tick-label-fill: #4a4f51;
+}
+#speedSlider .track {
+    -fx-background-color: #adacac;
+    -fx-pref-width: 5px;
+}
+#speedSlider .thumb {
+    -fx-background-color: #adacac;
+}
 #mainMenuBar .label:hover {
     -fx-background-color: #494e50;
 }

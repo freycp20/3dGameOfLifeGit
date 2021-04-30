@@ -46,12 +46,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.TimeoutException;
 
 public class outputController {
     private SimpleIntegerProperty randomness = new SimpleIntegerProperty(100);
@@ -84,7 +82,7 @@ public class outputController {
     public Button resetButton;
     public Button nextGeneration;
     public StackPane subScenePane;
-    private boolean falseBoxVal = false;
+    private boolean trueBox = true;
     private Timeline timeline;
     private Group cube;
     protected int yVal=0;
@@ -101,9 +99,9 @@ public class outputController {
 
 
     public void booleanBoxC() {
-        falseBoxVal = !falseBoxVal;
-        setFalseFirst(falseBoxVal);
-        booleanBox.setText(String.valueOf(falseBoxVal));
+        trueBox = !trueBox;
+        board.setTrueFirst(trueBox);
+        booleanBox.setText(String.valueOf(trueBox));
     }
     public void aliveNC() {
         if (!aliveNeighbor.getText().equals("")){
@@ -118,7 +116,8 @@ public class outputController {
                     aNeighbors.add(Integer.parseInt(next));
                 }
             }
-            board.setAliveNlist(aNeighbors);
+            board.setDeadNlist(aNeighbors);
+
         }
     }
     public void deadNC() {
@@ -135,14 +134,16 @@ public class outputController {
                 }
             }
             board.setDeadNlist(dNeighbors);
+
         }
     }
+
     public void runButtonC() {
+        // this code is literally jank as fuck but it works don't delete it
+        trueBox = !trueBox;
+        booleanBoxC();
 
         if (!modelRunning){
-//            System.out.println("Working!");
-            System.out.println("board.getAliveNlist() = " + board.getAliveNlist());
-            System.out.println("board.getDeadNlist() = " + board.getDeadNlist());
             playTimeLine();
             runButton.setText("Stop");
             modelRunning = true;
@@ -153,7 +154,6 @@ public class outputController {
         }
     }
     public void rotateButtonC() {
-        System.out.println("rotateTimeline.getStatus() = " + rotateTimeline.getStatus());
         if (rotateTimeline.getStatus().equals(Animation.Status.RUNNING)){
             rotateTimeline.pause();
             player.pause();
@@ -166,7 +166,6 @@ public class outputController {
     public void resetButtonC() {
 //        System.out.println("here");
 //        rotateTimeline.play();
-        System.out.println("rotateTimeline.getStatus() = '" + rotateTimeline.getStatus() + "'");
         if (modelRunning){
             runButtonC();
         }
@@ -190,7 +189,6 @@ public class outputController {
         board = new Board(alive);
 //        System.out.println("board.getCells() = " + board.getCells());
 
-        System.out.println("board.getCells() = " + board.getCells());
         board.setDeadNeighbors(3);
         board.setAliveNeighbors(3);
         AmbientLight ambientLight = new AmbientLight();
@@ -243,15 +241,12 @@ public class outputController {
     public void timeLineLogic() {
         boolean[][][] lastBoard = board.getCells();
         board.nextStep();
-                    System.out.println("this is working");
         if (Arrays.deepEquals(board.getCells(), lastBoard)) {
             pauseTimeLine();
-            System.out.println("we stopped");
         }
         else {
             removeChildren(cube);
             addValsToGroup(cube, board.getCells());
-            System.out.println("WE ARE GOING");
         }
     }
     public void initialize() {
@@ -272,9 +267,9 @@ public class outputController {
                         new KeyValue(rotateX.angleProperty(), rotateX.getAngle() + 3000)
                 )
         );
-        Media media = new Media("file:///Users/calebfrey/IdeaProjects/3dGameOfLifeGit/wii_music.mp3"); //replace /Movies/test.mp3 with your file
-        player = new MediaPlayer(media);
-        player.setCycleCount(Animation.INDEFINITE);
+//        Media media = new Media("file:///Users/calebfrey/IdeaProjects/3dGameOfLifeGit/wii_music.mp3"); //replace /Movies/test.mp3 with your file
+//        player = new MediaPlayer(media);
+//        player.setCycleCount(Animation.INDEFINITE);
     }
 
     public void setStyleDark() {
@@ -286,21 +281,9 @@ public class outputController {
     public void setCube(int size) {
         this.size = size;
         cube = createCube(size);
-//        System.out.println("this.size = " + this.size);
-        // initial cube rotation
+
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
-    }
-    private void setFalseFirst(boolean var){
-        board.setTrueFirst(var);
-    }
-
-    public void setAliveNeighbors(int aliveNeighbors) {
-        board.setAliveNeighbors(aliveNeighbors);
-    }
-
-    public void setDeadNeighbors(int deadNeighbors) {
-        board.setDeadNeighbors(deadNeighbors);
     }
 
     public void setDragRotate(StackPane root){
@@ -324,10 +307,6 @@ public class outputController {
             for (int j = 0; j < cells[i].length; j++) {
                 for (int k = 0; k < cells[i][j].length; k++) {
                     if (cells[i][j][k]) {
-//                        System.out.println(cells[i][j][k]);
-//                        System.out.println("k = " + k);
-//                        System.out.println("j = " + j);
-//                        System.out.println("i = " + i);
                         PhongMaterial material = new PhongMaterial();
                         Box newBox = new Box(cubeSize, cubeSize, cubeSize);
                         newBox.setTranslateX(localize(i));
@@ -345,7 +324,6 @@ public class outputController {
                         newBox.setMaterial(material);
                         cube.getChildren().add(newBox);
                     }
-//                    }
                 }
             }
         }
@@ -373,7 +351,7 @@ public class outputController {
                 dN += dNeighbors.get(i) + " ";
             }
             String content = String.format(
-                    "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, falseBoxVal,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getStartingPos()));
+                    "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getStartingPos()));
                     new fileIO().saveFile(content);
         }
     }
@@ -384,7 +362,7 @@ public class outputController {
                 runButtonC();
             }
             String content = String.format(
-                    "%d %d %d %b %b %d %d\n%s", yVal, xVal, zVal, true, falseBoxVal, aliveN, deadN, board.arrayToString(board.getCells()));
+                    "%d %d %d %b %b %d %d\n%s", yVal, xVal, zVal, true, trueBox, aliveN, deadN, board.arrayToString(board.getCells()));
             new fileIO().saveFile(content);
         }
     }
@@ -398,17 +376,12 @@ public class outputController {
             zVal = ifio.getZ();
             board = new Board(ifio.getCellArray());
             if (ifio.areRules()){
+                board.setTrueFirst(ifio.getRule1());
                 booleanBox.setText(String.valueOf(ifio.getRule1()));
-                aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
-                deadNeighbor.setText(String.valueOf(ifio.getRule3()));
-                System.out.println("ifio.getRule2() = " + ifio.getRule2());
-                System.out.println("ifio.getRule3() = " + ifio.getRule3());
-
                 board.setAliveNlist(ifio.getRule2());
+                aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
                 board.setDeadNlist(ifio.getRule3());
-                booleanBoxC();
-                aliveNC();
-                deadNC();
+                deadNeighbor.setText(String.valueOf(ifio.getRule3()));
             }
             boardMade = true;
             init(yVal*10,board.getStartingPos());
@@ -513,11 +486,8 @@ public class outputController {
     }
 
     public void speedSliderC() {
-        System.out.println("HERE");
         timeline.pause();
         this.stepSpeed = (int) speedSlider.getValue();
-        System.out.println("stepSpeed = " + stepSpeed);
-        System.out.println("timeline.getCycleDuration() = " + timeline.getCycleDuration());
         timeline =
                 new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> {
                     timeLineLogic();

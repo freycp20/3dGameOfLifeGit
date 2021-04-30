@@ -85,14 +85,14 @@ public class inputController {
         /**
          * CALEBS TEST
          */
-        File mediaFile = new File("/Users/calebfrey/IdeaProjects/3dGameOfLifeGit/animation.mp4");
-        Media media = new Media(mediaFile.toURI().toURL().toString());
-
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-
-        MediaView mediaView = new MediaView(mediaPlayer);
-        mediaPlayer.play();
-        vbox.getChildren().add(new Pane(mediaView));
+//        File mediaFile = new File("/Users/calebfrey/IdeaProjects/3dGameOfLifeGit/animation.mp4");
+//        Media media = new Media(mediaFile.toURI().toURL().toString());
+//
+//        MediaPlayer mediaPlayer = new MediaPlayer(media);
+//
+//        MediaView mediaView = new MediaView(mediaPlayer);
+//        mediaPlayer.play();
+//        vbox.getChildren().add(new Pane(mediaView));
         ZoomableScrollPane zScroll = new ZoomableScrollPane(vbox);
         zScroll.setStyle("-fx-background-color: #2c2c2c");
         mainBorderPane.setCenter(zScroll);
@@ -101,6 +101,7 @@ public class inputController {
         mainBorderPane.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.CONTROL) {
                 ctrlPressed = true;
+                mainBorderPane.requestFocus();
                 mainBorderPane.setOnKeyPressed(f -> {
                     if (f.getCode() == KeyCode.F){
                         fillLayerC();
@@ -113,6 +114,7 @@ public class inputController {
                 });
             }
             if (e.getCode() == KeyCode.ALT) {
+                mainBorderPane.requestFocus();
                 altPressed = true;
             }
             if (e.getCode() == KeyCode.W){
@@ -163,6 +165,9 @@ public class inputController {
                 outputC.rule1 = rule1;
                 outputC.aNeighbors = aNeighbors;
                 outputC.dNeighbors = dNeighbors;
+                outputC.booleanBox.setText(String.valueOf(rule1));
+                outputC.deadNeighbor.setText(String.valueOf(dNeighbors));
+                outputC.aliveNeighbor.setText(String.valueOf(aNeighbors));
             }
         }
     }
