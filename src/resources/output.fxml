@@ -141,6 +141,14 @@
                      </font>
                   </Label>
                   <Slider fx:id="speedSlider" blockIncrement="50.0" majorTickUnit="50.0" max="500.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" min="50.0" minorTickCount="5" onMouseDragged="#speedSliderC" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" value="250.0" VBox.vgrow="ALWAYS" />
+                  <Button fx:id="rotateButton" mnemonicParsing="false" onAction="#rotateButtonC" text="Rotate">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
                <VBox.margin>
                   <Insets top="10.0" />

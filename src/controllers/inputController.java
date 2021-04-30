@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -11,12 +13,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -64,7 +72,7 @@ public class inputController {
      * sceneBuilder methods
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws MalformedURLException {
         layerCount = 1;
         validateAxis(x);
         validateAxis(y);
@@ -74,6 +82,17 @@ public class inputController {
         Label label = new Label("Welcome");
         label.setStyle("-fx-font: 24 arial;");
         vbox.getChildren().add(label);
+        /**
+         * CALEBS TEST
+         */
+        File mediaFile = new File("/Users/calebfrey/IdeaProjects/3dGameOfLifeGit/animation.mp4");
+        Media media = new Media(mediaFile.toURI().toURL().toString());
+
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+        MediaView mediaView = new MediaView(mediaPlayer);
+        mediaPlayer.play();
+        vbox.getChildren().add(new Pane(mediaView));
         ZoomableScrollPane zScroll = new ZoomableScrollPane(vbox);
         zScroll.setStyle("-fx-background-color: #2c2c2c");
         mainBorderPane.setCenter(zScroll);

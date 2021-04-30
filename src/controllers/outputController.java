@@ -32,6 +32,8 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.PhongMaterial;
@@ -69,6 +71,7 @@ public class outputController {
     private ArrayList<Integer> aliveNList;
     private ArrayList<Integer> deadNList;
     private Board board;
+    private MediaPlayer player;
     private Timeline rotateTimeline;
     public Slider speedSlider;
     public VBox buttonVbox;
@@ -135,6 +138,7 @@ public class outputController {
         }
     }
     public void runButtonC() {
+
         if (!modelRunning){
 //            System.out.println("Working!");
             System.out.println("board.getAliveNlist() = " + board.getAliveNlist());
@@ -150,12 +154,18 @@ public class outputController {
     }
     public void rotateButtonC() {
         System.out.println("rotateTimeline.getStatus() = " + rotateTimeline.getStatus());
-//        if (rotateTimeline.getStatus() == )
-//        rotateTimeline.play();
+        if (rotateTimeline.getStatus().equals(Animation.Status.RUNNING)){
+            rotateTimeline.pause();
+            player.pause();
+        }
+        else {
+            rotateTimeline.play();
+            player.play();
+        }
     }
     public void resetButtonC() {
 //        System.out.println("here");
-        rotateTimeline.play();
+//        rotateTimeline.play();
         System.out.println("rotateTimeline.getStatus() = '" + rotateTimeline.getStatus() + "'");
         if (modelRunning){
             runButtonC();
@@ -257,11 +267,14 @@ public class outputController {
                         new KeyValue(rotateX.angleProperty(), rotateX.getAngle())
                 ),
                 new KeyFrame(
-                        Duration.seconds(45),
-                        new KeyValue(rotateY.angleProperty(), rotateY.getAngle()+1440),
-                        new KeyValue(rotateX.angleProperty(), rotateX.getAngle()+1440)
+                        Duration.seconds(90),
+                        new KeyValue(rotateY.angleProperty(), rotateY.getAngle() + 3000),
+                        new KeyValue(rotateX.angleProperty(), rotateX.getAngle() + 3000)
                 )
         );
+        Media media = new Media("file:///Users/calebfrey/IdeaProjects/3dGameOfLifeGit/wii_music.mp3"); //replace /Movies/test.mp3 with your file
+        player = new MediaPlayer(media);
+        player.setCycleCount(Animation.INDEFINITE);
     }
 
     public void setStyleDark() {
