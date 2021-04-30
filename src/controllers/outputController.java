@@ -23,9 +23,7 @@
 //}
 package controllers;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -46,6 +44,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +58,7 @@ public class outputController {
     private int size;
     private int width;
     private int cubeSize;
-    private int stepSpeed;
+    private int stepSpeed = 250;
 
     // variables for mouse interaction
     private double mousePosX, mousePosY;
@@ -70,6 +69,7 @@ public class outputController {
     private ArrayList<Integer> aliveNList;
     private ArrayList<Integer> deadNList;
     private Board board;
+    private Timeline rotateTimeline;
     public Slider speedSlider;
     public VBox buttonVbox;
     public BorderPane mainBorderPane;
@@ -148,8 +148,15 @@ public class outputController {
             modelRunning = false;
         }
     }
+    public void rotateButtonC() {
+        System.out.println("rotateTimeline.getStatus() = " + rotateTimeline.getStatus());
+//        if (rotateTimeline.getStatus() == )
+//        rotateTimeline.play();
+    }
     public void resetButtonC() {
 //        System.out.println("here");
+        rotateTimeline.play();
+        System.out.println("rotateTimeline.getStatus() = '" + rotateTimeline.getStatus() + "'");
         if (modelRunning){
             runButtonC();
         }
@@ -164,7 +171,6 @@ public class outputController {
         lineColor = Color.web("#adacac");
 //        lineColor = Color.TRANSPARENT;
         this.size = size;
-        stepSpeed = (int) speedSlider.getValue();
         cube = createCube(size);
         width = (size/10);
         cubeSize = (size/(size/10));
@@ -208,10 +214,8 @@ public class outputController {
 //        cam.setFieldOfView();
         subScene.setCamera(cam);
 //        pointLight.setRotate(100);
-
 //        page.setLeft(buttons);
         mainBorderPane.setCenter(subScenePane);
-
         setDragRotate(root);
         makeZoomable(root);
     }
@@ -246,6 +250,18 @@ public class outputController {
                     timeLineLogic();
                 }));
         timeline.setCycleCount(Animation.INDEFINITE);
+        rotateTimeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(0),
+                        new KeyValue(rotateY.angleProperty(), rotateY.getAngle()),
+                        new KeyValue(rotateX.angleProperty(), rotateX.getAngle())
+                ),
+                new KeyFrame(
+                        Duration.seconds(45),
+                        new KeyValue(rotateY.angleProperty(), rotateY.getAngle()+1440),
+                        new KeyValue(rotateX.angleProperty(), rotateX.getAngle()+1440)
+                )
+        );
     }
 
     public void setStyleDark() {
