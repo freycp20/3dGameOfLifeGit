@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class Board {
+public class guiBoard {
     boolean[][][] cells = null;
     boolean[][][] startingPos = null;
     private int aliveNeighbors;
@@ -19,7 +19,7 @@ public class Board {
 
     private int size;
 
-    public Board(int size) {
+    public guiBoard(int size) {
         this.size = size;
         cells = new boolean[size][size][size];
         startingPos = new boolean[size][size][size];
@@ -66,7 +66,7 @@ public class Board {
         this.trueFirst = trueFirst;
     }
 
-    public Board(File file) {
+    public guiBoard(File file) {
         try {
             FileInputStream readFile = new FileInputStream(file);
             Scanner scn = new Scanner(readFile);
@@ -142,7 +142,7 @@ public class Board {
         return startingPos;
     }
 
-    public Board (boolean[][][] cellArray) {
+    public guiBoard(boolean[][][] cellArray) {
         this.cells = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.size = cellArray.length;
@@ -168,7 +168,7 @@ public class Board {
                 }
             }
         }
-        this.cells = new Board(startingPos).getCells();
+        this.cells = new guiBoard(startingPos).getCells();
     }
     public String arrayToString(boolean[][][] arr){
         String cellString = "";

@@ -32,7 +32,6 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -68,7 +67,7 @@ public class outputController {
     private boolean modelRunning = false;
     private ArrayList<Integer> aliveNList;
     private ArrayList<Integer> deadNList;
-    private Board board;
+    private guiBoard board;
     private MediaPlayer player;
     private Timeline rotateTimeline;
     public Slider speedSlider;
@@ -140,9 +139,6 @@ public class outputController {
 
     public void runButtonC() {
         // this code is literally jank as fuck but it works don't delete it
-        trueBox = !trueBox;
-        booleanBoxC();
-
         if (!modelRunning){
             playTimeLine();
             runButton.setText("Stop");
@@ -186,7 +182,7 @@ public class outputController {
         // initial cube rotation
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
-        board = new Board(alive);
+        board = new guiBoard(alive);
 //        System.out.println("board.getCells() = " + board.getCells());
 
         board.setDeadNeighbors(3);
@@ -273,7 +269,7 @@ public class outputController {
         mainBorderPane.getScene().getStylesheets().add("resources/outputStyle.css");
     }
     public void setBoard(String file) {
-        board = new Board(new java.io.File(file));
+        board = new guiBoard(new java.io.File(file));
     }
     public void setCube(int size) {
         this.size = size;
@@ -358,8 +354,16 @@ public class outputController {
             if (modelRunning){
                 runButtonC();
             }
+            String aN = "";
+            String dN = "";
+            for (int i = 0; i < aNeighbors.size(); i++) {
+                aN += aNeighbors.get(i) + " ";
+            }
+            for (int i = 0; i < dNeighbors.size(); i++) {
+                dN += dNeighbors.get(i) + " ";
+            }
             String content = String.format(
-                    "%d %d %d %b %b %d %d\n%s", yVal, xVal, zVal, true, trueBox, aliveN, deadN, board.arrayToString(board.getCells()));
+                    "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getCells()));
             new fileIO().saveFile(content);
         }
     }
@@ -375,7 +379,7 @@ public class outputController {
             yVal = ifio.getY();
             xVal = ifio.getX();
             zVal = ifio.getZ();
-            board = new Board(ifio.getCellArray());
+            board = new guiBoard(ifio.getCellArray());
             if (ifio.areRules()){
                 board.setTrueFirst(ifio.getRule1());
                 booleanBox.setText(String.valueOf(ifio.getRule1()));
@@ -386,6 +390,9 @@ public class outputController {
             }
             boardMade = true;
             init(yVal*10,board.getStartingPos());
+            resetButtonC();
+            booleanBoxC();
+            booleanBoxC();
         }
     }
     public void switchSceneC(boolean[][][] arr) throws IOException {
