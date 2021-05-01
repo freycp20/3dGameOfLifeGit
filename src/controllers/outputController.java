@@ -1,26 +1,3 @@
-//package sample;
-//
-//import javafx.application.Application;
-//import javafx.fxml.FXMLLoader;
-//import javafx.scene.Parent;
-//import javafx.scene.Scene;
-//import javafx.stage.Stage;
-//
-//public class Main extends Application {
-//
-//    @Override
-//    public void start(Stage primaryStage) throws Exception{
-//        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-//        primaryStage.setTitle("Hello World");
-//        primaryStage.setScene(new Scene(root, 300, 275));
-//        primaryStage.show();
-//    }
-//
-//
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-//}
 package controllers;
 
 import javafx.animation.*;
@@ -44,11 +21,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class outputController {
     private SimpleIntegerProperty randomness = new SimpleIntegerProperty(100);
@@ -93,9 +68,10 @@ public class outputController {
     private int aliveN;
     public boolean areRules;
     public boolean rule1;
+    private boolean clickOpen = true;
     ArrayList<Integer> aNeighbors;
     ArrayList<Integer> dNeighbors;
-
+    fileIO ifio;
 
     public void booleanBoxC() {
         trueBox = !trueBox;
@@ -115,7 +91,7 @@ public class outputController {
                     aNeighbors.add(Integer.parseInt(next));
                 }
             }
-            board.setDeadNlist(aNeighbors);
+            board.setAliveNlist(aNeighbors);
 
         }
     }
@@ -138,7 +114,6 @@ public class outputController {
     }
 
     public void runButtonC() {
-        // this code is literally jank as fuck but it works don't delete it
         if (!modelRunning){
             playTimeLine();
             runButton.setText("Stop");
@@ -246,6 +221,7 @@ public class outputController {
         }
     }
     public void initialize() {
+        ifio = new fileIO();
         timeline =
                 new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> {
                     timeLineLogic();
@@ -369,8 +345,9 @@ public class outputController {
     }
 
     public void openTemplateC() {
-        fileIO ifio = new fileIO();
-        ifio.openFile();
+        if (clickOpen){
+            ifio.openFile();
+        }
         if (!(cube == null)) {
             cube.getChildren().removeAll();
         }
@@ -381,20 +358,48 @@ public class outputController {
             zVal = ifio.getZ();
             board = new guiBoard(ifio.getCellArray());
             if (ifio.areRules()){
-                board.setTrueFirst(ifio.getRule1());
-                booleanBox.setText(String.valueOf(ifio.getRule1()));
-                board.setAliveNlist(ifio.getRule2());
-                aliveNeighbor.setText(String.valueOf(ifio.getRule2()));
-                board.setDeadNlist(ifio.getRule3());
-                deadNeighbor.setText(String.valueOf(ifio.getRule3()));
+                rule1 = ifio.getRule1();
+                aNeighbors = ifio.getRule2();
+                dNeighbors = ifio.getRule3();
+
+                trueBox = !rule1;
+                aliveNeighbor.setText(aNeighbors.toString());
+                deadNeighbor.setText(dNeighbors.toString());
+
+//                setting these directly does jack shit
+//                board.setTrueFirst(rule1);
+//                board.setAliveNlist(aNeighbors);
+//                board.setDeadNlist(dNeighbors);
+                booleanBoxC();
+                aliveNC();
+                deadNC();
+
+
+                System.out.println(board.getTrueFirst());
+                System.out.println(board.getAliveNlist().toString());
+                System.out.println(board.getDeadNlist().toString());
             }
             boardMade = true;
-            init(yVal*10,board.getStartingPos());
+            init(yVal*10, board.getStartingPos());
             resetButtonC();
             booleanBoxC();
             booleanBoxC();
         }
+        clickOpen = true;
     }
+    public void gliderC() {
+        ifio = new fileIO();
+        clickOpen = false;
+        ifio.setBoardOpened(true);
+        File getFile = new File("C:\\Users\\WOODBURNKB20\\OneDrive - Grove City College\\Desktop\\3dGameOfLifeGit\\src\\templates\\glider.txt");
+        ifio.readFile(getFile);
+        openTemplateC();
+    }
+
+    public void mutableCubeC() {
+    }
+
+
     public void switchSceneC(boolean[][][] arr) throws IOException {
         pauseTimeLine();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/input.fxml"));
@@ -487,6 +492,9 @@ public class outputController {
     }
 
     public void nextGenC() {
+        System.out.println(board.getTrueFirst());
+        System.out.println(board.getAliveNlist().toString());
+        System.out.println(board.getDeadNlist().toString());
         removeChildren(cube);
         board.nextStep();
         addValsToGroup(cube, board.getCells());
@@ -509,6 +517,8 @@ public class outputController {
 
 
     }
+
+
 
 
     /**

@@ -118,6 +118,7 @@ public class fileIO {
     public ArrayList<Integer> getRule3(){
         return dNeighbors;
     }
+    public void setBoardOpened(boolean bdo){boardOpened = bdo;}
     public boolean boardOpened(){return boardOpened;}
     public boolean[][][] getCellArray(){
         return cellArray;

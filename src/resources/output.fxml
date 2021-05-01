@@ -41,6 +41,12 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
+                  <Menu mnemonicParsing="false" text="Unspecified Menu">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#gliderC" text="glider" />
+                      <MenuItem mnemonicParsing="false" onAction="#mutableCubeC" text="mutable cube" />
+                    </items>
+                  </Menu>
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>

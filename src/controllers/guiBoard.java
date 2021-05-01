@@ -45,11 +45,13 @@ public class guiBoard {
     }
 
     public void setAliveNlist(ArrayList<Integer> aliveNlist) {
+        this.aliveNlist.clear();
         this.aliveNlist = aliveNlist;
 //        System.out.println("Given: " + aliveNlist.toString() + "\nTaken: " + this.aliveNlist.toString());
     }
 
     public void setDeadNlist(ArrayList<Integer> deadNlist) {
+        this.deadNlist.clear();
         this.deadNlist = deadNlist;
 //        System.out.println("Given: " + deadNlist.toString() + "\nTaken: " + this.deadNlist.toString());
     }
@@ -100,7 +102,7 @@ public class guiBoard {
 //        System.out.println("nextstep is getting called");
         boolean[][][] board = new boolean[size][size][size];
         int livingNeighbors = 0;
-        
+
         for (int layer = 1; layer < board.length-1; layer++) {
             for (int row = 1; row < board[layer].length-1; row++) {
                 for (int col = 1; col < board[layer][row].length-1; col++) {
