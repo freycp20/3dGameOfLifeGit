@@ -156,11 +156,11 @@ public class outputController {
     public void rotateButtonC() {
         if (rotateTimeline.getStatus().equals(Animation.Status.RUNNING)){
             rotateTimeline.pause();
-            player.pause();
+//            player.pause();
         }
         else {
             rotateTimeline.play();
-            player.play();
+//            player.play();
         }
     }
     public void resetButtonC() {
@@ -267,9 +267,6 @@ public class outputController {
                         new KeyValue(rotateX.angleProperty(), rotateX.getAngle() + 3000)
                 )
         );
-//        Media media = new Media("file:///Users/calebfrey/IdeaProjects/3dGameOfLifeGit/wii_music.mp3"); //replace /Movies/test.mp3 with your file
-//        player = new MediaPlayer(media);
-//        player.setCycleCount(Animation.INDEFINITE);
     }
 
     public void setStyleDark() {
@@ -370,6 +367,10 @@ public class outputController {
     public void openTemplateC() {
         fileIO ifio = new fileIO();
         ifio.openFile();
+        if (!(cube == null)) {
+            cube.getChildren().removeAll();
+        }
+
         if (ifio.boardOpened()){
             yVal = ifio.getY();
             xVal = ifio.getX();
