@@ -67,7 +67,7 @@ public class outputController {
     private int deadN;
     private int aliveN;
     public boolean areRules;
-    public boolean rule1;
+    public boolean trueFirst;
     private boolean clickOpen = true;
     ArrayList<Integer> aNeighbors;
     ArrayList<Integer> dNeighbors;
@@ -80,16 +80,14 @@ public class outputController {
     }
     public void aliveNC() {
         if (!aliveNeighbor.getText().equals("")){
-            board.setAliveNlist(setRules(aliveNeighbor.getText()));
-            System.out.println(board.getAliveNlist());
+            aNeighbors = setRules(aliveNeighbor.getText());
+            board.setAliveNlist(aNeighbors);
         }
     }
     public void deadNC() {
-        String deadNeighborText = deadNeighbor.getText();
-        System.out.println("deadNeighborText = " + deadNeighborText);
-        if (!deadNeighborText.equals("")){
-            board.setDeadNlist(setRules(deadNeighbor.getText()));
-            System.out.println(board.getDeadNlist());
+        if (!deadNeighbor.getText().equals("")){
+            dNeighbors = setRules(deadNeighbor.getText());
+            board.setDeadNlist(dNeighbors);
         }
     }
 
@@ -109,13 +107,11 @@ public class outputController {
                 rules.add(Integer.parseInt(next));
             }
         }
-        System.out.println("rules = " + rules);
+//        System.out.println("rules: " + rules);
         return rules;
     }
 
     public void runButtonC() {
-        System.out.println(" from runbuttonc \n board.getAliveNlist() = " + board.getAliveNlist());
-        System.out.println(" from runbuttonc \n board.getdedNlist() = " + board.getDeadNlist());
         if (!modelRunning){
             playTimeLine();
             runButton.setText("Stop");
@@ -137,7 +133,6 @@ public class outputController {
         }
     }
     public void resetButtonC() {
-//        System.out.println("here");
 //        rotateTimeline.play();
         if (modelRunning){
             runButtonC();
@@ -159,10 +154,10 @@ public class outputController {
         // initial cube rotation
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
-        board = new guiBoard(alive, null, null, );
+        if (!boardMade){
+            board = new guiBoard(alive, null, null, xVal, yVal, zVal, true, false);
+        }
 
-        board.setDeadNeighbors(3);
-        board.setAliveNeighbors(3);
         AmbientLight ambientLight = new AmbientLight();
         ambientLight.setLightOn(true);
         StackPane root = new StackPane();
@@ -333,42 +328,32 @@ public class outputController {
     }
 
     public void openTemplateC() {
+
         if (clickOpen){
-            ifio.openFile();
+            board = ifio.openFile();
         }
         if (!(cube == null)) {
             cube.getChildren().removeAll();
         }
+        if (ifio.getBoardOpened()){
+            yVal = board.getyVal();
+            xVal = board.getxVal();
+            zVal = board.getzVal();
+            if (board.areRules()){
+                trueFirst = board.getTrueFirst();
+                aNeighbors = board.getAliveNlist();
+                dNeighbors = board.getDeadNlist();
 
-        if (ifio.boardOpened()){
-            yVal = ifio.getY();
-            xVal = ifio.getX();
-            zVal = ifio.getZ();
-            board = new guiBoard(ifio.getCellArray());
-            if (ifio.areRules()){
-                rule1 = ifio.getTrueFirst();
-                aNeighbors = ifio.getRule2();
-                dNeighbors = ifio.getRule3();
-
-                trueBox = !rule1;
+                trueBox = !trueFirst;
                 aliveNeighbor.setText(aNeighbors.toString());
                 deadNeighbor.setText(dNeighbors.toString());
 
-//                setting these directly does jack shit
-//                board.setTrueFirst(rule1);
-//                board.setAliveNlist(aNeighbors);
-//                board.setDeadNlist(dNeighbors);
                 booleanBoxC();
                 aliveNC();
                 deadNC();
-
-
-                System.out.println(board.getTrueFirst());
-                System.out.println(board.getAliveNlist().toString());
-                System.out.println(board.getDeadNlist().toString());
             }
             boardMade = true;
-            init(yVal*10, board.getStartingPos());
+            init(yVal*10, board.getStartingPos(),board.getxVal(),board.getyVal(),board.getzVal());
             resetButtonC();
             booleanBoxC();
             booleanBoxC();
@@ -377,18 +362,18 @@ public class outputController {
     }
     public void gliderC() {
         ifio = new fileIO();
-        clickOpen = false;
         ifio.setBoardOpened(true);
         File getFile = new File("C:\\Users\\WOODBURNKB20\\OneDrive - Grove City College\\Desktop\\3dGameOfLifeGit\\src\\templates\\glider.txt");
-        ifio.readFile(getFile);
+        board = ifio.readFile(getFile);
+        clickOpen = false;
         openTemplateC();
     }
     public void mutableCubeC() {
         ifio = new fileIO();
-        clickOpen = false;
         ifio.setBoardOpened(true);
         File getFile = new File("C:\\Users\\WOODBURNKB20\\OneDrive - Grove City College\\Desktop\\3dGameOfLifeGit\\src\\templates\\mutableCube.txt");
-        ifio.readFile(getFile);
+        board = ifio.readFile(getFile);
+        clickOpen = false;
         openTemplateC();
     }
 
@@ -419,7 +404,7 @@ public class outputController {
             inputC.handlers();
             inputC.setLayer(arr);
             inputC.areRules = areRules;
-            inputC.rule1 = rule1;
+            inputC.trueFirst = trueFirst;
             inputC.aNeighbors = aNeighbors;
             inputC.dNeighbors = dNeighbors;
         }

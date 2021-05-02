@@ -20,26 +20,29 @@ public class guiBoard {
     private int yVal;
     private int zVal;
     private int size;
+    private boolean areRules;
 
     public guiBoard(boolean[][][] cellArray,
                     ArrayList<Integer> aliveNlist,
-                    ArrayList<Integer> deadNList,
+                    ArrayList<Integer> deadNlist,
                     int xVal, int yVal, int zVal,
-                    boolean trueFirst) {
-
+                    boolean trueFirst, boolean areRules) {
+        this.areRules = areRules;
         this.cells = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.size = cellArray.length;
         if (aliveNlist == null) {
-            aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
+            this.aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
         } else {
             this.aliveNlist = aliveNlist;
         }
         if (deadNlist == null) {
-            deadNlist = new ArrayList<>(Arrays.asList(6));
+            this.deadNlist = new ArrayList<>(Arrays.asList(6));
         } else {
-            this.deadNlist = deadNList;
+            this.deadNlist = deadNlist;
         }
+        System.out.println(aliveNlist);
+        System.out.println(deadNlist);
         this.xVal = xVal;
         this.yVal = yVal;
         this.zVal = zVal;
@@ -107,7 +110,7 @@ public class guiBoard {
     }
 
     public void reset() {
-        this.cells = new guiBoard(startingPos).getCells();
+        this.cells = new guiBoard(startingPos,aliveNlist, deadNlist, xVal, yVal, zVal, trueFirst, areRules).getCells();
     }
 
     public String arrayToString(boolean[][][] arr) {
@@ -123,7 +126,9 @@ public class guiBoard {
         }
         return cellString;
     }
-
+    public boolean areRules(){
+        return areRules;
+    }
     public boolean getTrueFirst() {
         return trueFirst;
     }
@@ -135,9 +140,11 @@ public class guiBoard {
     }
     public void setAliveNeighbors(int aliveNeighbors) {
         this.aliveNeighbors = aliveNeighbors;
+        System.out.println("working alive");
     }
     public void setDeadNeighbors(int deadNeighbors) {
         this.deadNeighbors = deadNeighbors;
+        System.out.println("working dead");
     }
     public void setTrueFirst(boolean trueFirst) {
         this.trueFirst = trueFirst;
@@ -149,15 +156,12 @@ public class guiBoard {
         return startingPos;
     }
     public void setAliveNlist(ArrayList<Integer> aliveNlist) {
-        this.aliveNlist.clear();
         this.aliveNlist = aliveNlist;
-//        System.out.println("Given: " + aliveNlist.toString() + "\nTaken: " + this.aliveNlist.toString());
     }
     public void setDeadNlist(ArrayList<Integer> deadNlist) {
-        this.deadNlist.clear();
         this.deadNlist = deadNlist;
-//        System.out.println("Given: " + deadNlist.toString() + "\nTaken: " + this.deadNlist.toString());
     }
+
     public void setxVal(int xVal) {
         this.xVal = xVal;
     }

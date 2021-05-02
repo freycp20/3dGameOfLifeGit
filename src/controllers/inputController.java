@@ -56,7 +56,7 @@ public class inputController {
     private HashMap<Integer, Rectangle> layerMap;
     private int mapCount;
     public boolean areRules;
-    public boolean rule1;
+    public boolean trueFirst;
     public ArrayList<Integer> aNeighbors;
     public ArrayList<Integer> dNeighbors;
 
@@ -154,10 +154,10 @@ public class inputController {
             outputC.boardMade = true;
             if (areRules){
                 outputC.areRules = areRules;
-                outputC.rule1 = rule1;
+                outputC.trueFirst = trueFirst;
                 outputC.aNeighbors = aNeighbors;
                 outputC.dNeighbors = dNeighbors;
-                outputC.booleanBox.setText(String.valueOf(rule1));
+                outputC.booleanBox.setText(String.valueOf(trueFirst));
                 outputC.deadNeighbor.setText(String.valueOf(dNeighbors));
                 outputC.aliveNeighbor.setText(String.valueOf(aNeighbors));
             }
@@ -329,23 +329,23 @@ public class inputController {
     @FXML
     public void openTemplateC() {
         fileIO ifio = new fileIO();
-        ifio.openFile();
-        yVal = ifio.getyVal();
-        xVal = ifio.getxVal();
-        zVal = ifio.getzVal();
+        guiBoard board = ifio.openFile();
+        yVal = board.getyVal();
+        xVal = board.getxVal();
+        zVal = board.getzVal();
         y.setText(String.valueOf(yVal));
         x.setText(String.valueOf(xVal));
         z.setText(String.valueOf(zVal));
         xC();
         yC();
         zC();
-        if (ifio.areRules()){
-            areRules = ifio.areRules();
-            rule1 = ifio.getTrueFirst();
-            aNeighbors = ifio.getRule2();
-            dNeighbors = ifio.getRule3();
+        if (board.areRules()){
+            areRules = board.areRules();
+            trueFirst = board.getTrueFirst();
+            aNeighbors = board.getAliveNlist();
+            dNeighbors = board.getDeadNlist();
         }
-        setLayer(ifio.getCellArray());
+        setLayer(board.getStartingPos());
     }
 
     @FXML
