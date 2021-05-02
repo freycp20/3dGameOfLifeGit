@@ -20,9 +20,9 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 public class outputController {
@@ -363,7 +363,7 @@ public class outputController {
     public void gliderC() {
         ifio = new fileIO();
         ifio.setBoardOpened(true);
-        File getFile = new File("C:\\Users\\WOODBURNKB20\\OneDrive - Grove City College\\Desktop\\3dGameOfLifeGit\\src\\templates\\glider.txt");
+        File getFile = new File(getClass().getResource("/templates/glider.txt").getFile());
         board = ifio.readFile(getFile);
         clickOpen = false;
         openTemplateC();
@@ -371,7 +371,7 @@ public class outputController {
     public void mutableCubeC() {
         ifio = new fileIO();
         ifio.setBoardOpened(true);
-        File getFile = new File("C:\\Users\\WOODBURNKB20\\OneDrive - Grove City College\\Desktop\\3dGameOfLifeGit\\src\\templates\\mutableCube.txt");
+        File getFile = new File(getClass().getResource("/templates/mutableCube.txt").getFile());
         board = ifio.readFile(getFile);
         clickOpen = false;
         openTemplateC();
