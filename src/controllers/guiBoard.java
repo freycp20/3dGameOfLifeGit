@@ -16,26 +16,50 @@ public class guiBoard {
     private ArrayList<Integer> aliveNlist;
     private ArrayList<Integer> deadNlist;
     private boolean trueFirst;
-
+    private int xVal;
+    private int yVal;
+    private int zVal;
     private int size;
 
-    public guiBoard(int size) {
-        this.size = size;
-        cells = new boolean[size][size][size];
-        startingPos = new boolean[size][size][size];
-        aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
-        deadNlist = new ArrayList<>(Arrays.asList(6));
+    public guiBoard(boolean[][][] cellArray,
+                    ArrayList<Integer> aliveNlist,
+                    ArrayList<Integer> deadNList,
+                    int xVal, int yVal, int zVal,
+                    boolean trueFirst) {
+
+        this.cells = new boolean[cellArray.length][cellArray.length][cellArray.length];
+        this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
+        this.size = cellArray.length;
+        if (aliveNlist == null) {
+            aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
+        } else {
+            this.aliveNlist = aliveNlist;
+        }
+        if (deadNlist == null) {
+            deadNlist = new ArrayList<>(Arrays.asList(6));
+        } else {
+            this.deadNlist = deadNList;
+        }
+        this.xVal = xVal;
+        this.yVal = yVal;
+        this.zVal = zVal;
+        this.trueFirst = trueFirst;
+        for (int i = 0; i < cellArray.length; i++) {
+            for (int j = 0; j < cellArray[i].length; j++) {
+                for (int k = 0; k < cellArray[i][j].length; k++) {
+                    this.cells[i][j][k] = cellArray[i][j][k];
+                    this.startingPos[i][j][k] = cellArray[i][j][k];
+                }
+            }
+        }
     }
+
     public void printCells() {
         for (int y = 0; y < cells.length; y++) {
             for (int x = 0; x < cells.length; x++) {
                 for (int z = 0; z < cells.length; z++) {
-//                        System.out.println("maybe?");
-//                    System.out.print("cells[y][x][z] = " + cells[y][x][z] + " ");
-                    if (cells[y][x][z]){
-
-                            System.out.print(cells[y][x][z] + " ");
-
+                    if (cells[y][x][z]) {
+                        System.out.print(cells[y][x][z] + " ");
                     }
                 }
                 System.out.println();
@@ -44,69 +68,14 @@ public class guiBoard {
         }
     }
 
-    public void setAliveNlist(ArrayList<Integer> aliveNlist) {
-        this.aliveNlist.clear();
-        this.aliveNlist = aliveNlist;
-//        System.out.println("Given: " + aliveNlist.toString() + "\nTaken: " + this.aliveNlist.toString());
-    }
-
-    public void setDeadNlist(ArrayList<Integer> deadNlist) {
-        this.deadNlist.clear();
-        this.deadNlist = deadNlist;
-//        System.out.println("Given: " + deadNlist.toString() + "\nTaken: " + this.deadNlist.toString());
-    }
-
-    public void setAliveNeighbors(int aliveNeighbors) {
-        this.aliveNeighbors = aliveNeighbors;
-    }
-
-    public void setDeadNeighbors(int deadNeighbors) {
-        this.deadNeighbors = deadNeighbors;
-    }
-
-    public void setTrueFirst(boolean trueFirst) {
-        this.trueFirst = trueFirst;
-    }
-
-    public guiBoard(File file) {
-        try {
-            FileInputStream readFile = new FileInputStream(file);
-            Scanner scn = new Scanner(readFile);
-            size = scn.nextInt();
-            scn.nextInt();
-            scn.nextInt();
-            cells = new boolean[size][size][size];
-            startingPos = new boolean[size][size][size];
-            aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
-            deadNlist = new ArrayList<>(Arrays.asList(6));
-//            System.out.println("here?");
-            for (int y = 0; y < cells.length; y++) {
-                for (int x = 0; x < cells.length; x++) {
-                    for (int z = 0; z < cells.length; z++) {
-//                        System.out.println("maybe?");
-                        cells[y][x][z] = scn.nextBoolean();
-                        if (cells[y][x][z]){
-
-//                            System.out.print(cells[y][x][z] + " ");
-
-                        }
-                    }
-                }
-            }
-            readFile.close();
-        } catch (IOException ex) {
-            System.out.println("uh oh problem");
-        }
-    }
     public void nextStep() {
-//        System.out.println("nextstep is getting called");
         boolean[][][] board = new boolean[size][size][size];
         int livingNeighbors = 0;
 
-        for (int layer = 1; layer < board.length-1; layer++) {
-            for (int row = 1; row < board[layer].length-1; row++) {
-                for (int col = 1; col < board[layer][row].length-1; col++) {
-                    livingNeighbors = Collections.frequency(surroundingCells(cells,layer,row,col), true);
+        for (int layer = 1; layer < board.length - 1; layer++) {
+            for (int row = 1; row < board[layer].length - 1; row++) {
+                for (int col = 1; col < board[layer][row].length - 1; col++) {
+                    livingNeighbors = Collections.frequency(surroundingCells(cells, layer, row, col), true);
                     if (cells[layer][row][col]) {
                         if (aliveNlist.contains(livingNeighbors)) {
                             board[layer][row][col] = trueFirst;
@@ -120,59 +89,28 @@ public class guiBoard {
                 }
             }
         }
-//        System.out.println("woh");
         cells = board;
     }
+
     public ArrayList<Boolean> surroundingCells(boolean[][][] board, int layer, int row, int col) {
         final int NUM_NEIGHBORS = 27;
         ArrayList<Boolean> surrounding = new ArrayList<>(NUM_NEIGHBORS);
-        for (boolean[][] i : new boolean[][][]{board[layer-1],board[layer],board[layer+1]}) {
-            for (boolean[] j : new boolean[][]{i[row-1],i[row],i[row+1]}) {
-                surrounding.add(j[col-1]);
+        for (boolean[][] i : new boolean[][][]{board[layer - 1], board[layer], board[layer + 1]}) {
+            for (boolean[] j : new boolean[][]{i[row - 1], i[row], i[row + 1]}) {
+                surrounding.add(j[col - 1]);
                 surrounding.add(j[col]);
-                surrounding.add(j[col+1]);
+                surrounding.add(j[col + 1]);
             }
         }
         surrounding.remove(13);
         return surrounding;
     }
 
-    public boolean[][][] getCells() {
-        return cells;
-    }
-    public boolean[][][] getStartingPos(){
-        return startingPos;
-    }
-
-    public guiBoard(boolean[][][] cellArray) {
-        this.cells = new boolean[cellArray.length][cellArray.length][cellArray.length];
-        this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
-        this.size = cellArray.length;
-        aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
-        deadNlist = new ArrayList<>(Arrays.asList(6));
-        for (int i = 0; i < cellArray.length; i++) {
-            for (int j = 0; j < cellArray[i].length; j++) {
-                for (int k = 0; k < cellArray[i][j].length; k++) {
-                    this.cells[i][j][k] = cellArray[i][j][k];
-                    this.startingPos[i][j][k] = cellArray[i][j][k];
-                }
-            }
-        }
-    }
     public void reset() {
-//        System.out.println(this.cells);
-//        System.out.println(this.startingPos);
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                for (int k = 0; k < cells[i][j].length; k++) {
-//                    System.out.println("this.cells[i][j][k] = " + this.cells[i][j][k]);
-//                    System.out.println("this.startingPos[i][j][k] = " + this.startingPos[i][j][k]);
-                }
-            }
-        }
         this.cells = new guiBoard(startingPos).getCells();
     }
-    public String arrayToString(boolean[][][] arr){
+
+    public String arrayToString(boolean[][][] arr) {
         String cellString = "";
         for (boolean[][] booleans : arr) {
             for (boolean[] aBoolean : booleans) {
@@ -186,14 +124,56 @@ public class guiBoard {
         return cellString;
     }
 
-    public boolean getTrueFirst(){ return trueFirst;}
-
+    public boolean getTrueFirst() {
+        return trueFirst;
+    }
     public ArrayList<Integer> getAliveNlist() {
         return aliveNlist;
     }
-
     public ArrayList<Integer> getDeadNlist() {
         return deadNlist;
     }
-
+    public void setAliveNeighbors(int aliveNeighbors) {
+        this.aliveNeighbors = aliveNeighbors;
+    }
+    public void setDeadNeighbors(int deadNeighbors) {
+        this.deadNeighbors = deadNeighbors;
+    }
+    public void setTrueFirst(boolean trueFirst) {
+        this.trueFirst = trueFirst;
+    }
+    public boolean[][][] getCells() {
+        return cells;
+    }
+    public boolean[][][] getStartingPos() {
+        return startingPos;
+    }
+    public void setAliveNlist(ArrayList<Integer> aliveNlist) {
+        this.aliveNlist.clear();
+        this.aliveNlist = aliveNlist;
+//        System.out.println("Given: " + aliveNlist.toString() + "\nTaken: " + this.aliveNlist.toString());
+    }
+    public void setDeadNlist(ArrayList<Integer> deadNlist) {
+        this.deadNlist.clear();
+        this.deadNlist = deadNlist;
+//        System.out.println("Given: " + deadNlist.toString() + "\nTaken: " + this.deadNlist.toString());
+    }
+    public void setxVal(int xVal) {
+        this.xVal = xVal;
+    }
+    public void setyVal(int yVal) {
+        this.yVal = yVal;
+    }
+    public void setzVal(int zVal) {
+        this.zVal = zVal;
+    }
+    public int getxVal() {
+        return xVal;
+    }
+    public int getyVal() {
+        return yVal;
+    }
+    public int getzVal() {
+        return zVal;
+    }
 }

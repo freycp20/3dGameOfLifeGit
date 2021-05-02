@@ -1,9 +1,5 @@
 package controllers;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -13,16 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -151,7 +143,7 @@ public class inputController {
         outputC.mainBorderPane.requestFocus();
         if (checkAxisFilledBase()){
             saveC();
-            outputC.init(this.xVal*10, alive);
+            outputC.init(this.xVal*10, alive, xVal, yVal, zVal);
 //        outputC.setSize(this.xVal*10);
 //        System.out.println("xVal = " + xVal);
 //        outputC.setCube(this.xVal*10);
@@ -338,9 +330,9 @@ public class inputController {
     public void openTemplateC() {
         fileIO ifio = new fileIO();
         ifio.openFile();
-        yVal = ifio.getY();
-        xVal = ifio.getX();
-        zVal = ifio.getZ();
+        yVal = ifio.getyVal();
+        xVal = ifio.getxVal();
+        zVal = ifio.getzVal();
         y.setText(String.valueOf(yVal));
         x.setText(String.valueOf(xVal));
         z.setText(String.valueOf(zVal));
@@ -349,7 +341,7 @@ public class inputController {
         zC();
         if (ifio.areRules()){
             areRules = ifio.areRules();
-            rule1 = ifio.getRule1();
+            rule1 = ifio.getTrueFirst();
             aNeighbors = ifio.getRule2();
             dNeighbors = ifio.getRule3();
         }

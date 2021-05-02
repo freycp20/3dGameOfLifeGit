@@ -80,40 +80,42 @@ public class outputController {
     }
     public void aliveNC() {
         if (!aliveNeighbor.getText().equals("")){
-            aNeighbors = new ArrayList<>();
-
-            Scanner scnr = new Scanner(aliveNeighbor.getText())
-                    .useDelimiter("[^\\d]");
-
-            while (scnr.hasNext()) {
-                String next = scnr.next();
-                if (!next.isEmpty()) {
-                    aNeighbors.add(Integer.parseInt(next));
-                }
-            }
-            board.setAliveNlist(aNeighbors);
-
+            board.setAliveNlist(setRules(aliveNeighbor.getText()));
+            System.out.println(board.getAliveNlist());
         }
     }
     public void deadNC() {
-        if (!deadNeighbor.getText().equals("")){
-            dNeighbors = new ArrayList<>();
-
-            Scanner scnr = new Scanner(deadNeighbor.getText())
-                    .useDelimiter("[^\\d]");
-
-            while (scnr.hasNext()) {
-                String next = scnr.next();
-                if (!next.isEmpty()) {
-                    dNeighbors.add(Integer.parseInt(next));
-                }
-            }
-            board.setDeadNlist(dNeighbors);
-
+        String deadNeighborText = deadNeighbor.getText();
+        System.out.println("deadNeighborText = " + deadNeighborText);
+        if (!deadNeighborText.equals("")){
+            board.setDeadNlist(setRules(deadNeighbor.getText()));
+            System.out.println(board.getDeadNlist());
         }
     }
 
+    /**
+     * solid
+     * @param text
+     * @return
+     */
+    private ArrayList<Integer> setRules(String text){
+        ArrayList<Integer> rules = new ArrayList<>();
+        Scanner scnr = new Scanner(text)
+                .useDelimiter("[^\\d]");
+
+        while (scnr.hasNext()) {
+            String next = scnr.next();
+            if (!next.isEmpty()) {
+                rules.add(Integer.parseInt(next));
+            }
+        }
+        System.out.println("rules = " + rules);
+        return rules;
+    }
+
     public void runButtonC() {
+        System.out.println(" from runbuttonc \n board.getAliveNlist() = " + board.getAliveNlist());
+        System.out.println(" from runbuttonc \n board.getdedNlist() = " + board.getDeadNlist());
         if (!modelRunning){
             playTimeLine();
             runButton.setText("Stop");
@@ -147,7 +149,7 @@ public class outputController {
     }
 
 
-    public void init(int size, boolean[][][] alive) {
+    public void init(int size, boolean[][][] alive, int xVal, int yVal, int zVal) {
         lineColor = Color.web("#adacac");
 //        lineColor = Color.TRANSPARENT;
         this.size = size;
@@ -157,8 +159,7 @@ public class outputController {
         // initial cube rotation
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
-        board = new guiBoard(alive);
-//        System.out.println("board.getCells() = " + board.getCells());
+        board = new guiBoard(alive, null, null, );
 
         board.setDeadNeighbors(3);
         board.setAliveNeighbors(3);
@@ -177,23 +178,12 @@ public class outputController {
         SubScene subScene = new SubScene(root, subScenePane.getLayoutBounds().getMaxX(), subScenePane.getLayoutBounds().getMaxY(), true, SceneAntialiasing.BALANCED);
         subScene.heightProperty().bind(subScenePane.heightProperty());
         subScene.widthProperty().bind(subScenePane.widthProperty());
-//        subScene.widthProperty().bind();
-//        subScenePane.prefHeightProperty().bind(mainBorderPane.getCenter());
-//        mainBorderPane.set;
-//        subScenePane.setStyle("-fx-background-color: #000000;");
         subScene.setStyle("-fx-background-color: #000000;");
-//        subScenePane.setMaxSize(mainBorderPane.getCenter().getLayoutBounds().getMaxX(), mainBorderPane.getCenter().getLayoutBounds().getMaxY());
         subScenePane.getChildren().addAll(subScene);
         subScenePane.setId("subScenePane");
         root.setId("cubeGridPane");
-//        System.out.println("root.getId() = " + root.getId());
-//        mainBorderPane.getCenter().;
         PerspectiveCamera cam = new PerspectiveCamera();
-
-//        cam.setFieldOfView();
         subScene.setCamera(cam);
-//        pointLight.setRotate(100);
-//        page.setLeft(buttons);
         mainBorderPane.setCenter(subScenePane);
         setDragRotate(root);
         makeZoomable(root);
@@ -244,9 +234,7 @@ public class outputController {
     public void setStyleDark() {
         mainBorderPane.getScene().getStylesheets().add("resources/outputStyle.css");
     }
-    public void setBoard(String file) {
-        board = new guiBoard(new java.io.File(file));
-    }
+
     public void setCube(int size) {
         this.size = size;
         cube = createCube(size);
@@ -358,7 +346,7 @@ public class outputController {
             zVal = ifio.getZ();
             board = new guiBoard(ifio.getCellArray());
             if (ifio.areRules()){
-                rule1 = ifio.getRule1();
+                rule1 = ifio.getTrueFirst();
                 aNeighbors = ifio.getRule2();
                 dNeighbors = ifio.getRule3();
 
@@ -395,8 +383,13 @@ public class outputController {
         ifio.readFile(getFile);
         openTemplateC();
     }
-
     public void mutableCubeC() {
+        ifio = new fileIO();
+        clickOpen = false;
+        ifio.setBoardOpened(true);
+        File getFile = new File("C:\\Users\\WOODBURNKB20\\OneDrive - Grove City College\\Desktop\\3dGameOfLifeGit\\src\\templates\\mutableCube.txt");
+        ifio.readFile(getFile);
+        openTemplateC();
     }
 
 
@@ -492,9 +485,6 @@ public class outputController {
     }
 
     public void nextGenC() {
-        System.out.println(board.getTrueFirst());
-        System.out.println(board.getAliveNlist().toString());
-        System.out.println(board.getDeadNlist().toString());
         removeChildren(cube);
         board.nextStep();
         addValsToGroup(cube, board.getCells());
