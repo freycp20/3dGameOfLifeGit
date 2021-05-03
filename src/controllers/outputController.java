@@ -333,7 +333,7 @@ public class outputController {
             board = ifio.openFile();
         }
         if (!(cube == null)) {
-            cube.getChildren().removeAll();
+            cube.getChildren().clear();
         }
         if (ifio.getBoardOpened()){
             yVal = board.getyVal();
