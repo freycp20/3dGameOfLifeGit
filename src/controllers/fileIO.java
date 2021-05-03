@@ -4,11 +4,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,12 +32,11 @@ public class fileIO {
     protected guiBoard readFile(File file) {
         guiBoard board = null;
         try {
-            ArrayList<Integer> aNeighbors = null;
-            ArrayList<Integer> dNeighbors = null;
+            LinkedHashSet<Integer> aNeighbors = null;
+            LinkedHashSet<Integer> dNeighbors = null;
 
 
-            FileInputStream readFile = new FileInputStream(file);
-            Scanner scn = new Scanner(readFile);
+            Scanner scn = new Scanner(file);
 
             int xVal = scn.nextInt();
             int yVal = scn.nextInt();
@@ -44,8 +44,8 @@ public class fileIO {
             boolean areRules = scn.nextBoolean();
 
             if (areRules){
-                aNeighbors = new ArrayList<>();
-                dNeighbors = new ArrayList<>();
+                aNeighbors = new LinkedHashSet<>();
+                dNeighbors = new LinkedHashSet<>();
                 trueFirst = scn.nextBoolean();
                 int stop = scn.nextInt();
                 for (int i = 0; i < stop; i++) {
@@ -55,7 +55,6 @@ public class fileIO {
                 for (int i = 0; i < stop; i++) {
                     dNeighbors.add(scn.nextInt());
                 }
-
             }
             boolean[][][] cellArray = new boolean[yVal][xVal][zVal];
             for (int y = 0; y < yVal; y++) {
@@ -65,7 +64,6 @@ public class fileIO {
                     }
                 }
             }
-            readFile.close();
             board = new guiBoard(cellArray, aNeighbors, dNeighbors,
                     xVal, yVal, zVal, trueFirst, areRules);
         } catch (IOException ex) {

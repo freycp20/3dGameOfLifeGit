@@ -5,6 +5,7 @@
 .label {
     -fx-text-fill: #adacac;
     -fx-font-size: 15px;
+    -fx-label-padding: 3px;
 }
 
 .label:hover {

@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.animation.*;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -23,6 +24,8 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class outputController {
@@ -69,8 +72,8 @@ public class outputController {
     public boolean areRules;
     public boolean trueFirst;
     private boolean clickOpen = true;
-    ArrayList<Integer> aNeighbors;
-    ArrayList<Integer> dNeighbors;
+    LinkedHashSet<Integer> aNeighbors;
+    LinkedHashSet<Integer> dNeighbors;
     fileIO ifio;
 
     public void booleanBoxC() {
@@ -96,8 +99,8 @@ public class outputController {
      * @param text
      * @return
      */
-    private ArrayList<Integer> setRules(String text){
-        ArrayList<Integer> rules = new ArrayList<>();
+    private LinkedHashSet<Integer> setRules(String text){
+        LinkedHashSet<Integer> rules = new LinkedHashSet<>();
         Scanner scnr = new Scanner(text)
                 .useDelimiter("[^\\d]");
 
@@ -296,11 +299,11 @@ public class outputController {
         if (boardMade){
             String aN = "";
             String dN = "";
-            for (int i = 0; i < aNeighbors.size(); i++) {
-                aN += aNeighbors.get(i) + " ";
+            for (Integer alvn : aNeighbors) {
+                aN += alvn + " ";
             }
-            for (int i = 0; i < dNeighbors.size(); i++) {
-                dN += dNeighbors.get(i) + " ";
+            for (Integer ddvn : dNeighbors){
+                dN += ddvn + " ";
             }
             String content = String.format(
                     "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getStartingPos()));
@@ -315,11 +318,11 @@ public class outputController {
             }
             String aN = "";
             String dN = "";
-            for (int i = 0; i < aNeighbors.size(); i++) {
-                aN += aNeighbors.get(i) + " ";
+            for (Integer alvn : aNeighbors) {
+                aN += alvn + " ";
             }
-            for (int i = 0; i < dNeighbors.size(); i++) {
-                dN += dNeighbors.get(i) + " ";
+            for (Integer ddvn : dNeighbors){
+                dN += ddvn + " ";
             }
             String content = String.format(
                     "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getCells()));
@@ -361,22 +364,31 @@ public class outputController {
         clickOpen = true;
     }
     public void gliderC() {
-        ifio = new fileIO();
-        ifio.setBoardOpened(true);
-        File getFile = new File(getClass().getResource("/templates/glider.txt").getFile());
-        board = ifio.readFile(getFile);
-        clickOpen = false;
-        openTemplateC();
+        preTemplateOpen(new File("src/templates/glider.txt"));
     }
     public void mutableCubeC() {
+        preTemplateOpen(new File("src/templates/mutableCube.txt"));
+    }
+
+    public void miniCubeC() {
+        preTemplateOpen(new File("src/templates/miniCube.txt"));
+    }
+
+    public void longC() {
+        preTemplateOpen(new File("src/templates/long.txt"));
+    }
+
+    public void checkeredLoafC(ActionEvent actionEvent) {
+        preTemplateOpen(new File("src/templates/checkeredLoaf.txt"));
+    }
+
+    private void preTemplateOpen(File file){
         ifio = new fileIO();
         ifio.setBoardOpened(true);
-        File getFile = new File(getClass().getResource("/templates/mutableCube.txt").getFile());
-        board = ifio.readFile(getFile);
+        board = ifio.readFile(file);
         clickOpen = false;
         openTemplateC();
     }
-
 
     public void switchSceneC(boolean[][][] arr) throws IOException {
         pauseTimeLine();
@@ -492,8 +504,6 @@ public class outputController {
 
 
     }
-
-
 
 
     /**

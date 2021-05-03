@@ -1,4 +1,4 @@
-package controllers;//package sample;
+package controllers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,7 +29,6 @@ public class consoleBoard {
         cells = new boolean[x][y][z];
 
     }
-
     /**
      * Creates a cubic board with sides of a given length
      * @param size the length of each side of the cube
@@ -41,7 +40,6 @@ public class consoleBoard {
         z = size;
         cells = new boolean[size][size][size];
     }
-
     /**
      *
      * @param cellArray
@@ -56,7 +54,6 @@ public class consoleBoard {
             }
         }
     }
-
     /**
      * Constructs a new board based on a given input file
      * @param file A file given by the user containing board template
@@ -82,7 +79,6 @@ public class consoleBoard {
         }
 
     }
-
     /**
      * moves the gameboard to the next step based on the given rules
      */
@@ -107,7 +103,6 @@ public class consoleBoard {
         }
         cells = removeBorder(board);
     }
-
     /**
      * Finds all cells surrounding a cell at a given location
      * @param board the current board
@@ -129,7 +124,6 @@ public class consoleBoard {
         surrounding.remove(13);
         return surrounding;
     }
-
     /**
      *
      * @return
@@ -137,11 +131,6 @@ public class consoleBoard {
     public boolean[][][] getCells() {
         return cells;
     }
-
-
-
-
-
     /**
      * makes the cell at a given set of coordinates alive
      * @param x x coordinate
@@ -151,7 +140,6 @@ public class consoleBoard {
     public void editCell(int x, int y, int z) {
         cells[x][y][z] = true;
     }
-
     /**
      * compares if two boards are equivalent or not
      * @param other the board to be compared to
@@ -160,7 +148,6 @@ public class consoleBoard {
     public boolean isSame(consoleBoard other) {
         return (this.toString().equals(other.toString()));
     }
-
     public boolean[][][] addBorder() {
         x = cells.length;
         y = cells[0].length;
@@ -175,7 +162,6 @@ public class consoleBoard {
         }
         return cellsWithBorder;
     }
-
     /**
      * removes the dead border from a board
      * @param board The board with a dead border around it

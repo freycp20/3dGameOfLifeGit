@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 
 
 public class inputController {
@@ -57,8 +58,8 @@ public class inputController {
     private int mapCount;
     public boolean areRules;
     public boolean trueFirst;
-    public ArrayList<Integer> aNeighbors;
-    public ArrayList<Integer> dNeighbors;
+    public LinkedHashSet<Integer> aNeighbors;
+    public LinkedHashSet<Integer> dNeighbors;
 
     /**
      * sceneBuilder methods
@@ -185,13 +186,13 @@ public class inputController {
 
     @FXML
     public void upLayerC() {
-        if (layerCount != yVal) {
+        if (layerCount != yVal && yVal != 0) {
             layerCount++;
             layerNumLabel.setText("Layer #: " + layerCount);
             slider.setValue(layerCount);
             for (int i = 0; i < (layerCount) - 1; i++) {
                 GridPane layer = layers.get(i);
-                layer.setOpacity(layer.getOpacity() * 0.5);
+                layer.setOpacity(layer.getOpacity() * 0);
             }
             layers.get(layerCount - 1).setVisible(true);
             layers.get(layerCount - 1).setOpacity(1);
@@ -351,7 +352,7 @@ public class inputController {
     @FXML
     public void saveTemplateC() {
         saveC();
-        String content = String.format("%d %d %d %b\n%s", yVal, xVal, zVal, true, aliveString);
+        String content = String.format("%d %d %d %b\n%s", yVal, xVal, zVal, false, aliveString);
         new fileIO().saveFile(content);
     }
 
@@ -400,7 +401,7 @@ public class inputController {
 
     public void aboutC() {
         Stage stage = new Stage();
-        stage.setTitle("key-binds");
+        stage.setTitle("about");
         VBox vb = new VBox();
         vb.setAlignment(Pos.CENTER);
         Label l1 = new Label("Inspired by Conways Game of Life, this program provides a easy and streamlined " +

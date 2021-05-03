@@ -3,18 +3,15 @@ package controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 public class guiBoard {
     boolean[][][] cells = null;
     boolean[][][] startingPos = null;
     private int aliveNeighbors;
     private int deadNeighbors;
-    private ArrayList<Integer> aliveNlist;
-    private ArrayList<Integer> deadNlist;
+    private LinkedHashSet<Integer> aliveNlist;
+    private LinkedHashSet<Integer> deadNlist;
     private boolean trueFirst;
     private int xVal;
     private int yVal;
@@ -23,8 +20,8 @@ public class guiBoard {
     private boolean areRules;
 
     public guiBoard(boolean[][][] cellArray,
-                    ArrayList<Integer> aliveNlist,
-                    ArrayList<Integer> deadNlist,
+                    LinkedHashSet<Integer> aliveNlist,
+                    LinkedHashSet<Integer> deadNlist,
                     int xVal, int yVal, int zVal,
                     boolean trueFirst, boolean areRules) {
         this.areRules = areRules;
@@ -32,12 +29,12 @@ public class guiBoard {
         this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.size = cellArray.length;
         if (aliveNlist == null) {
-            this.aliveNlist = new ArrayList<>(Arrays.asList(5, 6, 7));
+            this.aliveNlist = new LinkedHashSet<>(Arrays.asList(5, 6, 7));
         } else {
             this.aliveNlist = aliveNlist;
         }
         if (deadNlist == null) {
-            this.deadNlist = new ArrayList<>(Arrays.asList(6));
+            this.deadNlist = new LinkedHashSet<>(Arrays.asList(6));
         } else {
             this.deadNlist = deadNlist;
         }
@@ -56,7 +53,6 @@ public class guiBoard {
             }
         }
     }
-
     public void printCells() {
         for (int y = 0; y < cells.length; y++) {
             for (int x = 0; x < cells.length; x++) {
@@ -70,7 +66,6 @@ public class guiBoard {
             System.out.println();
         }
     }
-
     public void nextStep() {
         boolean[][][] board = new boolean[size][size][size];
         int livingNeighbors = 0;
@@ -94,7 +89,6 @@ public class guiBoard {
         }
         cells = board;
     }
-
     public ArrayList<Boolean> surroundingCells(boolean[][][] board, int layer, int row, int col) {
         final int NUM_NEIGHBORS = 27;
         ArrayList<Boolean> surrounding = new ArrayList<>(NUM_NEIGHBORS);
@@ -108,11 +102,9 @@ public class guiBoard {
         surrounding.remove(13);
         return surrounding;
     }
-
     public void reset() {
         this.cells = new guiBoard(startingPos,aliveNlist, deadNlist, xVal, yVal, zVal, trueFirst, areRules).getCells();
     }
-
     public String arrayToString(boolean[][][] arr) {
         String cellString = "";
         for (boolean[][] booleans : arr) {
@@ -132,19 +124,11 @@ public class guiBoard {
     public boolean getTrueFirst() {
         return trueFirst;
     }
-    public ArrayList<Integer> getAliveNlist() {
+    public LinkedHashSet<Integer> getAliveNlist() {
         return aliveNlist;
     }
-    public ArrayList<Integer> getDeadNlist() {
+    public LinkedHashSet<Integer> getDeadNlist() {
         return deadNlist;
-    }
-    public void setAliveNeighbors(int aliveNeighbors) {
-        this.aliveNeighbors = aliveNeighbors;
-        System.out.println("working alive");
-    }
-    public void setDeadNeighbors(int deadNeighbors) {
-        this.deadNeighbors = deadNeighbors;
-        System.out.println("working dead");
     }
     public void setTrueFirst(boolean trueFirst) {
         this.trueFirst = trueFirst;
@@ -155,21 +139,11 @@ public class guiBoard {
     public boolean[][][] getStartingPos() {
         return startingPos;
     }
-    public void setAliveNlist(ArrayList<Integer> aliveNlist) {
+    public void setAliveNlist(LinkedHashSet<Integer> aliveNlist) {
         this.aliveNlist = aliveNlist;
     }
-    public void setDeadNlist(ArrayList<Integer> deadNlist) {
+    public void setDeadNlist(LinkedHashSet<Integer> deadNlist) {
         this.deadNlist = deadNlist;
-    }
-
-    public void setxVal(int xVal) {
-        this.xVal = xVal;
-    }
-    public void setyVal(int yVal) {
-        this.yVal = yVal;
-    }
-    public void setzVal(int zVal) {
-        this.zVal = zVal;
     }
     public int getxVal() {
         return xVal;

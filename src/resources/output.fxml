@@ -45,6 +45,9 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#gliderC" text="Glider" />
                       <MenuItem mnemonicParsing="false" onAction="#mutableCubeC" text="Mutable Cube" />
+                        <MenuItem mnemonicParsing="false" onAction="#miniCubeC" text="Mini Cube" />
+                        <MenuItem mnemonicParsing="false" onAction="#longC" text="L o n g" />
+                        <MenuItem mnemonicParsing="false" onAction="#checkeredLoafC" text="Checkered Loaf" />
                     </items>
                   </Menu>
               <MenuItem mnemonicParsing="false" text="Delete" />
