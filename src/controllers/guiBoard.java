@@ -7,10 +7,12 @@ import java.util.LinkedHashSet;
 
 public class guiBoard {
     boolean[][][] cells = null;
+    boolean[][][] cellsWithBorder = null;
     boolean[][][] startingPos = null;
     private LinkedHashSet<Integer> aliveNlist;
     private LinkedHashSet<Integer> deadNlist;
     private boolean trueFirst;
+
     private int xVal;
     private int yVal;
     private int zVal;
@@ -49,6 +51,20 @@ public class guiBoard {
             }
         }
     }
+    public guiBoard(int xdim, int ydim, int zdim) {
+        this.xVal = xdim;
+        this.yVal = ydim;
+        this.zVal = zdim;
+        cells = new boolean[xdim][ydim][zdim];
+
+    }
+    public void editCell(int x, int y, int z) {
+        cells[x][y][z] = true;
+    }
+    public boolean isSame(guiBoard other) {
+        return (this.toString().equals(other.toString()));
+    }
+
     public void printCells() {
         for (int y = 0; y < cells.length; y++) {
             for (int x = 0; x < cells.length; x++) {
@@ -63,36 +79,38 @@ public class guiBoard {
         }
     }
     public void nextStep() {
-        boolean[][][] board = new boolean[size][size][size];
+        boolean[][][] boardReadOnly = addBorder(cells);
+        boolean[][][] mutableBoard = addBorder(cells);
         int livingNeighbors = 0;
 
-        for (int layer = 1; layer < board.length - 1; layer++) {
-            for (int row = 1; row < board[layer].length - 1; row++) {
-                for (int col = 1; col < board[layer][row].length - 1; col++) {
-                    livingNeighbors = Collections.frequency(surroundingCells(cells, layer, row, col), true);
-                    if (cells[layer][row][col]) {
+        for (int layer = 1; layer < boardReadOnly.length - 1; layer++) {
+            for (int row = 1; row < boardReadOnly[layer].length - 1; row++) {
+                for (int col = 1; col < boardReadOnly[layer][row].length - 1; col++) {
+                    livingNeighbors = Collections.frequency(surroundingCells(boardReadOnly, layer, row, col), true);
+                    if (boardReadOnly[layer][row][col]) {
+                        System.out.println("livingNeighbors = " + livingNeighbors);
                         if (aliveNlist.contains(livingNeighbors)) {
-                            board[layer][row][col] = trueFirst;
+                            mutableBoard[layer][row][col] = trueFirst;
                         } else {
-                            board[layer][row][col] = !trueFirst;
+                            mutableBoard[layer][row][col] = !trueFirst;
                         }
 
                     } else if (deadNlist.contains(livingNeighbors)) {
-                        board[layer][row][col] = true;
+                        mutableBoard[layer][row][col] = true;
                     }
                 }
             }
         }
-        cells = board;
+        cells = removeBorder(mutableBoard);
     }
     public ArrayList<Boolean> surroundingCells(boolean[][][] board, int layer, int row, int col) {
         final int NUM_NEIGHBORS = 27;
         ArrayList<Boolean> surrounding = new ArrayList<>(NUM_NEIGHBORS);
-        for (boolean[][] i : new boolean[][][]{board[layer - 1], board[layer], board[layer + 1]}) {
-            for (boolean[] j : new boolean[][]{i[row - 1], i[row], i[row + 1]}) {
-                surrounding.add(j[col - 1]);
+        for (boolean[][] i : new boolean[][][]{board[layer-1],board[layer],board[layer+1]}) {
+            for (boolean[] j : new boolean[][]{i[row-1],i[row],i[row+1]}) {
+                surrounding.add(j[col-1]);
                 surrounding.add(j[col]);
-                surrounding.add(j[col + 1]);
+                surrounding.add(j[col+1]);
             }
         }
         surrounding.remove(13);
@@ -113,6 +131,43 @@ public class guiBoard {
             cellString += "\n";
         }
         return cellString;
+    }
+    public boolean[][][] removeBorder(boolean[][][] board) {
+        boolean[][][] borderLess = new boolean[board.length-2][board[0].length-2][board[0][0].length-2];
+        for (int i=1; i<board.length-1; i++) {
+            for (int j=1; j<board[0].length-1; j++) {
+                for (int k=1; k<board[0][0].length-1; k++ ) {
+                    borderLess[i-1][j-1][k-1] = board[i][j][k];
+                }
+            }
+        }
+        return borderLess;
+    }
+    public boolean[][][] addBorder(boolean[][][] cells) {
+        int x = cells.length;
+        int y = cells[0].length;
+        int z = cells[0][0].length;
+        cellsWithBorder = new boolean[x+2][y+2][z+2];
+
+        for (int i = 0; i < x+2; i++) {
+            for (int j = 0; j < y+2; j++) {
+                for (int k = 0; k < z+2; k++) {
+                    if (i == 0 || j == 0 || k == 0 || i == x+1 || j == y+1 || k==z+1) {
+                        cellsWithBorder[i][j][k] = false;
+                    } else {
+                        cellsWithBorder[i][j][k] = cells[i-1][j-1][k-1];
+                    }
+                }
+            }
+        }
+//        for (int i = 1; i < x+1; i++) {
+//            for (int j = 1; j < y+1; j++) {
+//                for (int k = 1; k < z+1; k++) {
+//                    cellsWithBorder[i][j][k] = cells[i-1][j-1][k-1];
+//                }
+//            }
+//        }
+        return cellsWithBorder;
     }
     public boolean areRules(){
         return areRules;
