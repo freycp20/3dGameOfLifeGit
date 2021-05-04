@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -391,6 +392,33 @@ public class outputController {
         board = ifio.readFile(file);
         clickOpen = false;
         openTemplateC();
+    }
+
+    public void aboutC() {
+        Stage stage = new Stage();
+        stage.setTitle("about");
+        VBox vb = new VBox();
+        vb.setAlignment(Pos.CENTER);
+        Label l1 = new Label("Inspired by Conways Game of Life, this program provides a easy and streamlined " +
+                "method of input and output for 3D Cellular Automata. The default rules are 5 6 7 for alive, " +
+                "and 6 for dead. The cellular neighborhood we use to calculate alive and dead cells is moore's type. " +
+                "With moore's neighborhood, 26 possible values are read in, and a/d cells are accounted for. To use various key-binds," +
+                " go to help->key-binds.");
+        Label l2 = new Label("\nAuthors: Caleb Frey, Keegan Woodburn, Michael Gomez");
+        Insets ins = new Insets(15,15,15,15);
+        l1.setPadding(ins);
+        l1.setStyle("-fx-font: 15 arial;");
+        l2.setStyle("-fx-font: 13 arial;");
+        l1.setWrapText(true);
+        vb.getChildren().addAll(l1,l2);
+        vb.setStyle("-fx-background-color: #3b3f41");
+        Scene scene = new Scene(vb,450,250);
+        scene.getStylesheets().add("/resources/outputStyle.css");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     public void switchSceneC(boolean[][][] arr) throws IOException {

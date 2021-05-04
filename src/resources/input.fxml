@@ -31,7 +31,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#clearLayerC" text="Clear Layer" />
                   <MenuItem mnemonicParsing="false" onAction="#fillLayerC" text="Fill Layer" />
                   <MenuItem mnemonicParsing="false" onAction="#clearAllLayersC" text="Clear All Layers" />
-                  <MenuItem mnemonicParsing="false" text="Delete" />
+                  <MenuItem mnemonicParsing="false" onAction="#randomC" text="Random" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

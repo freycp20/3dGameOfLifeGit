@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -20,6 +21,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Random;
 
 
 public class inputController {
@@ -375,6 +377,26 @@ public class inputController {
         axisY.setVisible(axisShown);
         axisX.setVisible(axisShown);
         newAxisLayer = false;
+    }
+
+    public void randomC() {
+        if (checkAxisFilledBase()){
+            Random rand = new Random();
+            boolean[][][] randomCArray = new boolean[yVal][xVal][zVal];
+            for (int x = 0; x < xVal; x++) {
+                for (int y = 0; y < yVal; y++) {
+                    for (int z = 0; z < zVal; z++) {
+                        int weightedBoo = rand.nextInt(100);
+                        if (weightedBoo < 20){
+                            randomCArray[x][y][z] = true;
+                        } else {
+                            randomCArray[x][y][z] = false;
+                        }
+                    }
+                }
+            }
+            setLayer(randomCArray);
+        }
     }
 
     public void keybindsC() {
