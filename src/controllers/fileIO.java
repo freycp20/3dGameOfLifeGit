@@ -2,14 +2,11 @@ package controllers;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +15,12 @@ public class fileIO {
     private boolean trueFirst;
     boolean boardOpened;
 
+    /**
+     * displays file explorer
+     * @return guiBoard or null
+     */
     public guiBoard openFile(){
+        // create new stage and set scene to system file explorer
         stage = new Stage();
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(stage);
@@ -29,20 +31,24 @@ public class fileIO {
             return null;
         }
     }
+
+    /**
+     * reads selected file and returns board with all values
+     * @param file
+     * @return guiBoard
+     */
     protected guiBoard readFile(File file) {
         guiBoard board = null;
         try {
             LinkedHashSet<Integer> aNeighbors = null;
             LinkedHashSet<Integer> dNeighbors = null;
-
-
             Scanner scn = new Scanner(file);
-
             int xVal = scn.nextInt();
             int yVal = scn.nextInt();
             int zVal = scn.nextInt();
             boolean areRules = scn.nextBoolean();
 
+            // checks if rules are saved
             if (areRules){
                 aNeighbors = new LinkedHashSet<>();
                 dNeighbors = new LinkedHashSet<>();
@@ -56,6 +62,7 @@ public class fileIO {
                     dNeighbors.add(scn.nextInt());
                 }
             }
+            // assign read values to boolean array
             boolean[][][] cellArray = new boolean[yVal][xVal][zVal];
             for (int y = 0; y < yVal; y++) {
                 for (int x = 0; x < xVal; x++) {
@@ -64,6 +71,7 @@ public class fileIO {
                     }
                 }
             }
+            // set up new board with all given values
             board = new guiBoard(cellArray, aNeighbors, dNeighbors,
                     xVal, yVal, zVal, trueFirst, areRules);
         } catch (IOException ex) {
@@ -86,7 +94,6 @@ public class fileIO {
     }
     protected void saveTextToFile(String content, File file) {
         try {
-//            System.out.println("content = " + content);
             PrintWriter writer;
             writer = new PrintWriter(file);
             writer.write(content);

@@ -1,15 +1,13 @@
 package controllers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 
 public class guiBoard {
     boolean[][][] cells = null;
     boolean[][][] startingPos = null;
-    private int aliveNeighbors;
-    private int deadNeighbors;
     private LinkedHashSet<Integer> aliveNlist;
     private LinkedHashSet<Integer> deadNlist;
     private boolean trueFirst;
@@ -38,8 +36,6 @@ public class guiBoard {
         } else {
             this.deadNlist = deadNlist;
         }
-        System.out.println(aliveNlist);
-        System.out.println(deadNlist);
         this.xVal = xVal;
         this.yVal = yVal;
         this.zVal = zVal;

@@ -1,6 +1,5 @@
 package controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -9,7 +8,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -62,6 +64,7 @@ public class inputController {
     public boolean trueFirst;
     public LinkedHashSet<Integer> aNeighbors;
     public LinkedHashSet<Integer> dNeighbors;
+    private int RANDWEIGHT = 8;
 
     /**
      * sceneBuilder methods
@@ -147,10 +150,6 @@ public class inputController {
         if (checkAxisFilledBase()){
             saveC();
             outputC.init(this.xVal*10, alive, xVal, yVal, zVal);
-//        outputC.setSize(this.xVal*10);
-//        System.out.println("xVal = " + xVal);
-//        outputC.setCube(this.xVal*10);
-//        outputC.setBoard("test.txt");
             outputC.yVal = yVal;
             outputC.xVal = xVal;
             outputC.zVal = zVal;
@@ -380,18 +379,25 @@ public class inputController {
     }
 
     public void randomC() {
-        if (checkAxisFilledBase()){
-            Random rand = new Random();
-            boolean[][][] randomCArray = new boolean[yVal][xVal][zVal];
-            for (int x = 0; x < xVal; x++) {
-                for (int y = 0; y < yVal; y++) {
-                    for (int z = 0; z < zVal; z++) {
-                        int weightedBoo = rand.nextInt(100);
-                        if (weightedBoo < 20){
-                            randomCArray[x][y][z] = true;
-                        } else {
-                            randomCArray[x][y][z] = false;
-                        }
+        Random rand = new Random();
+        if (!checkAxisFilledBase()){
+            String cubeSize = String.valueOf(rand.nextInt(30));
+            x.setText(cubeSize);
+            y.setText(cubeSize);
+            z.setText(cubeSize);
+            xC();
+            yC();
+            zC();
+        }
+        boolean[][][] randomCArray = new boolean[yVal][xVal][zVal];
+        for (int x = 0; x < xVal; x++) {
+            for (int y = 0; y < yVal; y++) {
+                for (int z = 0; z < zVal; z++) {
+                    int weightedBoo = rand.nextInt(100);
+                    if (weightedBoo < RANDWEIGHT){
+                        randomCArray[x][y][z] = true;
+                    } else {
+                        randomCArray[x][y][z] = false;
                     }
                 }
             }
