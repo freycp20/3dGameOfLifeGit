@@ -36,7 +36,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#switchNewC" text="switch new" />
                     </items>
                   </Menu>
-              <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -51,7 +50,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#zoomyBoiC" text="Zoomy boi" />
                     </items>
                   </Menu>
-              <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

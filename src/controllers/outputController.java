@@ -68,7 +68,7 @@ public class outputController {
     protected int xVal=0;
     protected int zVal=0;
     Color lineColor;
-    public boolean boardMade;
+    public boolean boardMade = false;
     private int deadN;
     private int aliveN;
     public boolean areRules;
@@ -112,7 +112,7 @@ public class outputController {
                 rules.add(Integer.parseInt(next));
             }
         }
-//        System.out.println("rules: " + rules);
+//        println("rules: " + rules);
         return rules;
     }
 
@@ -299,37 +299,31 @@ public class outputController {
 
     public void saveOriginGenC() {
         if (boardMade){
-            String aN = "";
-            String dN = "";
-            for (Integer alvn : aNeighbors) {
-                aN += alvn + " ";
-            }
-            for (Integer ddvn : dNeighbors){
-                dN += ddvn + " ";
-            }
-            String content = String.format(
-                    "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getStartingPos()));
-                    new fileIO().saveFile(content);
+            saveTemplate(board.arrayToString(board.getStartingPos()));
         }
     }
 
     public void saveCurrentGenC() {
         if (boardMade){
-            if (modelRunning){
-                runButtonC();
-            }
-            String aN = "";
-            String dN = "";
-            for (Integer alvn : aNeighbors) {
-                aN += alvn + " ";
-            }
-            for (Integer ddvn : dNeighbors){
-                dN += ddvn + " ";
-            }
-            String content = String.format(
-                    "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, true, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, board.arrayToString(board.getCells()));
-            new fileIO().saveFile(content);
+            saveTemplate(board.arrayToString(board.getCells()));
         }
+    }
+
+    private void saveTemplate(String boo){
+        if (modelRunning){
+            runButtonC();
+        }
+        String aN = "";
+        String dN = "";
+        for (Integer alvn : board.getAliveNlist()) {
+            aN += alvn + " ";
+        }
+        for (Integer ddvn : board.getDeadNlist()){
+            dN += ddvn + " ";
+        }
+        String content = String.format(
+                "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, areRules, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, boo);
+        new fileIO().saveFile(content);
     }
 
     public void openTemplateC() {

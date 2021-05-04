@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -19,7 +20,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -36,11 +36,12 @@ public class inputController {
     public Label layerNumLabel = null;
     public Button visualize = null;
     public BorderPane mainBorderPane = null;
-    public CheckMenuItem showAxis;
-    public VBox buttonVbox;
-    public MenuBar mainMenuBar;
+    public CheckMenuItem showAxis = null;
+    public VBox buttonVbox = null;
+    public MenuBar mainMenuBar = null;
     public Label sizeLabel = null;
-
+    public Slider weightSlider = null;
+    public CustomMenuItem customSliderWeight = null;
     protected int layerCount;
     protected int xVal;
     protected int yVal;
@@ -64,13 +65,17 @@ public class inputController {
     public boolean trueFirst;
     public LinkedHashSet<Integer> aNeighbors;
     public LinkedHashSet<Integer> dNeighbors;
-    private int RANDWEIGHT = 8;
+    private int randWeight;
 
     /**
      * sceneBuilder methods
      */
     @FXML
-    public void initialize() throws MalformedURLException {
+    public void initialize() {
+        customSliderWeight.setContent(weightSlider);
+        customSliderWeight.setHideOnClick(false);
+        weightSlider.setValue(50);
+        randWeight = 50;
         layerCount = 1;
         validateAxis(x);
         validateAxis(y);
@@ -381,7 +386,7 @@ public class inputController {
     public void randomC() {
         Random rand = new Random();
         if (!checkAxisFilledBase()){
-            String cubeSize = String.valueOf(rand.nextInt(30));
+            String cubeSize = String.valueOf(rand.nextInt(20)+10);
             x.setText(cubeSize);
             y.setText(cubeSize);
             z.setText(cubeSize);
@@ -394,7 +399,7 @@ public class inputController {
             for (int y = 0; y < yVal; y++) {
                 for (int z = 0; z < zVal; z++) {
                     int weightedBoo = rand.nextInt(100);
-                    if (weightedBoo < RANDWEIGHT){
+                    if (weightedBoo > randWeight){
                         randomCArray[x][y][z] = true;
                     } else {
                         randomCArray[x][y][z] = false;
@@ -403,6 +408,9 @@ public class inputController {
             }
             setLayer(randomCArray);
         }
+    }
+    public void randomWeightC() {
+        randWeight = (int) weightSlider.getValue();
     }
 
     public void keybindsC() {
