@@ -68,7 +68,7 @@ public class outputController {
     protected int xVal=0;
     protected int zVal=0;
     Color lineColor;
-    public boolean boardMade = false;
+    public boolean boardMade;
     private int deadN;
     private int aliveN;
     public boolean areRules;
@@ -79,20 +79,26 @@ public class outputController {
     fileIO ifio;
 
     public void booleanBoxC() {
-        trueBox = !trueBox;
-        board.setTrueFirst(trueBox);
-        booleanBox.setText(String.valueOf(trueBox));
+        if (boardMade) {
+            trueBox = !trueBox;
+            board.setTrueFirst(trueBox);
+            booleanBox.setText(String.valueOf(trueBox));
+        }
     }
     public void aliveNC() {
-        if (!aliveNeighbor.getText().equals("")){
-            aNeighbors = setRules(aliveNeighbor.getText());
-            board.setAliveNlist(aNeighbors);
+        if (boardMade) {
+            if (!aliveNeighbor.getText().equals("")) {
+                aNeighbors = setRules(aliveNeighbor.getText());
+                board.setAliveNlist(aNeighbors);
+            }
         }
     }
     public void deadNC() {
-        if (!deadNeighbor.getText().equals("")){
-            dNeighbors = setRules(deadNeighbor.getText());
-            board.setDeadNlist(dNeighbors);
+        if (boardMade) {
+            if (!deadNeighbor.getText().equals("")) {
+                dNeighbors = setRules(deadNeighbor.getText());
+                board.setDeadNlist(dNeighbors);
+            }
         }
     }
 
@@ -112,40 +118,44 @@ public class outputController {
                 rules.add(Integer.parseInt(next));
             }
         }
-//        println("rules: " + rules);
         return rules;
     }
 
     public void runButtonC() {
-        if (!modelRunning){
-            playTimeLine();
-            runButton.setText("Stop");
-            modelRunning = true;
-        } else {
-            pauseTimeLine();
-            runButton.setText("Start");
-            modelRunning = false;
+        if (boardMade) {
+            if (!modelRunning) {
+                playTimeLine();
+                runButton.setText("Stop");
+                modelRunning = true;
+            } else {
+                pauseTimeLine();
+                runButton.setText("Start");
+                modelRunning = false;
+            }
         }
     }
     public void rotateButtonC() {
-        if (rotateTimeline.getStatus().equals(Animation.Status.RUNNING)){
-            rotateTimeline.pause();
+        if (boardMade) {
+            if (rotateTimeline.getStatus().equals(Animation.Status.RUNNING)) {
+                rotateTimeline.pause();
 //            player.pause();
-        }
-        else {
-            rotateTimeline.play();
+            } else {
+                rotateTimeline.play();
 //            player.play();
+            }
         }
     }
     public void resetButtonC() {
 //        rotateTimeline.play();
-        if (modelRunning){
-            runButtonC();
+        if (boardMade) {
+            if (modelRunning) {
+                runButtonC();
+            }
+            removeChildren(cube);
+            board.reset();
+            addValsToGroup(cube, board.getCells());
+            pauseTimeLine();
         }
-        removeChildren(cube);
-        board.reset();
-        addValsToGroup(cube, board.getCells());
-        pauseTimeLine();
     }
 
 
@@ -161,6 +171,7 @@ public class outputController {
         cube.setTranslateZ(-size);
         if (!boardMade){
             board = new guiBoard(alive, null, null, xVal, yVal, zVal, true, false);
+            boardMade = true;
         }
 
         AmbientLight ambientLight = new AmbientLight();
@@ -508,9 +519,11 @@ public class outputController {
     }
 
     public void nextGenC() {
-        removeChildren(cube);
-        board.nextStep();
-        addValsToGroup(cube, board.getCells());
+        if (boardMade) {
+            removeChildren(cube);
+            board.nextStep();
+            addValsToGroup(cube, board.getCells());
+        }
 
     }
 

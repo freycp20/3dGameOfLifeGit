@@ -8,9 +8,9 @@ import java.util.Scanner;
 public class consoleInput {
 
     Scanner console;
-    consoleBoard gameBoard;
+    guiBoard gameBoard;
     boolean boardMade;
-    ArrayList<consoleBoard> boards;
+    ArrayList<guiBoard> boards;
     int xdim;
     int ydim;
     int zdim;
@@ -27,7 +27,7 @@ public class consoleInput {
      * Handles user input and commands
      * @return the final board
      */
-    public consoleBoard runConsole() {
+    public guiBoard runConsole() {
         console = new Scanner(System.in);
 
         System.out.println("Enter a command (or 'help' to see a list of commands): ");
@@ -102,7 +102,8 @@ public class consoleInput {
      * @param userFile a file storing board data from the user
      */
     public void processFile(File userFile) {
-        gameBoard = new consoleBoard(userFile);
+        fileIO ifio = new fileIO();
+        gameBoard = ifio.openFile();
     }
 
 
@@ -121,7 +122,7 @@ public class consoleInput {
         } catch (Exception e) {
             handleNew(console);
         }
-        gameBoard = new consoleBoard(xdim,ydim,zdim);
+        gameBoard = new guiBoard(xdim,ydim,zdim);
 
         createNewBoard();
 
@@ -207,9 +208,9 @@ public class consoleInput {
      */
     public int findCycle() {
         int cycleIndex = -1;
-        for (consoleBoard board1 : boards) {
+        for (guiBoard board1 : boards) {
             if (cycleIndex==-1){
-                for (consoleBoard board2 : boards) {
+                for (guiBoard board2 : boards) {
                     if (boards.indexOf(board2) != boards.indexOf(board1)) {
                         if (board1.isSame(board2)) {
                             if (boards.indexOf(board1) < boards.indexOf(board2)) {
