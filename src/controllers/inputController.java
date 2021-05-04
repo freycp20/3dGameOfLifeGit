@@ -192,7 +192,7 @@ public class inputController {
             slider.setValue(layerCount);
             for (int i = 0; i < (layerCount) - 1; i++) {
                 GridPane layer = layers.get(i);
-                layer.setOpacity(layer.getOpacity() * 0);
+                layer.setOpacity(layer.getOpacity() * 0.5);
             }
             layers.get(layerCount - 1).setVisible(true);
             layers.get(layerCount - 1).setOpacity(1);

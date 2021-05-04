@@ -381,6 +381,9 @@ public class outputController {
     public void checkeredLoafC(ActionEvent actionEvent) {
         preTemplateOpen(new File("src/templates/checkeredLoaf.txt"));
     }
+    public void zoomyBoiC(ActionEvent actionEvent) {
+        preTemplateOpen(new File("src/templates/zoomyBoi.txt"));
+    }
 
     private void preTemplateOpen(File file){
         ifio = new fileIO();

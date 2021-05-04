@@ -48,6 +48,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#miniCubeC" text="Mini Cube" />
                         <MenuItem mnemonicParsing="false" onAction="#longC" text="L o n g" />
                         <MenuItem mnemonicParsing="false" onAction="#checkeredLoafC" text="Checkered Loaf" />
+                        <MenuItem mnemonicParsing="false" onAction="#zoomyBoiC" text="Zoomy boi" />
                     </items>
                   </Menu>
               <MenuItem mnemonicParsing="false" text="Delete" />
