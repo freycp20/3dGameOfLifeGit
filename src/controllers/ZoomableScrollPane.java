@@ -12,52 +12,76 @@ public class ZoomableScrollPane extends ScrollPane {
     private double scaleValue = 0.9;
     private final Node target;
     private final Node zoomNode;
+
+    /**
+     * adds given node to zoomableScrollPane
+     * sets up group and content, as well as other various variables necessary for zooming in an out
+     * @param target
+     */
     public ZoomableScrollPane(Node target) {
         super();
         this.target = target;
+        // adds to super.scrollPane-GROUP
         this.zoomNode = new Group(target);
         setContent(outerNode(zoomNode));
+        // allows for mouse-hold panning
         setPannable(true);
+        // scroll bars are lame
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         setFitToHeight(true); //center
         setFitToWidth(true); //center
-
+        // visualizes zooming
         updateScale();
     }
 
+    /**
+     * sets outerNode to centered node, sets up listener for zooming by scrolling
+     * @param node
+     */
     private Node outerNode(Node node) {
         Node outerNode = centeredNode(node);
-
         outerNode.setOnScroll(e -> {
+            // keeps scrolling from going up an down, and sets new x,y to 2d point on given e.zoom
             e.consume();
             onScroll(e.getTextDeltaY(), new Point2D(e.getX(), e.getY()));
         });
-
         return outerNode;
     }
 
+    /**
+     * centers the node
+     * @param node
+     */
     private Node centeredNode(Node node) {
+        // sets node in vbox, sets style, and aligns to the center of the vbox
         VBox vBox = new VBox(node);
         vBox.setStyle("-fx-background-color: #2c2c2c");
-
         vBox.setAlignment(Pos.CENTER);
         return vBox;
     }
 
+    /**
+     * sets node scale value to preset scale val
+     * this just determines the starting scale of the node, and the current scale
+     */
     private void updateScale() {
         target.setScaleX(scaleValue);
         target.setScaleY(scaleValue);
     }
 
+    /**
+     * sets scale of the node relative to the outerNode, according the scrolling
+     * @param wheelDelta
+     * @param mousePoint
+     */
     private void onScroll(double wheelDelta, Point2D mousePoint) {
-
+        // zoomIntensity just determines the speed of zooming relative to scrolling
         double zoomIntensity = 0.02;
         double zoomFactor = Math.exp(wheelDelta * zoomIntensity);
-
         Bounds innerBounds = zoomNode.getLayoutBounds();
-
         Bounds viewportBounds = getViewportBounds();
+
         // calculate pixel offsets from [0, 1] range
         double valX = this.getHvalue() * (innerBounds.getWidth() - viewportBounds.getWidth());
         double valY = this.getVvalue() * (innerBounds.getHeight() - viewportBounds.getHeight());
@@ -69,7 +93,7 @@ public class ZoomableScrollPane extends ScrollPane {
         // convert target coordinates to zoomTarget coordinates
         Point2D posInZoomTarget = target.parentToLocal(zoomNode.parentToLocal(mousePoint));
 
-        // calculate adjustment of scroll position (pixels)
+        // calculate adjustment of scroll position in pixels
         Point2D adjustment = target.getLocalToParentTransform().deltaTransform(posInZoomTarget.multiply(zoomFactor - 1));
 
         // convert back to [0, 1] range

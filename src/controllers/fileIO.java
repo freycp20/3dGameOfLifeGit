@@ -82,16 +82,27 @@ public class fileIO {
         }
         return board;
     }
+
+    /**
+     * open file explorer and allow user to make new text file where the size, rules, and board will be stored
+     * @param content
+     */
     public void saveFile(String content){
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"); // presets file type to txt
         fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showSaveDialog(stage);
+        File file = fileChooser.showSaveDialog(stage); // set file explorer to file stage
 
         if (file != null) {
             saveTextToFile(content, file);
         }
     }
+
+    /**
+     * size, rules, and board into chosen text file
+     * @param content
+     * @param file
+     */
     protected void saveTextToFile(String content, File file) {
         try {
             PrintWriter writer;
@@ -102,6 +113,7 @@ public class fileIO {
             Logger.getLogger(fileIO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    // return if board has been opened to avoid file system errors
     public boolean getBoardOpened(){
         return boardOpened;
     }

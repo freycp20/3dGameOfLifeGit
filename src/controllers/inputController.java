@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -18,7 +17,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +45,6 @@ public class inputController {
     protected int yVal;
     protected int zVal;
     private int oldSliderVal;
-    private double onionPercent = 75.7;
     private boolean[][][] alive;
     private String aliveString = "";
     GridPane gridPane;
@@ -67,8 +64,15 @@ public class inputController {
     public LinkedHashSet<Integer> dNeighbors;
     private int randWeight;
 
+//     sceneBuilder methods and any non-general helper methods specific to common node types
+//     These are the various buttons, sliders, menu-items, and any other nodes throughout input
+
     /**
-     * sceneBuilder methods
+     * sets various node values as they could not be set through scenebuilder
+     * sets slider incrementation to block ten, sets to ticks, and sets major tick units
+     * calls axis validation to check for input errors
+     * calls handlers to set up necessary listeners
+     * sets up welcome message
      */
     @FXML
     public void initialize() {
@@ -77,6 +81,10 @@ public class inputController {
         weightSlider.setValue(50);
         randWeight = 50;
         layerCount = 1;
+        slider.setBlockIncrement(10);
+        slider.setShowTickMarks(true);
+        slider.setMinorTickCount(1);
+        slider.setMajorTickUnit(2);
         validateAxis(x);
         validateAxis(y);
         validateAxis(z);
@@ -85,73 +93,33 @@ public class inputController {
         Label label = new Label("Welcome");
         label.setStyle("-fx-font: 24 arial;");
         vbox.getChildren().add(label);
-        /**
-         * CALEBS TEST
-         */
-//        File mediaFile = new File("/Users/calebfrey/IdeaProjects/3dGameOfLifeGit/animation.mp4");
-//        Media media = new Media(mediaFile.toURI().toURL().toString());
-//
-//        MediaPlayer mediaPlayer = new MediaPlayer(media);
-//
-//        MediaView mediaView = new MediaView(mediaPlayer);
-//        mediaPlayer.play();
-//        vbox.getChildren().add(new Pane(mediaView));
         ZoomableScrollPane zScroll = new ZoomableScrollPane(vbox);
         zScroll.setStyle("-fx-background-color: #2c2c2c");
         mainBorderPane.setCenter(zScroll);
     }
-    public void handlers(){
-        mainBorderPane.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.CONTROL) {
-                ctrlPressed = true;
-                mainBorderPane.requestFocus();
-                mainBorderPane.setOnKeyPressed(f -> {
-                    if (f.getCode() == KeyCode.F){
-                        fillLayerC();
-                    } else if (f.getCode() == KeyCode.C){
-                        clearLayerC();
-                    } else {
-                        mainBorderPane.setOnKeyPressed(null);
-                        handlers();
-                    }
-                });
-            }
-            if (e.getCode() == KeyCode.ALT) {
-                mainBorderPane.requestFocus();
-                altPressed = true;
-            }
-            if (e.getCode() == KeyCode.W){
-                if (checkAxisFilledBase()) {
-                    upLayerC();
-                }
-            }
-            if (e.getCode() == KeyCode.S){
-                if (checkAxisFilledBase()) {
-                    downLayerC();
-                }
-            }
-        });
-        mainBorderPane.setOnKeyReleased(e -> {
-            if (e.getCode() == KeyCode.CONTROL) {
-                ctrlPressed = false;
-            }
-            if (e.getCode() == KeyCode.ALT) {
-                altPressed = false;
-            }
-        });
-    }
+
+    /**
+     * switches from input to output and passes all the various rules, boolean vals, sizes,
+     * and whatever board that may have been created.
+     **/
+    @FXML
     public void switchSceneC() throws IOException {
+        // get fxml file and separate loader from Parent to utilize both. Combined line is commented below
+        // Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/output.fxml"));
         Parent outputRoot = loader.load();
-//        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
+        // set new scene to output
         Scene scene = new Scene(outputRoot,mainBorderPane.getWidth(),mainBorderPane.getHeight());
         scene.getStylesheets().add("/resources/outputStyle.css");
+        // get current stage by passing through mainBoarderPane (though the node is arbitrary), and set scene to stage
         Stage output = (Stage) mainBorderPane.getScene().getWindow();
-        output.setTitle("Output");
         output.setScene(scene);
         output.show();
+        // title is set after showing stage should the program lag and set title before actually visually switching the scene
+        output.setTitle("Output");
         outputController outputC = loader.getController();
         outputC.mainBorderPane.requestFocus();
+        // if Axis is filled, all rules, sizes, and board values are passed to output
         if (checkAxisFilledBase()){
             saveC();
             outputC.init(this.xVal*10, alive, xVal, yVal, zVal);
@@ -160,7 +128,7 @@ public class inputController {
             outputC.zVal = zVal;
             outputC.boardMade = true;
             if (areRules){
-                outputC.areRules = areRules;
+                outputC.areRules = true;
                 outputC.trueFirst = trueFirst;
                 outputC.aNeighbors = aNeighbors;
                 outputC.dNeighbors = dNeighbors;
@@ -171,14 +139,25 @@ public class inputController {
         }
     }
 
+    /**
+     * button that calls switchSceneC
+     */
+    @FXML
+    public void visualizeC() throws IOException {
+        switchSceneC();
+    }
+
+    /**
+     * checks if axis is filled and saves all board values to boolean array alive.
+     */
+    @FXML
     public void saveC() {
         aliveString = ""; // don't add to already made alive
-        String tempCell;
         for (int y = 0; y < yVal; y++) {
             for (int i = 0; i < zVal; i++) {
                 for (int j = i; j < xVal * zVal; j += zVal) {
-//                    System.out.println(layers.get(y).getChildren().get(j).getId().equals("1") + " = " + y + "," + j/zVal + "," + j%xVal);
-
+                    // System.out.println(layers.get(y).getChildren().get(j).getId().equals("1") + " = " + y + "," + j/zVal + "," + j%xVal);
+                    // manipulate layers data to come in yxz form. It is in yxz so we can read in the layers first and because I wasn't thinking at the time of coding
                     alive[y][j / zVal][j % xVal] = layers.get(y).getChildren().get(j).getId().equals("1"); // y = y | x = j/xVal | z = j%zVal
                     aliveString += alive[y][j / zVal][j % xVal] + " ";
                 }
@@ -186,16 +165,20 @@ public class inputController {
             }
             aliveString += "\n";
         }
-
-        // set 3d visualization
     }
 
+    /**
+     * goes up one layer relative to current layer, sets all necessary values to past and current board rectangles
+     */
     @FXML
     public void upLayerC() {
+        // yVal comparisons keeps user from breaking things. checkAxisFilledBase would also work.
         if (layerCount != yVal && yVal != 0) {
+            // maintain layerCount for text shown and slider vals
             layerCount++;
             layerNumLabel.setText("Layer #: " + layerCount);
             slider.setValue(layerCount);
+            // set opacity of past layers
             for (int i = 0; i < (layerCount) - 1; i++) {
                 GridPane layer = layers.get(i);
                 layer.setOpacity(layer.getOpacity() * 0.5);
@@ -205,9 +188,13 @@ public class inputController {
         }
     }
 
+    /**
+     * goes down one layer relative to current layer, sets all necessary values to past and current board rectangles
+     */
     @FXML
     public void downLayerC() {
-        if (slider.getValue() == 0) ; // this makes things work don't delete it
+        // bodiless if statement maintains layerCount should the user try and break it
+        if (slider.getValue() == 0); // this makes things work don't delete it
         else if (layerCount != 1) {
             layerCount--;
             layerNumLabel.setText("Layer #: " + layerCount);
@@ -222,11 +209,18 @@ public class inputController {
         }
     }
 
+    /**
+     * get old slider value at exact time the slider was clicked
+     */
     @FXML
     public void sliderPressed() {
         oldSliderVal = (int) slider.getValue();
     }
 
+    /**
+     * set the new slider val at the exact time the slider was released
+     * get difference between old and new slider vals, compare to 0, and run upL, or downL accordingly
+     */
     @FXML
     public void sliderC() {
         int newSliderVal = (int) slider.getValue();
@@ -243,6 +237,10 @@ public class inputController {
         }
     }
 
+    /**
+     * gets and clears current layer in layers layerMap
+     */
+    @FXML
     public void clearLayerC() {
         if (checkAxisFilledBase()) {
             int mapCount = 0;
@@ -256,6 +254,11 @@ public class inputController {
         }
         handlers();
     }
+
+    /**
+     * gets and fills current layer in layers layerMap
+     */
+    @FXML
     public void fillLayerC(){
         if (checkAxisFilledBase()) {
             int mapCount = 0;
@@ -269,6 +272,11 @@ public class inputController {
         }
         handlers();
     }
+
+    /**
+     * clears all layers from board by calling clearLayerC yVal number of times
+     */
+    @FXML
     public void clearAllLayersC() {
         int stop = layerCount;
         layerCount = 1;
@@ -279,93 +287,105 @@ public class inputController {
         layerCount = stop;
         handlers();
     }
-    private boolean checkAxisFilledBase(){
-        if (!x.getText().equals("") && !y.getText().equals("") && !z.getText().equals("")){
-            return true;
-        }
-        return false;
-    }
 
+    /**
+     * checks if values are valid and sets xVal to textField input.
+     * Checks if axis filled using checkAxisFilled, which will display board to user
+     */
     @FXML
     public void xC() {
-//        x.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!(x.getText().equals(""))) {
-//                if (oldVal && !newVal) {
-                    xVal = Integer.parseInt(x.getText());
-                    checkValidRange(x);
-                    checkAxisFilled();
-//                }
-            }
-//        });
+        if (!(x.getText().equals(""))) {
+            xVal = Integer.parseInt(x.getText());
+            checkValidRange(x);
+            checkAxisFilled();
 
+        }
     }
 
+    /**
+     * checks if values are valid and sets yVal to textField input
+     * sets slider val and position to current layer
+     * sets slider max and min to yVal max and one respectively
+     * Checks if axis filled using checkAxisFilled, which will display board to user
+     */
     @FXML
     public void yC() {
-//            y.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if (!(y.getText().equals(""))) {
-//                    if (oldVal && !newVal) {
-                        yVal = Integer.parseInt(y.getText());
-                        layerNumLabel.setText("Layer #: 1");
-                        slider.setBlockIncrement(10);
-                        slider.setMax(yVal);
-                        slider.setMin(1);
-                        slider.setShowTickMarks(true);
-                        slider.setMinorTickCount(1);
-                        slider.setMajorTickUnit(2);
-                        checkValidRange(y);
-                        checkAxisFilled();
-                    }
-//                }
-//            });
+        if (!(y.getText().equals(""))) {
+            yVal = Integer.parseInt(y.getText());
+            layerNumLabel.setText("Layer #: 1");
+            slider.setMax(yVal);
+            slider.setMin(1);
+            checkValidRange(y);
+            checkAxisFilled();
+        }
     }
 
+    /**
+     * checks if values are valid and sets zVak to textField input.
+     * Checks if axis filled using checkAxisFilled, which will display board to user
+     */
     @FXML
     public void zC() {
-//        z.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!(z.getText().equals(""))) {
-//                if (oldVal && !newVal) {
-                    zVal = Integer.parseInt(z.getText());
-                    checkValidRange(z);
-                    checkAxisFilled();
-//                }
-            }
-//        });
+        if (!(z.getText().equals(""))) {
+            zVal = Integer.parseInt(z.getText());
+            checkValidRange(z);
+            checkAxisFilled();
+        }
     }
 
+    /**
+     * makes new instance if fileIO
+     * sets received boardValues to sizes, textValues, and rules
+     * calls xC, yC, and zC to properly set up slider
+     * displays opened board
+     */
     @FXML
     public void openTemplateC() {
         fileIO ifio = new fileIO();
-        guiBoard board = ifio.openFile();
-        yVal = board.getyVal();
-        xVal = board.getxVal();
-        zVal = board.getzVal();
-        y.setText(String.valueOf(yVal));
-        x.setText(String.valueOf(xVal));
-        z.setText(String.valueOf(zVal));
-        xC();
-        yC();
-        zC();
-        if (board.areRules()){
-            areRules = board.areRules();
-            trueFirst = board.getTrueFirst();
-            aNeighbors = board.getAliveNlist();
-            dNeighbors = board.getDeadNlist();
+        if (ifio.getBoardOpened()) {
+            guiBoard board = ifio.openFile();
+            yVal = board.getyVal();
+            xVal = board.getxVal();
+            zVal = board.getzVal();
+            y.setText(String.valueOf(yVal));
+            x.setText(String.valueOf(xVal));
+            z.setText(String.valueOf(zVal));
+            xC();
+            yC();
+            zC();
+            if (board.areRules()) {
+                // set rules so they can pass to output should the user visualize opened board
+                areRules = board.areRules();
+                trueFirst = board.getTrueFirst();
+                aNeighbors = board.getAliveNlist();
+                dNeighbors = board.getDeadNlist();
+            }
+            // use set layer to display board
+            setLayer(board.getStartingPos());
         }
-        setLayer(board.getStartingPos());
     }
 
+    /**
+     * calls saveC and runs sizes and board through fileIO which will save it in a new text file
+     */
     @FXML
     public void saveTemplateC() {
         saveC();
+        // alive string is boolean array in string form. The seemingly random false lets the file system know that there are no rules
         String content = String.format("%d %d %d %b\n%s", yVal, xVal, zVal, false, aliveString);
         new fileIO().saveFile(content);
     }
 
+    /**
+     * a toggleable menu-item that displays axis on the board
+     */
     @FXML
     public void showAxisC() {
+        // axisShown allows for showAxis to be toggleable
         axisShown = !axisShown;
+        // newAxisLayer allows for axis to be seen regardless of current layer
         if (newAxisLayer) {
+            // setting axis length, width, color, and visibility
             axisY = new Line(stackPane.getWidth() / 2, stackPane.getHeight(), stackPane.getWidth() / 2, 2);
             axisX = new Line(0, stackPane.getHeight() / 2, stackPane.getWidth() - 2, stackPane.getHeight() / 2);
             axisY.setStrokeWidth(2.5);
@@ -380,9 +400,15 @@ public class inputController {
         }
         axisY.setVisible(axisShown);
         axisX.setVisible(axisShown);
+        // sets newAxisLayer to identify current layer as having an axis
         newAxisLayer = false;
     }
 
+    /**
+     * creates random board with randomness set to slider weight, which is set to 50% by default
+     * if board size is not already set, x, y, and z, are given a random number from 10-30
+     */
+    @FXML
     public void randomC() {
         Random rand = new Random();
         if (!checkAxisFilledBase()){
@@ -409,10 +435,19 @@ public class inputController {
             setLayer(randomCArray);
         }
     }
+
+    /**
+     * sets randomWeight to current val of the slider
+     */
+    @FXML
     public void randomWeightC() {
         randWeight = (int) weightSlider.getValue();
     }
 
+    /**
+     * displays all key-binds in new stage
+     */
+    @FXML
     public void keybindsC() {
         Stage stage = new Stage();
         VBox vb = new VBox();
@@ -435,6 +470,10 @@ public class inputController {
         stage.show();
     }
 
+    /**
+     * displays information about the program in a new stage
+     */
+    @FXML
     public void aboutC() {
         Stage stage = new Stage();
         stage.setTitle("about");
@@ -462,45 +501,57 @@ public class inputController {
         stage.show();
     }
 
+//     non-sceneBuilder methods and any general helper methods used by many different nodes or classes
+//     These are the checkers, setters, and other various background logic for the input interface
+
     /**
-     * non-scenebuilder methods
+     * Fills board with given size and displays it in mainBoardPane-CENTER
      */
-    @FXML
-    void fillLayer() { // originally initialize
+    void fillLayer() {
         mapCount = 0;
+        // makes empty board
         empty3dArray();
+        // makes new map and stackpane
         layerMap = new HashMap<>();
         stackPane = new StackPane();
+        // clears all previous layers
         layers.clear();
         for (int y = 0; y < yVal; y++) {
             gridPane = new GridPane();
             for (int x = 0; x < zVal; x++) {
                 for (int z = 0; z < xVal; z++) {
+                    // makes new rectangle according to size
                     Rectangle rectangle = new Rectangle(30, 30);
                     rectangle.setStroke(Color.SILVER);
                     rectangle.setFill(Color.TRANSPARENT);
+                    // Id is set to 0 if false, and to 1 if true
                     rectangle.setId("0");
-
+                    // set rectangle listeners
                     setRectangles(rectangle);
-//                    System.out.println("mainBorderPane.getOnKeyPressed() = " + mainBorderPane.getOnKeyPressed());
+                    // add rectangle to layer at x,z
                     gridPane.add(rectangle, x, z);
                 }
             }
+            // add all gridpane layers of rectangles to stackpane
             stackPane.getChildren().add(gridPane);
             layers.add(gridPane);
         }
         for (int l = 1; l < layers.size(); l++) {
             layers.get(l).setVisible(false);
         }
-
+        // make zoomable scrollPane
         ZoomableScrollPane zScroll = new ZoomableScrollPane(stackPane);
         zScroll.setStyle("-fx-background-color: #2c2c2c");
-
+        // set mainBoarderPane-CENTER to zoomableScrollPane
         mainBorderPane.setCenter(zScroll);
     }
 
-    @FXML
+    /**
+     * literally does the same thing as fill layer, but with a predetermined board
+     * @param cellArray
+     */
     void setLayer(boolean[][][] cellArray) {
+        // I'm not commenting this, go read fillLayer
         StackPane stackPane = new StackPane();
         layerMap = new HashMap<>();
         layers.clear();
@@ -511,6 +562,7 @@ public class inputController {
                 for (int z = 0; z < xVal; z++) {
                     Rectangle rectangle = new Rectangle(30, 30);
                     rectangle.setStroke(Color.SILVER);
+                    // sets values of rectangles according to given board values
                     if (cellArray[y][x][z]) {
                         rectangle.setFill(Color.SILVER);
                         rectangle.setId("1");
@@ -533,6 +585,10 @@ public class inputController {
         mainBorderPane.setCenter(zScroll);
     }
 
+    /**
+     * sets given rectangle up with necessary listeners and aggressively forces it into layerMap
+     * @param rct
+     */
     private void setRectangles(Rectangle rct){
         layerMap.put(mapCount,rct);
         mapCount++;
@@ -557,6 +613,9 @@ public class inputController {
         });
     }
 
+    /**
+     * makes an empty 3d array of size x,y,z
+     */
     private void empty3dArray() {
         alive = new boolean[yVal][xVal][zVal];
         for (int y = 0; y < yVal; y++) {
@@ -568,6 +627,10 @@ public class inputController {
         }
     }
 
+    /**
+     * checks if given textFields have non-integer values
+     * @param tf
+     */
     private void validateAxis(TextField tf) {
         tf.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!(newValue.matches("\\d*"))) {
@@ -576,6 +639,10 @@ public class inputController {
         });
     }
 
+    /**
+     * checks if given textField has values between 1-50
+     * @param tf
+     */
     private void checkValidRange(TextField tf) {
         int MIN_XYZ = 1;
         int MAX_XYZ = 50;
@@ -586,17 +653,75 @@ public class inputController {
         }
     }
 
+    /**
+     * checks if all axis have been filled, set various boolean values to necessary values
+     */
     private void checkAxisFilled() {
         if (!x.getText().equals("") && !y.getText().equals("") && !z.getText().equals("")) {
+            // once all textFields have been filled, fillLayer is run
             fillLayer();
+            // gets rid of old axis if shown
             newAxisLayer = true;
             axisShown = false;
             showAxis.setSelected(false);
-//            mainBorderPane.requestFocus();
         }
     }
 
-    public void visualizeC() throws IOException {
-        switchSceneC();
+    /**
+     * return boolean value if all axis are filled
+     */
+    private boolean checkAxisFilledBase(){
+        return !x.getText().equals("") && !y.getText().equals("") && !z.getText().equals("");
+    }
+
+    /**
+     * sets up various listeners for drawing, hot-keys, and pane-clicking
+     */
+    public void handlers(){
+        // sets new listeners when ctrl is pressed for key-binds
+        mainBorderPane.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.CONTROL) {
+                ctrlPressed = true;
+                // request focus so erasing still works
+                mainBorderPane.requestFocus();
+                mainBorderPane.setOnKeyPressed(f -> {
+                    if (f.getCode() == KeyCode.F){
+                        fillLayerC();
+                    } else if (f.getCode() == KeyCode.C){
+                        clearLayerC();
+                    } else {
+                        // stops listener and resets handlers
+                        mainBorderPane.setOnKeyPressed(null);
+                        handlers();
+                    }
+                });
+            }
+            // drawing
+            if (e.getCode() == KeyCode.ALT) {
+                mainBorderPane.requestFocus();
+                altPressed = true;
+            }
+            // up layer
+            if (e.getCode() == KeyCode.W){
+                if (checkAxisFilledBase()) {
+                    upLayerC();
+                }
+            }
+            // down layer
+            if (e.getCode() == KeyCode.S){
+                if (checkAxisFilledBase()) {
+                    downLayerC();
+                }
+            }
+        });
+        // sets ctrl and alt to false so key-binds and drawing mechanics are stopped
+        mainBorderPane.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.CONTROL) {
+                ctrlPressed = false;
+            }
+            if (e.getCode() == KeyCode.ALT) {
+                altPressed = false;
+            }
+        });
     }
 }
