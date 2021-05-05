@@ -529,10 +529,10 @@ public class outputController {
     }
 
 
-    /**
-     * Helper methods for output. These methods control the visualization and the actual
-     *  rendering of the model.
-     */
+
+     // Helper methods for output. These methods control the visualization and the actual
+     // rendering of the model.
+
 
     /**
      * This method adds the cell array to the 3d cube.
@@ -613,16 +613,16 @@ public class outputController {
         if (modelRunning){
             runButtonC();
         }
-        String aN = "";
-        String dN = "";
+        StringBuilder aN = new StringBuilder();
+        StringBuilder dN = new StringBuilder();
         for (Integer alvn : board.getAliveNlist()) {
-            aN += alvn + " ";
+            aN.append(alvn).append(" ");
         }
         for (Integer ddvn : board.getDeadNlist()){
-            dN += ddvn + " ";
+            dN.append(ddvn).append(" ");
         }
         String content = String.format(
-                "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, areRules, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, boo);
+                "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, areRules, trueBox,aNeighbors.size(), aN,dNeighbors.size(), dN, boo);
         new fileIO().saveFile(content);
     }
 
