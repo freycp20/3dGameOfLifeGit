@@ -19,7 +19,7 @@ public class fileIO {
      * displays file explorer
      * @return guiBoard or null
      */
-    public guiBoard openFile(){
+    public Board openFile(){
         // create new stage and set scene to system file explorer
         stage = new Stage();
         final FileChooser fileChooser = new FileChooser();
@@ -37,8 +37,8 @@ public class fileIO {
      * @param file
      * @return guiBoard
      */
-    protected guiBoard readFile(File file) {
-        guiBoard board = null;
+    protected Board readFile(File file) {
+        Board board = null;
         try {
             LinkedHashSet<Integer> aNeighbors = null;
             LinkedHashSet<Integer> dNeighbors = null;
@@ -72,7 +72,7 @@ public class fileIO {
                 }
             }
             // set up new board with all given values
-            board = new guiBoard(cellArray, aNeighbors, dNeighbors,
+            board = new Board(cellArray, aNeighbors, dNeighbors,
                     xVal, yVal, zVal, trueFirst, areRules);
         } catch (IOException ex) {
             Logger.getLogger(

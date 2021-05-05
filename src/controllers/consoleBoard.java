@@ -148,6 +148,7 @@ public class consoleBoard {
     public boolean isSame(consoleBoard other) {
         return (this.toString().equals(other.toString()));
     }
+
     public boolean[][][] addBorder() {
         x = cells.length;
         y = cells[0].length;

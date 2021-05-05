@@ -65,7 +65,7 @@ public class outputController {
     public boolean boardMade;
 
     // board and cube members
-    private guiBoard board;
+    private Board board;
     private Group cube;
 
     // timeline variables
@@ -144,7 +144,7 @@ public class outputController {
 
 
         if (!boardMade){
-            board = new guiBoard(alive, aNeighbors, dNeighbors, xVal, yVal, zVal, trueFirst, areRules);
+            board = new Board(alive, aNeighbors, dNeighbors, xVal, yVal, zVal, trueFirst, areRules);
             boardMade = true;
         }
         // Set Lighting
@@ -268,12 +268,16 @@ public class outputController {
     @FXML
     public void openTemplateC() {
 
+        // checks if the file has been opened by file opener rather than the templates
         if (clickOpen){
             board = ifio.openFile();
         }
+
+        // clears the current board if there is something there
         if (!(cube == null)) {
             cube.getChildren().clear();
         }
+
         if (ifio.getBoardOpened()){
             yVal = board.getyVal();
             xVal = board.getxVal();
@@ -529,10 +533,8 @@ public class outputController {
     }
 
 
-    /**
-     * Helper methods for output. These methods control the visualization and the actual
-     *  rendering of the model.
-     */
+    // Helper methods for output. These methods control the visualization and the actual
+    // rendering of the model.
 
     /**
      * This method adds the cell array to the 3d cube.
@@ -613,16 +615,16 @@ public class outputController {
         if (modelRunning){
             runButtonC();
         }
-        String aN = "";
-        String dN = "";
+        StringBuilder aN = new StringBuilder();
+        StringBuilder dN = new StringBuilder();
         for (Integer alvn : board.getAliveNlist()) {
-            aN += alvn + " ";
+            aN.append(alvn).append(" ");
         }
         for (Integer ddvn : board.getDeadNlist()){
-            dN += ddvn + " ";
+            dN.append(ddvn).append(" ");
         }
         String content = String.format(
-                "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, areRules, trueBox,aNeighbors.size(), aN,dNeighbors.size(),dN, boo);
+                "%d %d %d %s %s %d %s %d %s\n%s", yVal, xVal, zVal, areRules, trueBox,aNeighbors.size(), aN.toString(),dNeighbors.size(), dN.toString(), boo);
         new fileIO().saveFile(content);
     }
 

@@ -1,43 +1,46 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
+import java.util.*;
 
-public class guiBoard {
-    boolean[][][] cells = null;
+public class Board {
+
+    // variables regarding the current board and its rules
+    boolean[][][] cells;
     boolean[][][] cellsWithBorder = null;
     boolean[][][] startingPos = null;
     private LinkedHashSet<Integer> aliveNlist;
     private LinkedHashSet<Integer> deadNlist;
     private boolean trueFirst;
+    private boolean areRules;
 
+    // Size of the board
     private int xVal;
     private int yVal;
     private int zVal;
     private int size;
-    private boolean areRules;
 
-    public guiBoard(boolean[][][] cellArray,
-                    LinkedHashSet<Integer> aliveNlist,
-                    LinkedHashSet<Integer> deadNlist,
-                    int xVal, int yVal, int zVal,
-                    boolean trueFirst, boolean areRules) {
+    /**
+     * Initializes the board class
+     * @param cellArray the 3d array of values
+     * @param aliveNlist the list containing the alive rules
+     * @param deadNlist the list containing the dead rules
+     * @param xVal the size of the x dimension
+     * @param yVal the size of the y dimension
+     * @param zVal the size of the z dimension
+     * @param trueFirst the value of the trueFirst Rule
+     * @param areRules holds if there are given rules or not
+     */
+    public Board(boolean[][][] cellArray,
+                 LinkedHashSet<Integer> aliveNlist,
+                 LinkedHashSet<Integer> deadNlist,
+                 int xVal, int yVal, int zVal,
+                 boolean trueFirst, boolean areRules) {
         this.areRules = areRules;
         this.cells = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.size = cellArray.length;
-        if (aliveNlist == null) {
-            this.aliveNlist = new LinkedHashSet<>(Arrays.asList(5, 6, 7));
-        } else {
-            this.aliveNlist = aliveNlist;
-        }
-        if (deadNlist == null) {
-            this.deadNlist = new LinkedHashSet<>(Arrays.asList(6));
-        } else {
-            this.deadNlist = deadNlist;
-        }
+        this.aliveNlist = Objects.requireNonNullElseGet(aliveNlist, () -> new LinkedHashSet<>(Arrays.asList(5, 6, 7)));
+        this.deadNlist = Objects.requireNonNullElseGet(deadNlist, () -> new LinkedHashSet<>(Collections.singletonList(6)));
         this.xVal = xVal;
         this.yVal = yVal;
         this.zVal = zVal;
@@ -51,20 +54,37 @@ public class guiBoard {
             }
         }
     }
-    public guiBoard(int xdim, int ydim, int zdim) {
+
+    /**
+     * Constructor based off size
+     * @param xdim
+     * @param ydim
+     * @param zdim
+     */
+    public Board(int xdim, int ydim, int zdim) {
         this.xVal = xdim;
         this.yVal = ydim;
         this.zVal = zdim;
         cells = new boolean[xdim][ydim][zdim];
 
     }
+
     public void editCell(int x, int y, int z) {
         cells[x][y][z] = true;
     }
-    public boolean isSame(guiBoard other) {
+
+    /**
+     * Checks if the current board is the same as another
+     * @param other the other board being checked
+     * @return true or false depending on result of the check
+     */
+    public boolean isSame(Board other) {
         return (this.toString().equals(other.toString()));
     }
 
+    /**
+     * method for debugging, prints out the current board
+     */
     public void printCells() {
         for (int y = 0; y < cells.length; y++) {
             for (int x = 0; x < cells.length; x++) {
@@ -78,10 +98,15 @@ public class guiBoard {
             System.out.println();
         }
     }
+
+    /**
+     * Handles the logic for determining the next generation of the current board
+     */
     public void nextStep() {
+        // Creates a read only board and a mutable board with a border
         boolean[][][] boardReadOnly = addBorder(cells);
         boolean[][][] mutableBoard = addBorder(cells);
-        int livingNeighbors = 0;
+        int livingNeighbors;
 
         for (int layer = 1; layer < boardReadOnly.length - 1; layer++) {
             for (int row = 1; row < boardReadOnly[layer].length - 1; row++) {
@@ -101,6 +126,15 @@ public class guiBoard {
         }
         cells = removeBorder(mutableBoard);
     }
+
+    /**
+     * Finds all cells surrounding a cell at a given location
+     * @param board the current board
+     * @param layer the layer the desired cell is in
+     * @param row the row the desired cell is in
+     * @param col the column the desired cell is in
+     * @return a boolean array of the surrounding cells
+     */
     public ArrayList<Boolean> surroundingCells(boolean[][][] board, int layer, int row, int col) {
         final int NUM_NEIGHBORS = 27;
         ArrayList<Boolean> surrounding = new ArrayList<>(NUM_NEIGHBORS);
@@ -114,22 +148,38 @@ public class guiBoard {
         surrounding.remove(13);
         return surrounding;
     }
+
+    /**
+     * Resets the board to the original generation
+     */
     public void reset() {
-        this.cells = new guiBoard(startingPos,aliveNlist, deadNlist, xVal, yVal, zVal, trueFirst, areRules).getCells();
+        this.cells = new Board(startingPos,aliveNlist, deadNlist, xVal, yVal, zVal, trueFirst, areRules).getCells();
     }
+
+    /**
+     * Returns a string version of the board
+     * @param arr the board to be converted to a string
+     * @return the string version
+     */
     public String arrayToString(boolean[][][] arr) {
-        String cellString = "";
+        StringBuilder cellString = new StringBuilder();
         for (boolean[][] booleans : arr) {
             for (boolean[] aBoolean : booleans) {
                 for (boolean b : aBoolean) {
-                    cellString += b + " ";
+                    cellString.append(b).append(" ");
                 }
-                cellString += "\n";
+                cellString.append("\n");
             }
-            cellString += "\n";
+            cellString.append("\n");
         }
-        return cellString;
+        return cellString.toString();
     }
+
+    /**
+     * removes the dead border from a board
+     * @param board The board with a dead border around it
+     * @return the new board without any border around it
+     */
     public boolean[][][] removeBorder(boolean[][][] board) {
         boolean[][][] borderLess = new boolean[board.length-2][board[0].length-2][board[0][0].length-2];
         for (int i=1; i<board.length-1; i++) {
