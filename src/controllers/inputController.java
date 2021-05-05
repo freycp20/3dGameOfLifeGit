@@ -124,11 +124,7 @@ public class inputController {
             outputC.xVal = xVal;
             outputC.zVal = zVal;
             if (areRules){
-                outputC.init(this.xVal*10, alive, aNeighbors, dNeighbors, xVal, yVal, zVal, trueFirst, areRules);
-//                outputC.areRules = areRules;
-//                outputC.trueFirst = trueFirst;
-//                outputC.aNeighbors = aNeighbors;
-//                outputC.dNeighbors = dNeighbors;
+                outputC.init(this.xVal*10, alive, aNeighbors, dNeighbors, xVal, yVal, zVal, trueFirst, true);
                 outputC.booleanBox.setText(String.valueOf(trueFirst));
                 outputC.deadNeighbor.setText(String.valueOf(dNeighbors));
                 outputC.aliveNeighbor.setText(String.valueOf(aNeighbors));
@@ -196,9 +192,7 @@ public class inputController {
      */
     @FXML
     public void downLayerC() {
-        // bodiless if statement maintains layerCount should the user try and break it
-        if (slider.getValue() == 0); // this makes things work don't delete it
-        else if (layerCount != 1) {
+         if (layerCount != 1) {
             layerCount--;
             layerNumLabel.setText("Layer #: " + layerCount);
             slider.setValue(layerCount);
@@ -428,11 +422,7 @@ public class inputController {
             for (int y = 0; y < yVal; y++) {
                 for (int z = 0; z < zVal; z++) {
                     int weightedBoo = rand.nextInt(100);
-                    if (weightedBoo > randWeight){
-                        randomCArray[x][y][z] = true;
-                    } else {
-                        randomCArray[x][y][z] = false;
-                    }
+                    randomCArray[x][y][z] = weightedBoo > randWeight;
                 }
             }
             setLayer(randomCArray);
@@ -644,7 +634,7 @@ public class inputController {
 
     /**
      * checks if given textField has values between 1-50
-     * @param tf
+     * @param tf textfield
      */
     private void checkValidRange(TextField tf) {
         int MIN_XYZ = 1;

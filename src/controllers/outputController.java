@@ -533,8 +533,9 @@ public class outputController {
     }
 
 
-    // Helper methods for output. These methods control the visualization and the actual
-    // rendering of the model.
+     // Helper methods for output. These methods control the visualization and the actual
+     // rendering of the model.
+
 
     /**
      * This method adds the cell array to the 3d cube.
