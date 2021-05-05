@@ -9,14 +9,17 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 public class ZoomableScrollPane extends ScrollPane {
+    // preset scale size
     private double scaleValue = 0.9;
+    // inner pane of zoomable node (content)
     private final Node target;
+    // outer pane of zoomable node
     private final Node zoomNode;
 
     /**
      * adds given node to zoomableScrollPane
      * sets up group and content, as well as other various variables necessary for zooming in an out
-     * @param target
+     * @param target given node
      */
     public ZoomableScrollPane(Node target) {
         super();
@@ -37,7 +40,7 @@ public class ZoomableScrollPane extends ScrollPane {
 
     /**
      * sets outerNode to centered node, sets up listener for zooming by scrolling
-     * @param node
+     * @param node given node
      */
     private Node outerNode(Node node) {
         Node outerNode = centeredNode(node);
@@ -51,7 +54,7 @@ public class ZoomableScrollPane extends ScrollPane {
 
     /**
      * centers the node
-     * @param node
+     * @param node given node
      */
     private Node centeredNode(Node node) {
         // sets node in vbox, sets style, and aligns to the center of the vbox
@@ -72,8 +75,8 @@ public class ZoomableScrollPane extends ScrollPane {
 
     /**
      * sets scale of the node relative to the outerNode, according the scrolling
-     * @param wheelDelta
-     * @param mousePoint
+     * @param wheelDelta double value of current position
+     * @param mousePoint 2d point of mouse location given by x,y double values
      */
     private void onScroll(double wheelDelta, Point2D mousePoint) {
         // zoomIntensity just determines the speed of zooming relative to scrolling

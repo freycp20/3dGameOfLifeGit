@@ -22,6 +22,38 @@ import java.util.*;
 
 
 public class inputController {
+    // x,y,z values
+    protected int xVal;
+    protected int yVal;
+    protected int zVal;
+    private boolean[][][] alive;
+    private String aliveString = "";
+    protected int layerCount;
+    private boolean newAxisLayer = true;
+
+    // board layers and map
+    GridPane gridPane;
+    ArrayList<GridPane> layers = new ArrayList<>();
+    private StackPane stackPane;
+    private HashMap<Integer, Rectangle> layerMap;
+    private int mapCount;
+
+    // rules
+    public boolean areRules;
+    public boolean trueFirst;
+    public LinkedHashSet<Integer> aNeighbors;
+    public LinkedHashSet<Integer> dNeighbors;
+
+    // slider values
+    private int randWeight;
+    private int oldSliderVal;
+
+    // listener values
+    private boolean ctrlPressed = false;
+    private boolean altPressed = false;
+    private boolean axisShown = false;
+
+    @FXML
     public Button upLayer = null;
     public Button downLayer = null;
     public Slider slider = null;
@@ -37,32 +69,8 @@ public class inputController {
     public Label sizeLabel = null;
     public Slider weightSlider = null;
     public CustomMenuItem customSliderWeight = null;
-    protected int layerCount;
-    protected int xVal;
-    protected int yVal;
-    protected int zVal;
-    private int oldSliderVal;
-    private boolean[][][] alive;
-    private String aliveString = "";
-    GridPane gridPane;
-    ArrayList<GridPane> layers = new ArrayList<>();
-    private boolean ctrlPressed = false;
-    private boolean altPressed = false;
-    private boolean axisShown = false;
-    private StackPane stackPane;
-    private Line axisY;
-    private Line axisX;
-    private boolean newAxisLayer = true;
-    private HashMap<Integer, Rectangle> layerMap;
-    private int mapCount;
-    public boolean areRules;
-    public boolean trueFirst;
-    public LinkedHashSet<Integer> aNeighbors;
-    public LinkedHashSet<Integer> dNeighbors;
-    private int randWeight;
-
-//     sceneBuilder methods and any non-general helper methods specific to common node types
-//     These are the various buttons, sliders, menu-items, and any other nodes throughout input
+    private Line axisY = null;
+    private Line axisX = null;
 
     /**
      * sets various node values as they could not be set through scenebuilder
@@ -494,8 +502,10 @@ public class inputController {
         stage.show();
     }
 
-//     non-sceneBuilder methods and any general helper methods used by many different nodes or classes
-//     These are the checkers, setters, and other various background logic for the input interface
+
+    // Helper methods for input. These methods control the visualization of the board, as well as
+    // backend logic for various nodes
+
 
     /**
      * Fills board with given size and displays it in mainBoardPane-CENTER
@@ -541,7 +551,7 @@ public class inputController {
 
     /**
      * literally does the same thing as fill layer, but with a predetermined board
-     * @param cellArray
+     * @param cellArray 3d boolean array
      */
     void setLayer(boolean[][][] cellArray) {
         // I'm not commenting this, go read fillLayer
@@ -580,7 +590,7 @@ public class inputController {
 
     /**
      * sets given rectangle up with necessary listeners and aggressively forces it into layerMap
-     * @param rct
+     * @param rct given rectangle
      */
     private void setRectangles(Rectangle rct){
         layerMap.put(mapCount,rct);
@@ -622,7 +632,7 @@ public class inputController {
 
     /**
      * checks if given textFields have non-integer values
-     * @param tf
+     * @param tf is given textField, x,y,z
      */
     private void validateAxis(TextField tf) {
         tf.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -634,7 +644,7 @@ public class inputController {
 
     /**
      * checks if given textField has values between 1-50
-     * @param tf textfield
+     * @param tf is given textField, x,y,z
      */
     private void checkValidRange(TextField tf) {
         int MIN_XYZ = 1;
@@ -661,7 +671,7 @@ public class inputController {
     }
 
     /**
-     * return boolean value if all axis are filled
+     * @return boolean value if all axis are filled
      */
     private boolean checkAxisFilledBase(){
         return !x.getText().equals("") && !y.getText().equals("") && !z.getText().equals("");
