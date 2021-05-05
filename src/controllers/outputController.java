@@ -502,6 +502,12 @@ public class outputController {
     public void zoomyBoiC() {
         preTemplateOpen(new File("src/templates/zoomyBoi.txt"));
     }
+    public void welcomeC() {
+        preTemplateOpen(new File("src/templates/welcome.txt"));
+    }
+    public void starC() {
+        preTemplateOpen(new File("src/templates/star.txt"));
+    }
 
 
     /**
