@@ -11,8 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class fileIO {
+    // filer explorer stage
     private static Stage stage;
+    // trueFirst rule
     private boolean trueFirst;
+    // boolean value of whether the board has bee opened or not
     boolean boardOpened;
 
     /**
@@ -34,7 +37,7 @@ public class fileIO {
 
     /**
      * reads selected file and returns board with all values
-     * @param file
+     * @param file is a given file path
      * @return guiBoard
      */
     protected guiBoard readFile(File file) {
@@ -85,7 +88,7 @@ public class fileIO {
 
     /**
      * open file explorer and allow user to make new text file where the size, rules, and board will be stored
-     * @param content
+     * @param content string value of 3d boolean array list
      */
     public void saveFile(String content){
         FileChooser fileChooser = new FileChooser();
@@ -100,8 +103,8 @@ public class fileIO {
 
     /**
      * size, rules, and board into chosen text file
-     * @param content
-     * @param file
+     * @param content String value of 3d boolean array
+     * @param file file path
      */
     protected void saveTextToFile(String content, File file) {
         try {

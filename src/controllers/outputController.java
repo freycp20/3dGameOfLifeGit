@@ -529,7 +529,6 @@ public class outputController {
     }
 
 
-
      // Helper methods for output. These methods control the visualization and the actual
      // rendering of the model.
 
@@ -736,6 +735,7 @@ public class outputController {
 
      // Handles the visualization of the cube itself.
      // Creates axes and displays lines for borders.
+
 
     /**
      * This subclass creates the axes for the cube.
