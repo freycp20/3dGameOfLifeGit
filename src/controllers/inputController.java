@@ -342,8 +342,8 @@ public class inputController {
     @FXML
     public void openTemplateC() {
         fileIO ifio = new fileIO();
+        guiBoard board = ifio.openFile();
         if (ifio.getBoardOpened()) {
-            guiBoard board = ifio.openFile();
             yVal = board.getyVal();
             xVal = board.getxVal();
             zVal = board.getzVal();
