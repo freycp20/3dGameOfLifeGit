@@ -50,7 +50,7 @@
     -fx-background-insets: 0, 0 0 1 0 ;
     -fx-background-radius: 0;
     -fx-text-fill: #e8e8e8;
-    -fx-prompt-text-fill: #acabab;
+    -fx-prompt-text-fill: #565656;
 }
 .text-field:focused {
     -fx-background-color: -fx-focus-color, #3b3f41 ;

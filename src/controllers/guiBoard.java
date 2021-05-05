@@ -88,13 +88,11 @@ public class guiBoard {
                 for (int col = 1; col < boardReadOnly[layer][row].length - 1; col++) {
                     livingNeighbors = Collections.frequency(surroundingCells(boardReadOnly, layer, row, col), true);
                     if (boardReadOnly[layer][row][col]) {
-                        System.out.println("livingNeighbors = " + livingNeighbors);
                         if (aliveNlist.contains(livingNeighbors)) {
                             mutableBoard[layer][row][col] = trueFirst;
                         } else {
                             mutableBoard[layer][row][col] = !trueFirst;
                         }
-
                     } else if (deadNlist.contains(livingNeighbors)) {
                         mutableBoard[layer][row][col] = true;
                     }

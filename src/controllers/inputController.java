@@ -18,10 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Random;
+import java.util.*;
 
 
 public class inputController {
@@ -122,20 +119,26 @@ public class inputController {
         // if Axis is filled, all rules, sizes, and board values are passed to output
         if (checkAxisFilledBase()){
             saveC();
-            outputC.init(this.xVal*10, alive, xVal, yVal, zVal);
+//            outputC.init(this.xVal*10, alive, xVal, yVal, zVal);
             outputC.yVal = yVal;
             outputC.xVal = xVal;
             outputC.zVal = zVal;
-            outputC.boardMade = true;
             if (areRules){
-                outputC.areRules = true;
-                outputC.trueFirst = trueFirst;
-                outputC.aNeighbors = aNeighbors;
-                outputC.dNeighbors = dNeighbors;
+                outputC.init(this.xVal*10, alive, aNeighbors, dNeighbors, xVal, yVal, zVal, trueFirst, areRules);
+//                outputC.areRules = areRules;
+//                outputC.trueFirst = trueFirst;
+//                outputC.aNeighbors = aNeighbors;
+//                outputC.dNeighbors = dNeighbors;
                 outputC.booleanBox.setText(String.valueOf(trueFirst));
                 outputC.deadNeighbor.setText(String.valueOf(dNeighbors));
                 outputC.aliveNeighbor.setText(String.valueOf(aNeighbors));
+            } else {
+                LinkedHashSet<Integer> a = new LinkedHashSet<>(List.of(5, 6, 7));
+                LinkedHashSet<Integer> d = new LinkedHashSet<>(List.of(6));
+                outputC.init(this.xVal*10, alive, a, d, xVal, yVal, zVal, true, false);
             }
+            outputC.boardMade = true;
+
         }
     }
 
@@ -321,7 +324,7 @@ public class inputController {
     }
 
     /**
-     * checks if values are valid and sets zVak to textField input.
+     * checks if values are valid and sets zVal to textField input.
      * Checks if axis filled using checkAxisFilled, which will display board to user
      */
     @FXML
