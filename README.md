@@ -69,7 +69,7 @@ Once the user decides to open or close a template, or create their own, they can
 
 This GUI is where all the visualization happens. The board that is visualized can come from multiple different sources:
 - a user-created template,
-- [a pre-made template](#-templates),
+- [a pre-made template](./README.md#templates),
 - or a saved file.
 -----
 
