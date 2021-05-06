@@ -21,7 +21,7 @@
             <Menu mnemonicParsing="false" text="File">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#openTemplateC" text="Open Template" />
-                  <MenuItem mnemonicParsing="false" onAction="#saveTemplateC" text="SaveTemplate" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveTemplateC" text="Save Template" />
                   <MenuItem mnemonicParsing="false" onAction="#switchSceneC" text="Switch" />
                </items>
             </Menu>
