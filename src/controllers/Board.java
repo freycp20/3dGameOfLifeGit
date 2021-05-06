@@ -40,7 +40,7 @@ public class Board {
         this.startingPos = new boolean[cellArray.length][cellArray.length][cellArray.length];
         this.size = cellArray.length;
         this.aliveNlist = Objects.requireNonNullElseGet(aliveNlist, () -> new LinkedHashSet<>(Arrays.asList(5, 6, 7)));
-        this.deadNlist = Objects.requireNonNullElseGet(deadNlist, () -> new LinkedHashSet<>(Collections.singletonList(6)));
+        this.deadNlist = Objects.requireNonNullElseGet(deadNlist, () -> new LinkedHashSet<>(Arrays.asList(6)));
         this.xVal = xVal;
         this.yVal = yVal;
         this.zVal = zVal;
@@ -66,6 +66,9 @@ public class Board {
         this.yVal = ydim;
         this.zVal = zdim;
         cells = new boolean[xdim][ydim][zdim];
+        this.aliveNlist = new LinkedHashSet<>(Arrays.asList(5, 6, 7));
+        this.deadNlist = new LinkedHashSet<>(Arrays.asList(6));
+        this.trueFirst = true;
 
     }
 
@@ -103,7 +106,10 @@ public class Board {
      * Handles the logic for determining the next generation of the current board
      */
     public void nextStep() {
-        // Creates a read only board and a mutable board with a border
+        // Creates a read only board and a mutable board with a border. This is created
+        // so that we do not read the values from a board and then update the same board.
+        // We cannot just use cells, as it would cause an index out of bounds error, so
+        // we have to use a copy of the board with a border.
         boolean[][][] boardReadOnly = addBorder(cells);
         boolean[][][] mutableBoard = addBorder(cells);
         int livingNeighbors;
@@ -113,6 +119,8 @@ public class Board {
                 for (int col = 1; col < boardReadOnly[layer][row].length - 1; col++) {
                     livingNeighbors = Collections.frequency(surroundingCells(boardReadOnly, layer, row, col), true);
                     if (boardReadOnly[layer][row][col]) {
+
+                        // if num neighbors in list of rules.
                         if (aliveNlist.contains(livingNeighbors)) {
                             mutableBoard[layer][row][col] = trueFirst;
                         } else {
@@ -191,6 +199,12 @@ public class Board {
         }
         return borderLess;
     }
+
+    /**
+     * Adds a border around the current array
+     * @param cells the board to add a border around
+     * @return the cells with a border around them
+     */
     public boolean[][][] addBorder(boolean[][][] cells) {
         int x = cells.length;
         int y = cells[0].length;
@@ -208,13 +222,6 @@ public class Board {
                 }
             }
         }
-//        for (int i = 1; i < x+1; i++) {
-//            for (int j = 1; j < y+1; j++) {
-//                for (int k = 1; k < z+1; k++) {
-//                    cellsWithBorder[i][j][k] = cells[i-1][j-1][k-1];
-//                }
-//            }
-//        }
         return cellsWithBorder;
     }
     public boolean areRules(){

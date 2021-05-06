@@ -94,9 +94,17 @@ public class outputController {
      */
     public void initialize() {
         ifio = new fileIO();
+
+        // Timeline allows for an action to take place with a certain amount of time in between each
+        // event. This allows for the cube to continually evolve, without pausing the whole gui.
+        // This allows the user to rotate the cube and watch it as it evolves. This is in contrast
+        // to the wait function, which pauses the current thread, and does not allow for the user to
+        // continue using the gui.
         timeline =
                 new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> timeLineLogic()));
         timeline.setCycleCount(Animation.INDEFINITE);
+
+        // Same thing but for rotation of the cube.
         rotateTimeline = new Timeline(
                 new KeyFrame(
                         Duration.seconds(0),
@@ -129,6 +137,8 @@ public class outputController {
                      LinkedHashSet<Integer> dNeighbors,
                      int xVal, int yVal, int zVal,
                      boolean trueFirst, boolean areRules) {
+
+        // Set class members
         this.areRules = areRules;
         this.trueFirst = trueFirst;
         this.aNeighbors = aNeighbors;
@@ -138,21 +148,27 @@ public class outputController {
         cube = createCube(size);
         width = (size/10);
         cubeSize = (size/(size/10));
+
         // initial cube rotation
         cube.getTransforms().addAll(rotateX, rotateY);
         cube.setTranslateZ(-size);
 
 
         if (!boardMade){
+            // Create a new board if necessary
             board = new Board(alive, aNeighbors, dNeighbors, xVal, yVal, zVal, trueFirst, areRules);
             boardMade = true;
         }
-        // Set Lighting
+
+        // Create a light and add it to the scene, for lighting of the blocks
         AmbientLight ambientLight = new AmbientLight();
         ambientLight.setLightOn(true);
 
+        // Create the base model
         StackPane root = new StackPane();
         root.getChildren().add(cube);
+
+        // Set Dark Mode
         setStyleDark();
 
         root.getChildren().add(ambientLight);
@@ -162,13 +178,22 @@ public class outputController {
         SubScene subScene = new SubScene(root, subScenePane.getLayoutBounds().getMaxX(), subScenePane.getLayoutBounds().getMaxY(), true, SceneAntialiasing.BALANCED);
         subScene.heightProperty().bind(subScenePane.heightProperty());
         subScene.widthProperty().bind(subScenePane.widthProperty());
+
         subScene.setStyle("-fx-background-color: #000000;");
+
+        // Add the subscene to its parent pane.
         subScenePane.getChildren().addAll(subScene);
         subScenePane.setId("subScenePane");
+
         root.setId("cubeGridPane");
+
         PerspectiveCamera cam = new PerspectiveCamera();
         subScene.setCamera(cam);
+
+        // Set the subscene in the mainBorderPane
         mainBorderPane.setCenter(subScenePane);
+
+        // Apply modifications
         setDragRotate(root);
         makeZoomable(root);
     }
@@ -279,9 +304,12 @@ public class outputController {
         }
 
         if (ifio.getBoardOpened()){
+            // Gets values from the board class
             yVal = board.getyVal();
             xVal = board.getxVal();
             zVal = board.getzVal();
+
+            // If the template has saved rules, use them, otherwise, init with default values.
             if (board.areRules()){
                 init(yVal*10, board.getStartingPos(), board.getAliveNlist(),
                         board.getDeadNlist(), board.getxVal(),board.getyVal(),
@@ -315,10 +343,12 @@ public class outputController {
     @FXML
     public void resetButtonC() {
         if (boardMade) {
+
+            // Pause the model if it is playing
             if (modelRunning) {
                 runButtonC();
             }
-            // Pause timeline if running
+            // Pause rotation timeline if running
             if (rotateTimeline.getStatus().equals(Animation.Status.RUNNING)) {
                 rotateTimeline.pause();
             }
@@ -389,11 +419,19 @@ public class outputController {
      */
     @FXML
     public void speedSliderC() {
+
+        // Pause the timeline while waiting for update
         timeline.pause();
+
+        // Get the user input for step speed from slider
         this.stepSpeed = (int) speedSlider.getValue();
+
+        // create a new timeline with the new speed
         timeline =
                 new Timeline(new KeyFrame(Duration.millis(stepSpeed), f -> timeLineLogic()));
         timeline.setCycleCount(Animation.INDEFINITE);
+
+        // Start the timeline if it was running before update, otherwise keep paused.
         if (modelRunning) {
             playTimeLine();
         } else {
@@ -411,6 +449,8 @@ public class outputController {
     @FXML
     public void switchSceneC(boolean[][][] arr) throws IOException {
         pauseTimeLine();
+
+        // Get the fxmlloader
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/input.fxml"));
         Parent inputRoot = loader.load();
 //        Parent loader = FXMLLoader.load(getClass().getResource("/resources/output.fxml"));
@@ -420,6 +460,8 @@ public class outputController {
         input.setTitle("Input");
         input.setScene(scene);
         input.show();
+
+        // Get the controller for the other scene to allow communication between guis
         inputController inputC = loader.getController();
         inputC.mainBorderPane.requestFocus();
         if (boardMade){
@@ -528,6 +570,7 @@ public class outputController {
     public void timeLineLogic() {
         boolean[][][] lastBoard = board.getCells();
         board.nextStep();
+
         // Pauses if nothing is happening
         if (Arrays.deepEquals(board.getCells(), lastBoard)) {
             pauseTimeLine();
@@ -556,6 +599,8 @@ public class outputController {
                         // Create material for boxes to handle color
                         PhongMaterial material = new PhongMaterial();
                         Box newBox = new Box(cubeSize, cubeSize, cubeSize);
+
+                        // Translate the position of the cube from center
                         newBox.setTranslateX(localize(i));
                         newBox.setTranslateY(localize(j));
                         newBox.setTranslateZ(localize(k));
@@ -565,6 +610,8 @@ public class outputController {
                         int dx = width/2 - i;
                         int dy = width/2 - j;
                         int dz = width/2 - k;
+
+                        // Calculate the max distance
                         final double MAX_DISTANCE = Math.sqrt(Math.pow(width/2.0, 2) + Math.pow(width/2.0, 2) + Math.pow(width/2.0, 2));
                         double distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2));
 
@@ -595,6 +642,7 @@ public class outputController {
      * @param file the file to be opened
      */
     private void preTemplateOpen(File file){
+
         ifio = new fileIO();
         ifio.setBoardOpened(true);
         board = ifio.readFile(file);
@@ -717,6 +765,7 @@ public class outputController {
         Scanner scnr = new Scanner(text)
                 .useDelimiter("[^\\d]");
 
+        // add the digits to the list of rules
         while (scnr.hasNext()) {
             String next = scnr.next();
             if (!next.isEmpty()) {
@@ -733,6 +782,9 @@ public class outputController {
      * @return the string without characters that were to be removed.
      */
     public static String stripChars(String input, String strip) {
+
+        // using string builder, as string is being editted in a loop. Would be inefficient with
+        // regular String.
         StringBuilder result = new StringBuilder();
         for (char c : input.toCharArray()) {
             if (strip.indexOf(c) == -1) {
@@ -763,6 +815,8 @@ public class outputController {
             // grid
             double zTranslate = 0;
             double lineWidth = 0.5;
+
+            // Create the lines
             for (int y = 0; y <= size; y += size) {
                 Line line = new Line(0, 0, size, 0);
                 line.setStroke(lineColor);

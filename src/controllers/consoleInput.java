@@ -34,25 +34,13 @@ public class consoleInput {
 
         while(console.hasNextLine()) {
             String command = console.nextLine();
-            switch(command) {
-                case "help":
-                    printHelp();
-                    break;
-                case "new":
-                    handleNew(console);
-                    break;
-                case "display":
-                    display();
-                    break;
-                case "next":
-                    next();
-                    break;
-                case "cycle":
-                    printCycle();
-                    break;
-                case "run":
-                    run(console);
-                    break;
+            switch (command) {
+                case "help" -> printHelp();
+                case "new" -> handleNew(console);
+                case "display" -> display();
+                case "next" -> next();
+                case "cycle" -> printCycle();
+                case "run" -> run(console);
             }
             runConsole();
 
