@@ -22,16 +22,16 @@ the steps that you need to take to set up your ide for JavaFX.
 * [Eclipse](https://www.youtube.com/watch?v=bC4XB6JAaoU)
 
 # Running the Program
-Now that your IDE is set up and ready to go, running the program is a breeze.
+Now that the IDE is set up and ready to go, running the program is a breeze.
 
-Once you pulled a copy of this repository and have it open in your IDE,
-find ```main.java``` and run it. The user will be met with this screen:
+Once a copy of this repository has been pulled and opened in the prepared IDE,
+the next step is find and run ```main.java``` . The user will be met with this screen:
 
 ><img src="src/resources/menu.png" width="300">
 The user can choose to go to: 
 * *input*: to create a template, 
 * *output*: if they desire to open a premade template, or a user-created template, or
-* *console*: to access a premade file and view it in terminal
+* *console*: to create a new board and view it in text-based in the terminal
 
 After this point, everything is self-explanatory. 
 
@@ -41,12 +41,13 @@ Let's keep going.
 ## Input 
 ><img src="src/resources/input.png" width="600">
 
-This is where the fun begins. In this layout, the user can create their own custom template to later visualize in 3D. We added this feature to our program after realizing the difficulty of creating a template without a dedicated GUI. This GUI provides ease of creation, along with an appealing *dark-mode stylesheet*. This GUI has many underlying features including but not limited to:
+This is where the fun begins. In this layout, the user can create their own custom template to later visualize in 3D. We added this feature to our program after realizing the difficulty of creating a template without a dedicated GUI. This GUI provides ease of creation, along with an appealing *dark-mode*. This GUI has many underlying features including but not limited to:
 
 * Streamlined layer-by-layer template creation:
   *  Custom size cube
   *  Paint feature
   *  Erase feature
+  *  Layer stacking
   *  Clear all layers: ```Edit -> Clear all layers```
   *  Show center axes: ```Edit -> Show Axes```
 
@@ -74,9 +75,9 @@ This GUI is where all the visualization happens. The board that is visualized ca
 -----
 
 Once the board is initialized, all of the features (as follows) can then be utilized:
-* Custom rules for [Alive/Dead Neighbor Constraints](#-digging-deeper)
+* Custom rules for [Alive/Dead Neighbor Constraints](./README.md#digging-deeper)
   * The default rules for this program are ```5, 6, 7``` for live neighbor constraints, and ```6``` for dead neighbor constraints.
-  * These rules can be changed by the user, to allow for experimentation, or left as default.
+  * These rules can be changed by the user, to allow for experimentation, or they can be left as default.
 * *Run*: begins the evolution of the model.
 * *Next Generation*: executes a single step of the model.
 * *Rotate*: Rotates the model whilst playing/paused for better visualization.
@@ -89,30 +90,35 @@ Once the board is initialized, all of the features (as follows) can then be util
   * Save original/current generation: ```File -> Save Generation```
 ### Templates
 ><img src="src/resources/templates.png" width="300">
-This program features a number of different templates, including but not limited to:
+
+This program features a number of different pre-made templates with custom rules, including but not limited to:
 * [Welcome](https://imgur.com/a/8Ueq9px)
 * [Star](https://imgur.com/a/cexPAoS)
 * [Checkered Loaf](https://imgur.com/a/sz0bwvQ)
 * [Mini Cube](https://imgur.com/a/dWu7Pdy)
+For users who want a quick visualization and ease of experimenting, the pre-made templates are the way to go
 
 ## Console
 ><img src="src/resources/console.png" width="600">
 
 # Digging deeper
 ## Alive/Dead Neighbor Constraints
-This constraint in *3d game of life* builds directly off of the rules in [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). 
+The Alive/Dead neighbor constraint in *3d game of life* builds directly off of the rules in [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). These rules are listes as follows:
 > Any live cell with two or three live neighbours survives.
 > 
 > Any dead cell with three live neighbours becomes a live cell.
 > 
 > All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
-The concept is very similar for our version of *Game of Life*. In a 3D model, instead of having 8 possible neighbors, each cell has 26 possible neighobors. This means that our rules have to be adjusted accordingly, as follows:
+The concept of this constraint is very similar in our version of *Game of Life*. In a 3D model, instead of having 8 possible neighbors, each cell has 26 possible neighobors. This means that the rules have to be adjusted accordingly:
 * Any live cell with five, six, or seven live neighbours survives.
 
 * Any dead cell with six live neighbours becomes a live cell.
 
 * All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+Each of these constraints can be customized by the user, and the program can take as many parameters as given.
+
 
 ## trueFirst Constraint
 This constraint does not exist in the original *Game of Life* but has been added as an extra feature to our version. 
