@@ -1,132 +1,136 @@
-# Welcome to Game of Life 3D!
-><img src="src/resources/star.png" width="200">
+# Game of Life 3D
 
+Inspired by [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), this program lets you create, run, and explore three-dimensional cellular automata. Build a pattern layer by layer, choose its rules, and watch it change over time.
 
-Inspired by [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), this program provides a easy and streamlined
-method of input and output for 3D Cellular Automata. The default rules are 5 6 7 for alive,
-and 6 for dead. The cellular neighborhood we use to calculate alive and dead cells is moore's type.
-With moore's neighborhood, 26 possible values are read in, and a/d cells are accounted for.
+![A cellular automaton in the 3D output view](src/resources/output.png)
 
+*The 3D view, with controls for rules, generation speed, rotation, and reset.*
 
-This project incorporates javafx, so to get started, the user's IDE will have to be set up to allow for this.
+## Motivation
 
-**Let's get started!**
+The rules of a cellular automaton are simple, but the patterns they produce can be difficult to picture, especially in three dimensions. We wanted a way to experiment with those rules and see the results directly.
 
-# Installing javafx
-First, begin by downloading  [JavaFX](https://gluonhq.com/products/javafx/).
+We added the layer editor after realizing how difficult it was to create a useful starting pattern without a dedicated GUI. The editor and 3D view let us move between designing a pattern and exploring what happens to it.
 
-Then, once have installed JavaFX is installed, watch the following video regarding 
-the steps that you need to take to set up your ide for JavaFX.
+## Using the program
 
-* [Intellij](https://www.youtube.com/watch?v=BHj6zbH3inI)
-* [Eclipse](https://www.youtube.com/watch?v=bC4XB6JAaoU)
+The welcome screen has three options:
 
-# Running the Program
-Now that the IDE is set up and ready to go, running the program is a breeze.
+<img src="src/resources/menu.png" alt="The welcome menu with input, output, and console options" width="300">
 
-Once a copy of this repository has been pulled and opened in the prepared IDE,
-the next step is find and run ```main.java``` . The user will be met with this screen:
+- **Input:** create or edit a starting template.
+- **Output:** open a template and visualize it in 3D.
+- **Console:** create a board and view its generations as text in the terminal.
 
-><img src="src/resources/menu.png" width="300">
-The user can choose to go to: 
-* *input*: to create a template, 
-* *output*: if they desire to open a premade template, or a user-created template, or
-* *console*: to create a new board and view it in text-based in the terminal
+For a quick look, choose **Output**, open a built-in template, and use **Next Generation** to step through its changes. Use **Start** to run it continuously, **Rotate** to see it from different angles, and **Reset** to return to the initial generation.
 
-After this point, everything is self-explanatory. 
+## Input: building a template
 
-Let's keep going.
+![The layer-by-layer template editor](src/resources/input.png)
 
-# Features
-## Input 
-><img src="src/resources/input.png" width="600">
+The input view lets you paint and erase cells one layer at a time. Choose the board dimensions, move between layers, and build the starting pattern before opening it in the output view.
 
-This is where the fun begins. In this layout, the user can create their own custom template to later visualize in 3D. We added this feature to our program after realizing the difficulty of creating a template without a dedicated GUI. This GUI provides ease of creation, along with an appealing *dark-mode*. This GUI has many underlying features including but not limited to:
+The editor includes:
 
-* Streamlined layer-by-layer template creation:
-  *  Custom size cube
-  *  Paint feature
-  *  Erase feature
-  *  Layer stacking
-  *  Clear all layers: ```Edit -> Clear all layers```
-  *  Show center axes: ```Edit -> Show Axes```
-
-* Saving/Opening user-created templates
-  * Save: ```File -> Save Template```
-  * Open: ```File -> Open Template```
-
-Once the user decides to open or close a template, or create their own, they can then visualize it in 3D.
+- Custom board dimensions and layer controls
+- Painting, erasing, and filling or clearing a layer
+- Center axes to help align a pattern
+- **Edit → Clear all layers** to start again
+- **File → Save Template** and **File → Open Template** for reusing designs
 
 ### Keybinds
-* Move Up Layer: ```w```
-* Move Down Layer: ```s```
-* Fill layer: ```Ctrl + f```
-* Clear layer: ```Crtl + c```
-* Paint: ```Alt + MouseHover```
-* Erase: ```Ctrl + MouseHover```
 
-## Output
-><img src="src/resources/output.png" width="600">
+| Action | Keybind |
+| --- | --- |
+| Move up a layer | `W` |
+| Move down a layer | `S` |
+| Fill the current layer | `Ctrl + F` |
+| Clear the current layer | `Ctrl + C` |
+| Paint cells | `Alt` + mouse hover |
+| Erase cells | `Ctrl` + mouse hover |
 
-This GUI is where all the visualization happens. The board that is visualized can come from multiple different sources:
-- a user-created template,
-- [a pre-made template](./README.md#templates),
-- or a saved file.
------
+## Output: exploring a pattern
 
-Once the board is initialized, all of the features (as follows) can then be utilized:
-* Custom rules for [Alive/Dead Neighbor Constraints](./README.md#digging-deeper)
-  * The default rules for this program are ```5, 6, 7``` for live neighbor constraints, and ```6``` for dead neighbor constraints.
-  * These rules can be changed by the user, to allow for experimentation, or they can be left as default.
-* *Run*: begins the evolution of the model.
-* *Next Generation*: executes a single step of the model.
-* *Rotate*: Rotates the model whilst playing/paused for better visualization.
-* *Step-Speed*: Change the speed of the evolution.
-* *Reset*: Resets the model to the original state.
+The output view accepts a user-created template, a built-in template, or a saved file. Once a board is loaded, you can:
 
+- Change the alive and dead neighbor rules
+- Run the simulation or advance one generation at a time
+- Adjust the time between generations
+- Rotate the model while it is running or paused
+- Reset to the original state
+- Open another template or save a generation from the **File** menu
 
-* Opening and Closing a File:
-  * Open a file: ```File -> Open template```
-  * Save original/current generation: ```File -> Save Generation```
 ### Templates
-><img src="src/resources/templates.png" width="300">
 
-This program features a number of different pre-made templates with custom rules, including but not limited to:
-* [Welcome](https://imgur.com/a/8Ueq9px)
-* [Star](https://imgur.com/a/cexPAoS)
-* [Checkered Loaf](https://imgur.com/a/sz0bwvQ)
-* [Mini Cube](https://imgur.com/a/dWu7Pdy)
-For users who want a quick visualization and ease of experimenting, the pre-made templates are the way to go
+<img src="src/resources/templates.png" alt="The built-in template menu" width="300">
+
+Built-in templates provide a starting point for experimenting. Some have their own rule settings. Watch these examples:
+
+- [Welcome](https://imgur.com/a/8Ueq9px)
+- [Star](https://imgur.com/a/cexPAoS)
+- [Checkered Loaf](https://imgur.com/a/sz0bwvQ)
+- [Mini Cube](https://imgur.com/a/dWu7Pdy)
+
+The template files are also available in [src/templates](src/templates).
 
 ## Console
-><img src="src/resources/console.png" width="600">
 
-# Digging deeper
-## Alive/Dead Neighbor Constraints
-The Alive/Dead neighbor constraint in *3d game of life* builds directly off of the rules in [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). These rules are listes as follows:
-> Any live cell with two or three live neighbours survives.
-> 
-> Any dead cell with three live neighbours becomes a live cell.
-> 
-> All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+![A board represented in the console](src/resources/console.png)
 
-The concept of this constraint is very similar in our version of *Game of Life*. In a 3D model, instead of having 8 possible neighbors, each cell has 26 possible neighobors. This means that the rules have to be adjusted accordingly:
-* Any live cell with five, six, or seven live neighbours survives.
+The console offers a text-based way to create and step through a board. Choose **console** from the welcome menu and follow the prompts in the terminal that launched the application.
 
-* Any dead cell with six live neighbours becomes a live cell.
+## Digging deeper
 
-* All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+### Alive/dead neighbor rules
 
-Each of these constraints can be customized by the user, and the program can take as many parameters as given.
+In Conway's two-dimensional Game of Life, a cell has eight neighbors. A live cell survives with two or three live neighbors, and a dead cell becomes alive with three.
 
+In this project, the [Moore neighborhood](https://en.wikipedia.org/wiki/Moore_neighborhood) extends into three dimensions. Each cell has 26 neighbors: the cells around it in its own layer and in the layers above and below.
 
-## trueFirst Constraint
-This constraint does not exist in the original *Game of Life* but has been added as an extra feature to our version. 
+The default rules are:
 
-This constraint inverts the effects of the live neighbor constraint, such that when this is true (by default), the rules are as previously stated, but when this is false, the rules are inverted, shown as follows (changes in bold):
-* Any live cell with five, six, or seven live neighbours **dies**.
- 
-* Any dead cell with six live neighbours becomes a live cell.
- 
-* All other live cells **survive** in the next generation. Similarly, all other dead cells stay dead.
+- A live cell with **five, six, or seven** live neighbors survives.
+- A dead cell with **six** live neighbors becomes alive.
+- All other live cells die; all other dead cells stay dead.
 
+Both sets of neighbor counts can be changed in the output view. Changing a rule can produce very different behavior from the same starting pattern.
+
+### The `trueFirst` constraint
+
+The application also has an **Alive Constraint Inversion** option, called `trueFirst` in the code. It changes how the live-cell rule is interpreted.
+
+With `trueFirst` set to `true`, live cells survive when their neighbor count matches the alive constraint. With it set to `false`, matching live cells die and nonmatching live cells survive. The dead-cell birth rule stays the same.
+
+### How it is organized
+
+The project is written in Java with JavaFX for the editor, controls, and 3D display. [Board.java](src/controllers/Board.java) calculates each generation from a separate copy of the previous one, so updating a cell does not affect the other cells in that step.
+
+The [input controller](src/controllers/inputController.java), [output controller](src/controllers/outputController.java), and [file handling](src/controllers/fileIO.java) connect that board logic to the interface and saved templates.
+
+## Running locally
+
+Use JDK 16 and the [JavaFX 16 SDK](https://gluonhq.com/products/javafx/) for your operating system and CPU architecture. Open the project in IntelliJ or Eclipse.
+
+1. Clone the repository and open it in your IDE:
+
+   ```sh
+   git clone https://github.com/freycp20/3dGameOfLifeGit.git
+   cd 3dGameOfLifeGit
+   ```
+
+2. Select your JDK and mark `src` as a source folder.
+3. Add the JARs from your JavaFX SDK's `lib` folder to the project libraries. Replace any old JavaFX library paths in the imported IDE settings with your local SDK path.
+4. In the run configuration for `main`, add these VM options, replacing the example path:
+
+   ```text
+   --module-path "/path/to/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml
+   ```
+
+5. Keep `src/resources` available on the runtime classpath as `/resources`, and set the working directory to the repository root. Built-in templates are loaded from `src/templates` relative to that directory.
+6. Run [src/main.java](src/main.java). It opens the welcome screen shown above.
+
+Setup videos are available for [IntelliJ](https://www.youtube.com/watch?v=BHj6zbH3inI) and [Eclipse](https://www.youtube.com/watch?v=bC4XB6JAaoU).
+
+## Project team
+
+Created by Caleb Frey, Keegan Woodburn, and Michael Gomez.
