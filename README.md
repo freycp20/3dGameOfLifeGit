@@ -4,7 +4,7 @@ Inspired by [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Gam
 
 ![A cellular automaton in the 3D output view](src/resources/output.png)
 
-*The application's 3D view, with controls for the rules, generation speed, rotation, and reset. All screenshots in this README are from the original project.*
+*The 3D view, with controls for rules, generation speed, rotation, and reset.*
 
 ## Motivation
 
@@ -64,7 +64,7 @@ The output view accepts a user-created template, a built-in template, or a saved
 
 <img src="src/resources/templates.png" alt="The built-in template menu" width="300">
 
-Built-in templates provide a starting point for experimenting. Some have their own rule settings. The original project includes these recorded examples:
+Built-in templates provide a starting point for experimenting. Some have their own rule settings. Watch these examples:
 
 - [Welcome](https://imgur.com/a/8Ueq9px)
 - [Star](https://imgur.com/a/cexPAoS)
@@ -109,7 +109,7 @@ The [input controller](src/controllers/inputController.java), [output controller
 
 ## Running locally
 
-This is an IDE-based Java project, without a Maven or Gradle build. You will need a JDK and the [JavaFX SDK](https://gluonhq.com/products/javafx/) for your operating system and CPU architecture. The original IntelliJ configuration uses JDK 16 and JavaFX 16.
+Use JDK 16 and the [JavaFX 16 SDK](https://gluonhq.com/products/javafx/) for your operating system and CPU architecture. Open the project in IntelliJ or Eclipse.
 
 1. Clone the repository and open it in your IDE:
 
@@ -129,8 +129,8 @@ This is an IDE-based Java project, without a Maven or Gradle build. You will nee
 5. Keep `src/resources` available on the runtime classpath as `/resources`, and set the working directory to the repository root. Built-in templates are loaded from `src/templates` relative to that directory.
 6. Run [src/main.java](src/main.java). It opens the welcome screen shown above.
 
-The original setup videos are available for [IntelliJ](https://www.youtube.com/watch?v=BHj6zbH3inI) and [Eclipse](https://www.youtube.com/watch?v=bC4XB6JAaoU).
+Setup videos are available for [IntelliJ](https://www.youtube.com/watch?v=BHj6zbH3inI) and [Eclipse](https://www.youtube.com/watch?v=bC4XB6JAaoU).
 
 ## Project team
 
-Created by Caleb Frey, Keegan Woodburn, and Michael Gomez, as credited in the application's About dialog.
+Created by Caleb Frey, Keegan Woodburn, and Michael Gomez.
